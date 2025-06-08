@@ -235,6 +235,18 @@ class WarpCommand(private val plugin: PostWarps) : CommandExecutor, TabCompleter
                 sender.sendMessage(plugin.i18n.getMessage("prefix") + plugin.i18n.getMessage("reload.success"))
             }
             
+            "update", "checkupdate" -> {
+                // 检查权限
+                if (!sender.hasPermission("postwarps.admin")) {
+                    sender.sendMessage(plugin.i18n.getMessage("prefix") + plugin.i18n.getMessage("no.permission"))
+                    return true
+                }
+                
+                // 检查更新
+                sender.sendMessage(plugin.i18n.getMessage("prefix") + plugin.i18n.getMessage("system.updater.update_checking"))
+                plugin.sendUpdateInfo(sender, true) // 强制检查更新
+            }
+            
             "help" -> {
                 showHelp(sender)
             }
@@ -257,6 +269,7 @@ class WarpCommand(private val plugin: PostWarps) : CommandExecutor, TabCompleter
         
         if (player.hasPermission("postwarps.admin")) {
             player.sendMessage(plugin.i18n.getMessage("warp.help.reload"))
+            player.sendMessage(plugin.i18n.getMessage("warp.help.update"))
         }
     }
     
@@ -291,6 +304,7 @@ class WarpCommand(private val plugin: PostWarps) : CommandExecutor, TabCompleter
             
             if (sender.hasPermission("postwarps.admin")) {
                 subCommands.add("reload")
+                subCommands.add("update")
             }
             
             return subCommands.filter { it.startsWith(args[0].lowercase()) }

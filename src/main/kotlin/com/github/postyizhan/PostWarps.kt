@@ -5,6 +5,8 @@ import com.github.postyizhan.database.DatabaseManager
 import com.github.postyizhan.i18n.I18n
 import com.github.postyizhan.listeners.PlayerListener
 import com.github.postyizhan.manager.WarpManager
+import com.github.postyizhan.util.UpdateChecker
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -13,6 +15,7 @@ class PostWarps : JavaPlugin() {
     lateinit var databaseManager: DatabaseManager
     lateinit var warpManager: WarpManager
     lateinit var i18n: I18n
+    private lateinit var updateChecker: UpdateChecker
     
     // 数据库设置
     var useMySQL: Boolean = false
@@ -49,6 +52,27 @@ class PostWarps : JavaPlugin() {
         
         // 注册事件监听器
         registerListeners()
+        
+        // 初始化更新检查器
+        updateChecker = UpdateChecker(this, "postyizhan/PostWarps")
+        if (config.getBoolean("update-checker.enabled", true)) {
+            updateChecker.checkForUpdates({ isUpdateAvailable, newVersion ->
+                if (isUpdateAvailable) {
+                    val updateAvailableMsg = i18n.getMessage("system.updater.update_available")
+                        .replace("{current_version}", description.version)
+                        .replace("{latest_version}", newVersion)
+                    
+                    val updateUrlMsg = i18n.getMessage("system.updater.update_url")
+                        .replace("{current_version}", description.version)
+                        .replace("{latest_version}", newVersion)
+                        
+                    server.consoleSender.sendMessage(i18n.getMessage("prefix") + updateAvailableMsg)
+                    server.consoleSender.sendMessage(i18n.getMessage("prefix") + updateUrlMsg)
+                } else {
+                    server.consoleSender.sendMessage(i18n.getMessage("prefix") + i18n.getMessage("system.updater.up_to_date"))
+                }
+            })
+        }
         
         logger.info("PostWarps plugin enabled!")
     }
@@ -109,5 +133,29 @@ class PostWarps : JavaPlugin() {
         if (debugMode) {
             logger.info("Event listeners registered successfully")
         }
+    }
+    
+    /**
+     * 向玩家发送更新检查信息
+     * @param player 接收信息的玩家
+     * @param force 是否强制检查更新
+     */
+    fun sendUpdateInfo(player: Player, force: Boolean = false) {
+        updateChecker.checkForUpdates({ isUpdateAvailable, newVersion ->
+            if (isUpdateAvailable) {
+                val updateAvailableMsg = i18n.getMessage("system.updater.update_available")
+                        .replace("{current_version}", description.version)
+                        .replace("{latest_version}", newVersion)
+                
+                val updateUrlMsg = i18n.getMessage("system.updater.update_url")
+                        .replace("{current_version}", description.version)
+                        .replace("{latest_version}", newVersion)
+                
+                player.sendMessage(i18n.getMessage("prefix") + updateAvailableMsg)
+                player.sendMessage(i18n.getMessage("prefix") + updateUrlMsg)
+            } else {
+                player.sendMessage(i18n.getMessage("prefix") + i18n.getMessage("system.updater.up_to_date"))
+            }
+        }, force)
     }
 }

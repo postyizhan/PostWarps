@@ -36,3 +36,10 @@ bungeecord:
   enabled: false
   # 服务器名称(与BungeeCord配置匹配)
   serverName: 'lobby'
+
+# 更新检查器设置
+update-checker:
+  # 是否启用更新检查器
+  enabled: true
+  # 检查频率（天）
+  check-interval-days: 1
