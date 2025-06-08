@@ -1,0 +1,31 @@
+name: PostWarps
+version: '${version}'
+main: com.github.postyizhan.PostWarps
+api-version: '1.13'
+description: '一个功能丰富的地标传送插件'
+commands:
+  warp:
+    description: '地标相关命令'
+    usage: '/warp <create|delete|list|teleport> [名称] [描述]'
+    aliases: [pw, warps]
+permissions:
+  postwarps.create:
+    description: '创建地标的权限'
+    default: true
+  postwarps.delete:
+    description: '删除地标的权限'
+    default: true
+  postwarps.list:
+    description: '列出地标的权限'
+    default: true
+  postwarps.teleport:
+    description: '传送到地标的权限'
+    default: true
+  postwarps.admin:
+    description: '管理员权限'
+    default: op
+    children:
+      postwarps.create: true
+      postwarps.delete: true
+      postwarps.list: true
+      postwarps.teleport: true

@@ -1,0 +1,38 @@
+# PostWarps 配置文件
+
+# 数据库设置
+database:
+  # SQLite 配置
+  sqlite:
+    file: 'warps.db'
+  
+  # MySQL 配置
+  mysql:
+    enabled: false
+    host: 'localhost'
+    port: 3306
+    database: 'minecraft'
+    username: 'root'
+    password: 'password'
+    options:
+      useSSL: false
+      autoReconnect: true
+
+# 插件设置
+settings:
+  # 语言设置 (zh_CN, en_US)
+  language: 'zh_CN'
+  # 调试模式
+  debug: false
+  # 每页显示的地标数量
+  warpsPerPage: 5
+  # 传送延迟(秒)
+  teleportDelay: 3
+  # 每个玩家可创建的最大地标数量 (-1表示无限制)
+  maxWarpsPerPlayer: 5
+  
+# BungeeCord跨服设置
+bungeecord:
+  enabled: false
+  # 服务器名称(与BungeeCord配置匹配)
+  serverName: 'lobby'
