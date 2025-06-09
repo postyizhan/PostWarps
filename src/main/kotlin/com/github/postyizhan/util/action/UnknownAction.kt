@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
  */
 class UnknownAction(plugin: PostWarps) : AbstractAction(plugin) {
     override fun execute(player: Player, actionValue: String) {
-        logWarning("Unknown action: $actionValue from player ${player.name}")
+        logDebug("Unknown action: $actionValue from player ${player.name}")
+        sendMessage(player, "unknown_action", "action" to actionValue)
     }
 }

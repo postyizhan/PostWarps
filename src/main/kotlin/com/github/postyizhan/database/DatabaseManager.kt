@@ -149,4 +149,11 @@ class DatabaseManager(private val plugin: PostWarps) {
     fun updateWarpDescription(name: String, owner: UUID, description: String): Boolean {
         return storage.updateWarpDescription(name, owner, description)
     }
+    
+    /**
+     * 更新地标位置
+     */
+    fun updateWarpLocation(id: Int, worldName: String, x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Boolean {
+        return storage.updateWarpLocation(id, worldName, x, y, z, yaw, pitch)
+    }
 }

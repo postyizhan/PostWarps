@@ -26,6 +26,7 @@ class ActionFactory(private val plugin: PostWarps) {
         registerAction(ActionType.WARP_SET_PRIVATE, WarpSetPrivateAction(plugin))
         registerAction(ActionType.WARP_SET, WarpSetAction(plugin))
         registerAction(ActionType.WARP_TOGGLE, WarpToggleAction(plugin))
+        registerAction(ActionType.WARP_LOCATION, WarpSetLocationAction(plugin))
         registerAction(ActionType.MENU, MenuAction(plugin))
         registerAction(ActionType.CLOSE, CloseAction(plugin))
         registerAction(ActionType.PAGE_NEXT, PageNextAction(plugin))

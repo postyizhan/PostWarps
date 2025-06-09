@@ -1,7 +1,6 @@
 package com.github.postyizhan.util.action
 
 import com.github.postyizhan.PostWarps
-import com.github.postyizhan.util.MessageUtil
 import org.bukkit.entity.Player
 
 /**
@@ -25,18 +24,13 @@ class WarpDeleteAction(plugin: PostWarps) : AbstractAction(plugin) {
         }
         
         if (warp == null) {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("delete.not-found")
-                    .replace("{name}", if (name.isEmpty()) "selected warp" else name)
-            ))
+            sendMessage(player, "warp_delete.not_found", "name" to (if (name.isEmpty()) "selected warp" else name))
             return
         }
         
         // 检查是否是自己的地标
         if (warp.owner != player.uniqueId && !player.hasPermission("postwarps.admin")) {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("delete.not-owner")
-            ))
+            sendMessage(player, "warp_delete.not_owner")
             return
         }
         
@@ -45,17 +39,12 @@ class WarpDeleteAction(plugin: PostWarps) : AbstractAction(plugin) {
         // 删除地标
         val success = plugin.getDatabaseManager().deleteWarp(warp.id)
         if (success) {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("delete.success")
-                    .replace("{name}", warp.name)
-            ))
+            sendMessage(player, "warp_delete.success", "name" to warp.name)
             
             // 关闭菜单
             player.closeInventory()
         } else {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("delete.failed")
-            ))
+            sendMessage(player, "warp_delete.failed")
         }
     }
 }

@@ -21,6 +21,7 @@ enum class ActionType(val prefix: String) {
     WARP_SET_PRIVATE("[warp_private]"),
     WARP_SET("[warp_set]"),
     WARP_TOGGLE("[warp_toggle]"),
+    WARP_LOCATION("[warp_location]"),
     MENU("[menu]"),
     CLOSE("[close]"),
     PAGE_NEXT("[page_next]"),

@@ -1,10 +1,10 @@
 title: "&8【 &3Post&bWarps &8】&7主菜单"
 layout:
-  - "         " # 第1行（空行）
-  - "  A B C  " # 第2行，A、B、C在中间
-  - "  D E F  " # 第3行，D、E、F在中间
-  - "  G H I  " # 第4行，G、H、I在中间
-  - "         " # 第5行（空行）
+  - "?       X"
+  - "  A B C  "
+  - "  D E F  "
+  - "  G H I  "
+  - "         "
 items:
   # 创建地标按钮
   A:
@@ -14,7 +14,9 @@ items:
       - "&7点击创建一个新的地标"
       - ""
       - "&e► 点击打开创建菜单"
-    action: "[menu] create"
+    action:
+      - "[menu] create"
+      - "[sound] ORB_PICKUP 0.5 1.2"
   # 我的地标按钮
   B:
     material: BOOK
@@ -23,7 +25,9 @@ items:
       - "&7查看和管理你的地标"
       - ""
       - "&e► 点击查看"
-    action: "[menu] private_warps"
+    action:
+      - "[menu] private_warps"
+      - "[sound] NOTE_PLING 0.6 1.0"
   # 公开地标按钮
   C:
     material: FILLED_MAP
@@ -32,29 +36,21 @@ items:
       - "&7查看所有公开的地标"
       - ""
       - "&e► 点击查看"
-    action: "[menu] public_warps"
-  # 设置按钮
-  D:
-    material: NAME_TAG
-    name: "&b设置"
-    lore:
-      - "&7设置插件选项"
-      - ""
-      - "&e► 点击打开"
-    action: "[menu] settings"
-  # 帮助信息按钮
-  E:
+    action:
+      - "[menu] public_warps"
+      - "[sound] NOTE_PLING 0.6 1.2"
+  # 帮助信息
+  ?:
     material: PAPER
-    name: "&b帮助信息"
+    name: "&a这是什么？"
     lore:
-      - "&7显示命令帮助"
-      - ""
-      - "&e► 点击执行命令"
-    action: "[command] postwarps help"
+      - "&7这是服务器地标系统"
   # 关闭按钮
-  F:
+  X:
     material: BARRIER
     name: "&c关闭"
     lore:
       - "&7关闭此菜单"
-    action: "[close]"
+    action:
+      - "[close]"
+      - "[sound] CHEST_CLOSE 0.5 1.0"

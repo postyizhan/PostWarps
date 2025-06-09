@@ -276,6 +276,10 @@ class Menu(
             .replace("{world}", warp.worldName)
             .replace("{coords}", warp.getFormattedCoordinates())
             
+        // 处理公开/私有状态
+        val publicState = if (warp.isPublic) "&a公开" else "&c私有"
+        result = result.replace("{public_state}", publicState)
+            
         // 替换数据占位符
         for ((key, value) in data) {
             result = result.replace("{$key}", value.toString())
@@ -351,12 +355,14 @@ class Menu(
                     plugin.logger.info("[DEBUG] Player ${player.name} clicked warp slot: $row,$col, warp ID: $warpId")
                 }
                 
-                // 检查是否按住Shift键
-                val isShiftClick = player.isSneaking
+                // 检查是否按住Shift键和左键点击
+                val isShiftClick = data["is_shift_click"] as? Boolean ?: false
+                val isLeftClick = data["is_left_click"] as? Boolean ?: true
                 
-                return if (isShiftClick) {
-                    // Shift+点击，显示详细信息
-                    listOf("[warp_info]")
+                return if (isShiftClick && isLeftClick) {
+                    // Shift+左键点击，打开设置菜单
+                    plugin.logger.info("[DEBUG] Player ${player.name} shift+left clicked warp ID: $warpId, opening settings menu")
+                    listOf("[menu] settings")
                 } else {
                     // 普通点击，传送
                     listOf("[warp_tp]")

@@ -86,4 +86,9 @@ interface IStorage {
      * 根据名称和所有者更新地标描述
      */
     fun updateWarpDescription(name: String, owner: UUID, description: String): Boolean
+    
+    /**
+     * 更新地标位置
+     */
+    fun updateWarpLocation(id: Int, worldName: String, x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Boolean
 }

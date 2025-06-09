@@ -13,6 +13,53 @@ messages:
   teleport-failed: "{prefix}&c传送失败：地标位置无效！"
   invalid-field: "{prefix}&c无效的输入字段：&e{field}"
 
+# Action类消息
+actions:
+  # 通用消息
+  no_permission: "{prefix}&c你没有权限执行此操作"
+  not_found: "{prefix}&c找不到指定的地标"
+  unknown_action: "{prefix}&c未知操作：{action}"
+  
+  # 地标操作消息
+  warp_delete:
+    not_found: "{prefix}&c找不到名为 &e{name} &c的地标"
+    not_owner: "{prefix}&c你不能删除其他玩家的地标"
+    success: "{prefix}&a成功删除地标 &e{name}"
+    failed: "{prefix}&c删除地标失败，请稍后再试"
+  
+  warp_toggle:
+    no_permission: "{prefix}&c你没有权限修改这个地标"
+    not_found: "{prefix}&c找不到指定的地标"
+    success_public: "{prefix}&a地标状态已更改为：&a公开"
+    success_private: "{prefix}&a地标状态已更改为：&c私有" 
+    failed: "{prefix}&c无法更新地标状态，请稍后再试"
+  
+  warp_location:
+    not_found: "{prefix}&c错误: 找不到指定的地标"
+    no_warp_selected: "{prefix}&c错误: 未选中地标"
+    no_permission: "{prefix}&c你没有权限修改这个地标"
+    success: "{prefix}&a地标位置已更新到你当前的位置"
+    failed: "{prefix}&c地标位置更新失败"
+  
+  warp_tp:
+    not_found: "{prefix}&c找不到名为 &e{name} &c的地标"
+    not_found_id: "{prefix}&c找不到ID为 &e{id} &c的地标"
+    no_warp_id: "{prefix}&c没有选择任何地标"
+    no_permission: "{prefix}&c你没有权限传送到此地标"
+    failed: "{prefix}&c传送失败：地标位置无效"
+    success: "{prefix}&a成功传送到地标 &e{name}"
+  
+  warp_set:
+    name_exists: "{prefix}&c已存在同名地标"
+    success: "{prefix}&a设置成功"
+    failed: "{prefix}&c设置失败，请稍后再试"
+  
+  warp_create:
+    no_name: "{prefix}&c请先设置地标名称"
+    name_exists: "{prefix}&c已存在同名地标"
+    success: "{prefix}&a成功创建地标 &e{name}"
+    failed: "{prefix}&c创建地标失败，请稍后再试"
+
 updater:
   update_checking: "{prefix}&7正在检查更新..."
   update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"
@@ -20,7 +67,7 @@ updater:
   up_to_date: "{prefix}&7您使用的是最新版本！"
 
 help:
-  header: "&a===== PostWarps 帮助 ====="
+  header: "&a===== {prefix} &a====="
   create: "&7/pw create <名称> [描述] [公开(true/false)] &f- 创建新地标"
   delete: "&7/pw delete <名称> &f- 删除一个地标"
   list: "&7/pw list [public/private] &f- 查看地标列表"

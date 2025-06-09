@@ -408,6 +408,37 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
     }
     
     /**
+     * 更新地标位置
+     */
+    override fun updateWarpLocation(id: Int, worldName: String, x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Boolean {
+        try {
+            val sql = """
+                UPDATE warps 
+                SET world_name = ?, x = ?, y = ?, z = ?, yaw = ?, pitch = ?
+                WHERE id = ?
+            """.trimIndent()
+            
+            val preparedStatement = connection?.prepareStatement(sql)
+            
+            preparedStatement?.setString(1, worldName)
+            preparedStatement?.setDouble(2, x)
+            preparedStatement?.setDouble(3, y)
+            preparedStatement?.setDouble(4, z)
+            preparedStatement?.setFloat(5, yaw)
+            preparedStatement?.setFloat(6, pitch)
+            preparedStatement?.setInt(7, id)
+            
+            val result = preparedStatement?.executeUpdate() ?: 0
+            preparedStatement?.close()
+            
+            return result > 0
+        } catch (e: SQLException) {
+            plugin.logger.severe("更新地标位置时出错: ${e.message}")
+            return false
+        }
+    }
+    
+    /**
      * 从结果集创建地标对象
      */
     private fun createWarpFromResultSet(rs: ResultSet): Warp {

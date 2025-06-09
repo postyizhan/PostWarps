@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -28,7 +29,7 @@ class MenuListener(private val plugin: PostWarps) : Listener {
         // 检查是否是菜单
         val openMenu = plugin.getMenuManager().getOpenMenu(player) ?: return
         
-        // 取消事件
+        // 始终取消事件，防止物品被移动
         event.isCancelled = true
         
         // 获取点击的槽位
@@ -43,7 +44,20 @@ class MenuListener(private val plugin: PostWarps) : Listener {
         // 获取玩家数据
         val playerData = plugin.getMenuManager().getPlayerData(player)
         
+        // 记录调试信息
+        if (plugin.isDebugEnabled()) {
+            plugin.logger.info("[DEBUG] Player ${player.name} clicked menu: $openMenu, slot: $slot, click type: ${event.click}")
+        }
+        
         // 处理点击
+        val isShiftClick = event.click == ClickType.SHIFT_LEFT || event.click == ClickType.SHIFT_RIGHT
+        val isLeftClick = event.click == ClickType.LEFT || event.click == ClickType.SHIFT_LEFT
+        
+        // 设置是否按住Shift键
+        (playerData as? MutableMap<String, Any>)?.put("is_shift_click", isShiftClick)
+        (playerData as? MutableMap<String, Any>)?.put("is_left_click", isLeftClick)
+        
+        // 处理点击，获取动作
         val actions = menu.handleClick(player, slot, playerData)
         
         // 执行动作

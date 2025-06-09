@@ -1,63 +1,93 @@
 title: "&8【 &3Post&bWarps &8】&7设置"
 layout:
-  - "         " # 第1行（空行）
-  - "    A    " # 第2行，三个按钮
-  - "    B    " # 第3行，三个按钮
-  - "    C    " # 第4行，三个按钮
-  - "  D E F  " # 第5行，三个按钮
+  - "<        "
+  - "   A B   "
+  - "    C    "
+  - "   DEF   "
+  - "    T    "
 items:
-  # 输入名称按钮
   A:
-    material: REDSTONE_LAMP
-    name: "&b默认地标公开状态"
+    material: REDSTONE
+    name: "&c删除地标"
     lore:
-      - "&7设置新地标的默认公开状态"
+      - ""
+      - "&e► 点击删除"
+    action:
+      - "[warp_delete]"
+      - "[sound] ITEM_BREAK 0.7 0.8"
+  # 公开/私有设置按钮
+  B:
+    material: REDSTONE_TORCH
+    material_if_true: TORCH
+    material_if_false: REDSTONE_TORCH
+    name: "&b公开/私有"
+    lore:
       - "&7当前状态: {public_state}"
       - ""
-      - "&e► 点击切换"
-    action: "[warp_toggle] public"
-  # 公开状态按钮
-  B:
-    material: KNOWLEDGE_BOOK
-    name: "&b命令帮助"
-    lore:
-      - "&7查看插件命令帮助"
-      - ""
-      - "&e► 点击查看"
-    action: "[command] postwarps help"
-  # 设置描述按钮
+      - "&e► 点击切换状态"
+    action:
+      - "[warp_toggle] public"
+      - "[sound] CLICK 0.5 1.5"
+  # 显示材质
   C:
-    material: COMPARATOR
-    name: "&b版本信息"
+    material: APPLE
+    name: "&a显示材质"
     lore:
-      - "&7查看插件版本信息"
+      - "&7将手持物品设置为此地标显示头颅"
+      - "&7若无物品则设置为你的头颅"
       - ""
-      - "&e► 点击查看"
-    action: "[command] postwarps version"
-  # 取消按钮
+      - "&e► 点击设置"
+    action:
+      - "[warp_set] material"
+      - "[sound] ORB_PICKUP 0.5 1.2"
+  # 名称输入按钮
   D:
+    material: NAME_TAG
+    name: "&b设置名称"
+    lore:
+      - "&7当前名称: &f{name}"
+      - ""
+      - "&e► 点击设置地标名称"
+    action:
+      - "[warp_set] name"
+      - "[sound] NOTE_PLING 0.5 1.0"
+  # 描述输入按钮
+  E:
+    material: BOOK
+    name: "&b设置描述"
+    lore:
+      - "&7当前描述: &f{desc}"
+      - ""
+      - "&e► 点击设置地标描述"
+    action:
+      - "[warp_set] desc"
+      - "[sound] NOTE_PLING 0.5 1.2"
+  # 变更
+  F:
+    material: RED_BED
+    name: "&a变更位置"
+    lore:
+      - "&7设置地标位置到此处"
+      - ""
+      - "&e► 点击变更"
+    action:
+      - "[warp_location]"
+      - "[sound] LEVEL_UP 0.5 1.0"
+  # <
+  <:
     material: ARROW
     name: "&a返回"
+    action:
+      - "[menu] private_warps"
+      - "[sound] NOTE_PLING 0.6 1.2"
+  # 传送
+  T:
+    material: ENDER_PEARL
+    name: "&c传送"
     lore:
-      - "&7返回主菜单"
+      - "&7传送到地标"
       - ""
-      - "&e► 点击返回"
-    action: "[menu] main"
-  # 返回按钮
-  E:
-    material: REDSTONE
-    name: "&c重载插件"
-    lore:
-      - "&7重新加载插件配置"
-      - ""
-      - "&e► 点击重载"
-    action: "[command] postwarps reload"
-  # 关闭按钮
-  F:
-    material: BARRIER
-    name: "&c关闭"
-    lore:
-      - "&7关闭此菜单"
-      - ""
-      - "&e► 点击关闭"
-    action: "[close]"
+      - "&e► 点击传送"
+    action:
+      - "[warp_tp]"
+      - "[sound] ENDERMAN_TELEPORT 0.5 1.0"

@@ -1,6 +1,7 @@
 package com.github.postyizhan.util.action
 
 import com.github.postyizhan.PostWarps
+import com.github.postyizhan.util.MessageUtil
 import org.bukkit.entity.Player
 
 /**
@@ -33,5 +34,29 @@ abstract class AbstractAction(protected val plugin: PostWarps) : Action {
      */
     protected fun logWarning(message: String) {
         plugin.logger.warning(message)
+    }
+    
+    /**
+     * 从语言文件获取消息
+     * @param key 消息键
+     * @param replacements 替换参数
+     * @return 格式化后的消息
+     */
+    protected fun getMessage(key: String, vararg replacements: Pair<String, String>): String {
+        var message = MessageUtil.getMessage("actions.$key")
+        replacements.forEach { (placeholder, value) ->
+            message = message.replace("{$placeholder}", value)
+        }
+        return MessageUtil.color(message)
+    }
+    
+    /**
+     * 向玩家发送消息
+     * @param player 玩家
+     * @param key 消息键
+     * @param replacements 替换参数
+     */
+    protected fun sendMessage(player: Player, key: String, vararg replacements: Pair<String, String>) {
+        player.sendMessage(getMessage(key, *replacements))
     }
 }
