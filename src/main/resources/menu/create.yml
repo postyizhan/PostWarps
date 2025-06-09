@@ -1,0 +1,68 @@
+title: "&8【 &3Post&bWarps &8】&7创建地标"
+layout:
+  - "         " # 第1行（空行）
+  - "  A B C  " # 第2行，名称输入按钮
+  - "    D    " # 第3行，描述输入按钮
+  - "  E F G  " # 第4行，公开/私有设置按钮
+  - "         " # 第5行（空行）
+items:
+  # 名称输入按钮
+  A:
+    material: NAME_TAG
+    name: "&b设置名称"
+    lore:
+      - "&7当前名称: &f{name}"
+      - ""
+      - "&e► 点击设置地标名称"
+    action: "[warp_set] name"
+  # 描述输入按钮
+  B:
+    material: BOOK
+    name: "&b设置描述"
+    lore:
+      - "&7当前描述: &f{desc}"
+      - ""
+      - "&e► 点击设置地标描述"
+    action: "[warp_set] desc"
+  # 公开/私有设置按钮
+  C:
+    material: REDSTONE_TORCH
+    material_if_true: TORCH
+    material_if_false: REDSTONE_TORCH
+    name: "&b公开/私有"
+    lore:
+      - "&7当前状态: {public_state}"
+      - ""
+      - "&e► 点击切换状态"
+    action: "[warp_toggle] public"
+  # 创建按钮
+  D:
+    material: EMERALD
+    name: "&a确认创建"
+    lore:
+      - "&7点击确认创建地标"
+      - ""
+      - "&7名称: &f{name}"
+      - "&7描述: &f{desc}"
+      - "&7公开: {public_state}"
+      - ""
+      - "&e► 点击确认"
+    action: "[warp_create]"
+  # 返回按钮
+  E:
+    material: ARROW
+    name: "&a返回"
+    lore:
+      - "&7返回上一级菜单"
+      - ""
+      - "&e► 点击返回"
+    action: "[menu] main"
+  # 关闭菜单按钮
+  F:
+    material: BARRIER
+    name: "&c关闭"
+    lore:
+      - "&7关闭此菜单"
+      - ""
+      - "&e► 点击关闭"
+    action: "[close]"

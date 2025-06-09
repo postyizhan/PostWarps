@@ -1,0 +1,63 @@
+title: "&8【 &3Post&bWarps &8】&7设置"
+layout:
+  - "         " # 第1行（空行）
+  - "    A    " # 第2行，三个按钮
+  - "    B    " # 第3行，三个按钮
+  - "    C    " # 第4行，三个按钮
+  - "  D E F  " # 第5行，三个按钮
+items:
+  # 输入名称按钮
+  A:
+    material: REDSTONE_LAMP
+    name: "&b默认地标公开状态"
+    lore:
+      - "&7设置新地标的默认公开状态"
+      - "&7当前状态: {public_state}"
+      - ""
+      - "&e► 点击切换"
+    action: "[warp_toggle] public"
+  # 公开状态按钮
+  B:
+    material: KNOWLEDGE_BOOK
+    name: "&b命令帮助"
+    lore:
+      - "&7查看插件命令帮助"
+      - ""
+      - "&e► 点击查看"
+    action: "[command] postwarps help"
+  # 设置描述按钮
+  C:
+    material: COMPARATOR
+    name: "&b版本信息"
+    lore:
+      - "&7查看插件版本信息"
+      - ""
+      - "&e► 点击查看"
+    action: "[command] postwarps version"
+  # 取消按钮
+  D:
+    material: ARROW
+    name: "&a返回"
+    lore:
+      - "&7返回主菜单"
+      - ""
+      - "&e► 点击返回"
+    action: "[menu] main"
+  # 返回按钮
+  E:
+    material: REDSTONE
+    name: "&c重载插件"
+    lore:
+      - "&7重新加载插件配置"
+      - ""
+      - "&e► 点击重载"
+    action: "[command] postwarps reload"
+  # 关闭按钮
+  F:
+    material: BARRIER
+    name: "&c关闭"
+    lore:
+      - "&7关闭此菜单"
+      - ""
+      - "&e► 点击关闭"
+    action: "[close]"

@@ -1,0 +1,60 @@
+title: "&8【 &3Post&bWarps &8】&7主菜单"
+layout:
+  - "         " # 第1行（空行）
+  - "  A B C  " # 第2行，A、B、C在中间
+  - "  D E F  " # 第3行，D、E、F在中间
+  - "  G H I  " # 第4行，G、H、I在中间
+  - "         " # 第5行（空行）
+items:
+  # 创建地标按钮
+  A:
+    material: COMPASS
+    name: "&b创建地标"
+    lore:
+      - "&7点击创建一个新的地标"
+      - ""
+      - "&e► 点击打开创建菜单"
+    action: "[menu] create"
+  # 我的地标按钮
+  B:
+    material: BOOK
+    name: "&b我的地标"
+    lore:
+      - "&7查看和管理你的地标"
+      - ""
+      - "&e► 点击查看"
+    action: "[menu] private_warps"
+  # 公开地标按钮
+  C:
+    material: FILLED_MAP
+    name: "&b公开地标"
+    lore:
+      - "&7查看所有公开的地标"
+      - ""
+      - "&e► 点击查看"
+    action: "[menu] public_warps"
+  # 设置按钮
+  D:
+    material: NAME_TAG
+    name: "&b设置"
+    lore:
+      - "&7设置插件选项"
+      - ""
+      - "&e► 点击打开"
+    action: "[menu] settings"
+  # 帮助信息按钮
+  E:
+    material: PAPER
+    name: "&b帮助信息"
+    lore:
+      - "&7显示命令帮助"
+      - ""
+      - "&e► 点击执行命令"
+    action: "[command] postwarps help"
+  # 关闭按钮
+  F:
+    material: BARRIER
+    name: "&c关闭"
+    lore:
+      - "&7关闭此菜单"
+    action: "[close]"

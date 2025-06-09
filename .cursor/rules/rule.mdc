@@ -1,0 +1,33 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+编写一个我的世界地标插件
+
+1.可以创建和管理个人地标
+2.可选择将某地标设为公开或私有
+3.公开地标在一个可翻页菜单中展示
+4.私有地标在一个可翻页菜单中展示
+5.菜单可参考 resources/menu 文件夹中的
+6.i8n 语言文件在 resources/lang 文件夹
+7.报给服主的信息（比如一些警告）硬编码英文
+8.消息发送方式参考
+server.consoleSender.sendMessage(MessageUtil.color(
+    MessageUtil.getMessage("system.updater.update_url")
+        .replace("{current_version}", description.version)
+        .replace("{latest_version}", newVersion)
+))
+
+9.全GUI覆盖
+10.插件全功能可使用纯命令，不依赖GUI
+11.插件更新可参考@/PostSpawner 
+12.支持本地db和mysql两种数据存储方式
+13.支持 [config.yml](mdc:src/main/resources/config.yml) 中的内容，不要删除已有的键值
+14.输入捕获使用 anvilgui 库（这不是一个插件）https://github.com/WesJD/AnvilGUI
+
+这里有一个完善的GUI项目@/LiteSignIn-master 
+坚持代码的可维护性，坚持代码风格一致，使用模块化设计，避免重复结构
+
+重要 多检查一下自己是否丢失了上下文
+

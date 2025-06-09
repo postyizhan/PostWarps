@@ -1,0 +1,56 @@
+title: "&8【 &3Post&bWarps &8】&7私有地标 &f(&e{current_page}&f/&e{total_pages}&f)"
+layout:
+  - "         "
+  - " WWWWWWW "
+  - " WWWWWWW "
+  - " WWWWWWW "
+  - " P B N X "
+items:
+  P:
+    material: BARRIER
+    display_condition: has_prev
+    material_if_true: ARROW
+    name: "&a上一页"
+    lore:
+      - "&7查看上一页地标"
+      - ""
+      - "&e► 点击查看"
+    action: "[page_prev]"
+  N:
+    material: BARRIER
+    display_condition: has_next
+    material_if_true: ARROW
+    name: "&a下一页"
+    lore:
+      - "&7查看下一页地标"
+      - ""
+      - "&e► 点击查看"
+    action: "[page_next]"
+  B:
+    material: COMPASS
+    name: "&a返回菜单"
+    lore:
+      - "&7返回主菜单"
+      - ""
+      - "&e► 点击返回"
+    action: "[menu] main"
+  X:
+    material: BARRIER
+    name: "&c关闭"
+    lore:
+      - "&7关闭此菜单"
+      - ""
+      - "&e► 点击关闭"
+    action: "[close]"
+  W:
+    material: ENDER_EYE
+    warp_item: true
+    name: "&b地标: {name}"
+    lore:
+      - "&7创建者: &f{owner}"
+      - "&7世界: &f{world}"
+      - "&7坐标: &f{coords}"
+      - ""
+      - "&e► 左键 &7传送到此地标"
+      - "&e► Shift+左键 &7查看详细信息"
+    action: "[warp_tp]"
