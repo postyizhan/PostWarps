@@ -1,0 +1,80 @@
+title: "&8【 &3Post&bWarps &8】&7创建地标"
+layout:
+  - "         "
+  - "  A B C  "
+  - "    D    "
+  - "  E F G  "
+  - "         "
+items:
+  # 名称输入按钮
+  A:
+    material: NAME_TAG
+    name: "&b设置名称"
+    lore:
+      - "&7当前名称: &f{name}"
+      - ""
+      - "&e► 点击设置地标名称"
+    action:
+      - "[warp_set] name"
+      - "[sound] NOTE_PLING 0.5 1.0"
+  # 描述输入按钮
+  B:
+    material: BOOK
+    name: "&b设置描述"
+    lore:
+      - "&7当前描述: &f{desc}"
+      - ""
+      - "&e► 点击设置地标描述"
+    action:
+      - "[warp_set] desc"
+      - "[sound] NOTE_PLING 0.5 1.2"
+  # 公开/私有设置按钮
+  C:
+    material: REDSTONE_TORCH
+    material_if_true: TORCH
+    material_if_false: REDSTONE_TORCH
+    name: "&b公开/私有"
+    lore:
+      - "&7当前状态: {public_state}"
+      - ""
+      - "&e► 点击切换状态"
+    action:
+      - "[warp_toggle] public"
+      - "[sound] CLICK 0.5 1.5"
+  # 创建按钮
+  D:
+    material: EMERALD
+    name: "&a确认创建"
+    lore:
+      - "&7点击确认创建地标"
+      - ""
+      - "&7名称: &f{name}"
+      - "&7描述: &f{desc}"
+      - "&7公开: {public_state}"
+      - ""
+      - "&e► 点击确认"
+    action:
+      - "[warp_create]"
+      - "[sound] LEVEL_UP 0.7 1.0"
+  # 返回按钮
+  E:
+    material: ARROW
+    name: "&a返回"
+    lore:
+      - "&7返回上一级菜单"
+      - ""
+      - "&e► 点击返回"
+    action:
+      - "[menu] main"
+      - "[sound] NOTE_PLING 0.6 1.2"
+  # 关闭菜单按钮
+  F:
+    material: BARRIER
+    name: "&c关闭"
+    lore:
+      - "&7关闭此菜单"
+      - ""
+      - "&e► 点击关闭"
+    action:
+      - "[close]"
+      - "[sound] CHEST_CLOSE 0.5 1.0"

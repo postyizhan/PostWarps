@@ -1,0 +1,55 @@
+name: PostWarps
+version: '${version}'
+main: com.github.postyizhan.PostWarps
+api-version: '1.13'
+description: '一个简单的Minecraft地标传送插件，支持公开和私有地标'
+authors: [postyizhan]
+
+commands:
+  postwarps:
+    description: 地标插件主命令
+    aliases: [pw, warp, warps]
+    usage: /postwarps [help|create|delete|list|tp|info|public|private|menu|reload|version]
+    permission: postwarps.use
+
+permissions:
+  postwarps.use:
+    description: 允许使用基本的地标功能
+    default: true
+  postwarps.create:
+    description: 允许创建地标
+    default: true
+  postwarps.delete:
+    description: 允许删除自己的地标
+    default: true
+  postwarps.list:
+    description: 允许查看地标列表
+    default: true
+  postwarps.teleport:
+    description: 允许传送到地标
+    default: true
+  postwarps.info:
+    description: 允许查看地标信息
+    default: true
+  postwarps.public:
+    description: 允许将地标设为公开
+    default: true
+  postwarps.private:
+    description: 允许将地标设为私有
+    default: true
+  postwarps.menu:
+    description: 允许使用地标菜单
+    default: true
+  postwarps.admin:
+    description: 允许使用管理员功能
+    default: op
+    children:
+      postwarps.use: true
+      postwarps.create: true
+      postwarps.delete: true
+      postwarps.list: true
+      postwarps.teleport: true
+      postwarps.info: true
+      postwarps.public: true
+      postwarps.private: true
+      postwarps.menu: true

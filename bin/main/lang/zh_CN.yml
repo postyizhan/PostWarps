@@ -1,0 +1,125 @@
+prefix: "&8[&3Post&bWarps&8] "
+messages:
+  enabled: "{prefix}&7插件已启用"
+  disabled: "{prefix}&7插件已卸载"
+  reload: "{prefix}&7插件重载成功！"
+  menus_loaded: "{prefix}&7成功加载 &a{count} &7个菜单"
+  database_connected: "{prefix}&7成功连接到 &a{type} &7数据库"
+  database_closed: "{prefix}&7数据库连接已关闭"
+  no-permission: "{prefix}&c你没有权限执行此命令！"
+  invalid-command: "{prefix}&c无效的命令！使用 &7/pw help &c查看帮助。"
+  player-only: "{prefix}&c这个命令只能由玩家执行！"
+  teleported: "{prefix}&a已传送到地标 &e{name}&a！"
+  teleport-failed: "{prefix}&c传送失败：地标位置无效！"
+  invalid-field: "{prefix}&c无效的输入字段：&e{field}"
+
+# Action类消息
+actions:
+  # 通用消息
+  no_permission: "{prefix}&c你没有权限执行此操作"
+  not_found: "{prefix}&c找不到指定的地标"
+  unknown_action: "{prefix}&c未知操作：{action}"
+  
+  # 地标操作消息
+  warp_delete:
+    not_found: "{prefix}&c找不到名为 &e{name} &c的地标"
+    not_owner: "{prefix}&c你不能删除其他玩家的地标"
+    success: "{prefix}&a成功删除地标 &e{name}"
+    failed: "{prefix}&c删除地标失败，请稍后再试"
+  
+  warp_toggle:
+    no_permission: "{prefix}&c你没有权限修改这个地标"
+    not_found: "{prefix}&c找不到指定的地标"
+    success_public: "{prefix}&a地标状态已更改为：&a公开"
+    success_private: "{prefix}&a地标状态已更改为：&c私有" 
+    failed: "{prefix}&c无法更新地标状态，请稍后再试"
+  
+  warp_location:
+    not_found: "{prefix}&c错误: 找不到指定的地标"
+    no_warp_selected: "{prefix}&c错误: 未选中地标"
+    no_permission: "{prefix}&c你没有权限修改这个地标"
+    success: "{prefix}&a地标位置已更新到你当前的位置"
+    failed: "{prefix}&c地标位置更新失败"
+  
+  warp_tp:
+    not_found: "{prefix}&c找不到名为 &e{name} &c的地标"
+    not_found_id: "{prefix}&c找不到ID为 &e{id} &c的地标"
+    no_warp_id: "{prefix}&c没有选择任何地标"
+    no_permission: "{prefix}&c你没有权限传送到此地标"
+    failed: "{prefix}&c传送失败：地标位置无效"
+    success: "{prefix}&a成功传送到地标 &e{name}"
+  
+  warp_set:
+    name_exists: "{prefix}&c已存在同名地标"
+    success: "{prefix}&a设置成功"
+    failed: "{prefix}&c设置失败，请稍后再试"
+  
+  warp_create:
+    no_name: "{prefix}&c请先设置地标名称"
+    name_exists: "{prefix}&c已存在同名地标"
+    success: "{prefix}&a成功创建地标 &e{name}"
+    failed: "{prefix}&c创建地标失败，请稍后再试"
+
+updater:
+  update_checking: "{prefix}&7正在检查更新..."
+  update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"
+  update_url: "{prefix}&e请访问：&bhttps://github.com/postyizhan/PostWarps/releases/latest &e获取最新版本"
+  up_to_date: "{prefix}&7您使用的是最新版本！"
+
+help:
+  header: "&a===== {prefix} &a====="
+  create: "&7/pw create <名称> [描述] [公开(true/false)] &f- 创建新地标"
+  delete: "&7/pw delete <名称> &f- 删除一个地标"
+  list: "&7/pw list [public/private] &f- 查看地标列表"
+  tp: "&7/pw tp <名称> &f- 传送到地标"
+  info: "&7/pw info <名称> &f- 查看地标信息"
+  public: "&7/pw public <名称> &f- 将地标设为公开"
+  private: "&7/pw private <名称> &f- 将地标设为私有"
+  menu: "&7/pw menu [menu] &f- 打开菜单"
+  reload: "&7/pw reload &f- 重载插件"
+  version: "&7/pw version &f- 显示版本信息"
+
+create:
+  usage: "{prefix}&c用法: /pw create <名称> [描述] [是否公开]"
+  name-exists: "{prefix}&c已经存在同名地标！"
+  success: "{prefix}&7成功创建地标 &e{name}&a！"
+  invalid-name: "{prefix}&c无效的地标名称！名称不能为空或超过32个字符。"
+  no-name: "{prefix}&c请先设置地标名称！"
+
+delete:
+  usage: "{prefix}&c用法: /pw delete <名称>"
+  not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
+  success: "{prefix}&7成功删除地标 &e{name}&a！"
+
+list:
+  usage: "{prefix}&c用法: /pw list [public/private]"
+
+teleport:
+  usage: "{prefix}&c用法: /pw tp <名称>"
+  not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
+  success: "{prefix}&7成功传送到地标 &e{name}&a！"
+  failed: "{prefix}&c传送到地标 &e{name} &c失败！"
+
+info:
+  usage: "{prefix}&c用法: /pw info <名称>"
+  not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
+  header: "&a===== 地标信息 ====="
+  name: "&7名称: &f{name}"
+  owner: "&7创建者: &f{owner}"
+  world: "&7世界: &f{world}"
+  coordinates: "&7坐标: &f{coords}"
+  created: "&7创建时间: &f{time}"
+  public: "&7公开状态: &f{public}"
+  description: "&7描述: &f{desc}"
+
+public:
+  usage: "{prefix}&c用法: /pw public <名称>"
+  not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
+  already-public: "{prefix}&c地标 &e{name} &c已经是公开的！"
+  success: "{prefix}&7地标 &e{name} &a已设为公开！"
+
+private:
+  usage: "{prefix}&c用法: /pw private <名称>"
+  not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
+  already-private: "{prefix}&c地标 &e{name} &c已经是私有的！"
+  success: "{prefix}&7地标 &e{name} &a已设为私有！"
