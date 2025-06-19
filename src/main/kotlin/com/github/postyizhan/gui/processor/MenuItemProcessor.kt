@@ -144,36 +144,23 @@ class MenuItemProcessor(private val plugin: PostWarps) {
     }
 
     /**
-     * 检查显示条件
+     * 检查显示条件（已废弃，现在使用子图标功能）
      */
-    private fun checkDisplayCondition(itemConfig: ConfigurationSection, data: Map<String, Any>): Boolean {
-        val displayCondition = itemConfig.getString("display_condition")
-        if (displayCondition != null) {
-            val conditionValue = data[displayCondition] as? Boolean ?: false
-            return conditionValue
-        }
+    private fun checkDisplayCondition(
+        @Suppress("UNUSED_PARAMETER") itemConfig: ConfigurationSection,
+        @Suppress("UNUSED_PARAMETER") data: Map<String, Any>
+    ): Boolean {
+        // 不再处理display_condition，直接返回true
+        // 显示条件功能已由子图标功能替代
         return true
     }
     
     /**
-     * 创建备用物品（当显示条件不满足时）
+     * 创建备用物品（已废弃，现在使用子图标功能）
      */
-    private fun createFallbackItem(itemConfig: ConfigurationSection): ItemStack? {
-        val materialIfFalse = itemConfig.getString("material_if_false")
-        if (materialIfFalse != null) {
-            try {
-                val material = org.bukkit.Material.valueOf(materialIfFalse.uppercase())
-                val item = ItemStack(material, 1)
-                val meta = item.itemMeta
-                if (meta != null) {
-                    meta.setDisplayName(" ")
-                    item.itemMeta = meta
-                }
-                return item
-            } catch (e: IllegalArgumentException) {
-                plugin.logger.warning("未知的备用材料类型: $materialIfFalse")
-            }
-        }
+    private fun createFallbackItem(@Suppress("UNUSED_PARAMETER") itemConfig: ConfigurationSection): ItemStack? {
+        // 不再创建备用物品，直接返回null
+        // 备用物品功能已由子图标功能替代
         return null
     }
     

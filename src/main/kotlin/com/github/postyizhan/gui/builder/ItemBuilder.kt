@@ -67,34 +67,16 @@ class ItemBuilder(private val plugin: PostWarps) {
     }
     
     /**
-     * 处理条件材料
+     * 处理条件材料（已废弃，现在使用子图标功能）
      */
     private fun processConditionalMaterial(
         materialName: String,
-        mainConfig: ConfigurationSection,
-        data: Map<String, Any>
+        @Suppress("UNUSED_PARAMETER") mainConfig: ConfigurationSection,
+        @Suppress("UNUSED_PARAMETER") data: Map<String, Any>
     ): String {
-        return when {
-            data.containsKey("has_next") && data["has_next"] == true && 
-                mainConfig.getString("display_condition") == "has_next" && 
-                mainConfig.contains("material_if_true") ->
-                    mainConfig.getString("material_if_true") ?: materialName
-                    
-            data.containsKey("has_prev") && data["has_prev"] == true && 
-                mainConfig.getString("display_condition") == "has_prev" && 
-                mainConfig.contains("material_if_true") ->
-                    mainConfig.getString("material_if_true") ?: materialName
-                    
-            data.containsKey("public") && data["public"] == true && 
-                mainConfig.contains("material_if_true") ->
-                    mainConfig.getString("material_if_true") ?: materialName
-                    
-            data.containsKey("public") && data["public"] == false && 
-                mainConfig.contains("material_if_false") ->
-                    mainConfig.getString("material_if_false") ?: materialName
-                    
-            else -> materialName
-        }
+        // 不再处理条件材料，直接返回原材料名称
+        // 条件材料功能已由子图标功能替代
+        return materialName
     }
     
     /**

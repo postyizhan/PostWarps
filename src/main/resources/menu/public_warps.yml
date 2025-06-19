@@ -8,25 +8,61 @@ layout:
 items:
   P:
     material: BARRIER
-    display_condition: has_prev
-    material_if_true: ARROW
     name: "&a上一页"
     lore:
       - "&7查看上一页地标"
       - ""
       - "&e► 点击查看"
+    icons:
+      # 有上一页时显示箭头
+      - condition: 'data has_prev'
+        material: ARROW
+        name: "&a上一页"
+        lore:
+          - "&7查看上一页地标"
+          - ""
+          - "&e► 点击查看"
+        action:
+          - "[page_prev]"
+          - "[sound] CLICK 0.5 1.0"
+      # 没有上一页时显示屏障
+      - condition: '!data has_prev'
+        material: BARRIER
+        name: "&7上一页"
+        lore:
+          - "&7没有上一页了"
+        action: []
+    # 默认动作
     action:
       - "[page_prev]"
       - "[sound] CLICK 0.5 1.0"
   N:
     material: BARRIER
-    display_condition: has_next
-    material_if_true: ARROW
     name: "&a下一页"
     lore:
       - "&7查看下一页地标"
       - ""
       - "&e► 点击查看"
+    icons:
+      # 有下一页时显示箭头
+      - condition: 'data has_next'
+        material: ARROW
+        name: "&a下一页"
+        lore:
+          - "&7查看下一页地标"
+          - ""
+          - "&e► 点击查看"
+        action:
+          - "[page_next]"
+          - "[sound] CLICK 0.5 1.0"
+      # 没有下一页时显示屏障
+      - condition: '!data has_next'
+        material: BARRIER
+        name: "&7下一页"
+        lore:
+          - "&7没有下一页了"
+        action: []
+    # 默认动作
     action:
       - "[page_next]"
       - "[sound] CLICK 0.5 1.0"

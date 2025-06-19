@@ -85,11 +85,11 @@ class ItemBuilder(private val context: MenuContext) {
     }
     
     /**
-     * 检查显示条件
+     * 检查显示条件（兼容旧版本，建议使用子图标功能）
      */
     private fun checkDisplayCondition(itemConfig: ConfigurationSection): Boolean {
         val condition = itemConfig.getString("display_condition") ?: return true
-        
+
         return when (condition) {
             "has_prev" -> {
                 val currentPage = context.getCurrentPage()
@@ -109,24 +109,12 @@ class ItemBuilder(private val context: MenuContext) {
      */
     private fun getMaterial(itemConfig: ConfigurationSection): Material {
         val materialName = itemConfig.getString("material", "STONE")!!
-        
-        // 处理条件材质
-        val finalMaterialName = when {
-            context.playerData.containsKey("public") && context.playerData["public"] == true && 
-                itemConfig.contains("material_if_true") ->
-                    itemConfig.getString("material_if_true") ?: materialName
-                    
-            context.playerData.containsKey("public") && context.playerData["public"] == false && 
-                itemConfig.contains("material_if_false") ->
-                    itemConfig.getString("material_if_false") ?: materialName
-                    
-            else -> materialName
-        }
-        
+
+        // 不再处理条件材质，条件材质功能已由子图标功能替代
         return try {
-            Material.valueOf(finalMaterialName.uppercase())
+            Material.valueOf(materialName.uppercase())
         } catch (e: IllegalArgumentException) {
-            context.plugin.logger.warning("未知的材料类型: $finalMaterialName")
+            context.plugin.logger.warning("未知的材料类型: $materialName")
             Material.STONE
         }
     }

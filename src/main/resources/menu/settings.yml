@@ -18,13 +18,28 @@ items:
   # 公开/私有设置按钮
   B:
     material: REDSTONE_TORCH
-    material_if_true: TORCH
-    material_if_false: REDSTONE_TORCH
     name: "&b公开/私有"
     lore:
       - "&7当前状态: {public_state}"
       - ""
       - "&e► 点击切换状态"
+    icons:
+      - condition: 'data public'
+        material: TORCH
+        name: "&a公开地标"
+        lore:
+          - "&7当前状态: &a公开"
+          - "&7其他玩家可以看到此地标"
+          - ""
+          - "&e► 点击设为私有"
+      - condition: '!data public'
+        material: REDSTONE_TORCH
+        name: "&c私有地标"
+        lore:
+          - "&7当前状态: &c私有"
+          - "&7只有你可以看到此地标"
+          - ""
+          - "&e► 点击设为公开"
     action:
       - "[warp_toggle] public"
       - "[sound] CLICK 0.5 1.5"
