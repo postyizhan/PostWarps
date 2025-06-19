@@ -1,6 +1,7 @@
 package com.github.postyizhan.gui
 
 import com.github.postyizhan.PostWarps
+import com.github.postyizhan.gui.processor.MenuItemProcessor
 import com.github.postyizhan.util.MessageUtil
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -21,15 +22,18 @@ open class Menu(
     protected val config: YamlConfiguration
 ) {
     // 菜单标题
-    private val title: String = config.getString("title", "&8【 &b菜单 &8】").let { 
+    private val title: String = config.getString("title", "&8【 &b菜单 &8】").let {
         ChatColor.translateAlternateColorCodes('&', it)
     }
-    
+
     // 菜单布局
     private val layout: List<String> = config.getStringList("layout")
-    
+
     // 菜单项配置
     private val items: ConfigurationSection? = config.getConfigurationSection("items")
+
+    // 菜单项处理器
+    private val menuItemProcessor = MenuItemProcessor(plugin)
     
     /**
      * 创建库存
@@ -135,92 +139,11 @@ open class Menu(
      */
     private fun createItem(symbol: String, player: Player, data: Map<String, Any>): ItemStack? {
         val itemConfig = items?.getConfigurationSection(symbol) ?: return null
-        
-        // 检查显示条件
-        val displayCondition = itemConfig.getString("display_condition")
-        if (displayCondition != null) {
-            // 根据条件判断是否显示物品
-            val conditionValue = data[displayCondition] as? Boolean ?: false
-            if (!conditionValue) {
-                // 条件不满足，返回一个占位物品（如果配置了material_if_false）或者返回null
-                val materialIfFalse = itemConfig.getString("material_if_false")
-                if (materialIfFalse != null) {
-                    try {
-                        val material = Material.valueOf(materialIfFalse.uppercase())
-                        val item = ItemStack(material, 1)
-                        val meta = item.itemMeta
-                        if (meta != null) {
-                            meta.setDisplayName(" ")
-                            item.itemMeta = meta
-                        }
-                        return item
-                    } catch (e: IllegalArgumentException) {
-                        return null
-                    }
-                } else {
-                    return null
-                }
-            }
-        }
-        
-        // 获取材料
-        val materialName = itemConfig.getString("material") ?: return null
-        
-        // 根据条件判断是否使用不同的材料
-        val finalMaterialName = when {
-            data.containsKey("has_next") && data["has_next"] == true && 
-                itemConfig.getString("display_condition") == "has_next" && 
-                itemConfig.contains("material_if_true") ->
-                    itemConfig.getString("material_if_true") ?: materialName
-                    
-            data.containsKey("has_prev") && data["has_prev"] == true && 
-                itemConfig.getString("display_condition") == "has_prev" && 
-                itemConfig.contains("material_if_true") ->
-                    itemConfig.getString("material_if_true") ?: materialName
-                    
-            data.containsKey("public") && data["public"] == true && 
-                itemConfig.contains("material_if_true") ->
-                    itemConfig.getString("material_if_true") ?: materialName
-                    
-            data.containsKey("public") && data["public"] == false && 
-                itemConfig.contains("material_if_false") ->
-                    itemConfig.getString("material_if_false") ?: materialName
-                    
-            else -> materialName
-        }
-        
-        val material = try {
-            Material.valueOf(finalMaterialName.uppercase())
-        } catch (e: IllegalArgumentException) {
-            plugin.logger.warning("未知的材料类型: $finalMaterialName")
-            Material.STONE
-        }
-        
-        // 创建物品
-        val item = ItemStack(material, 1)
-        val meta = item.itemMeta ?: return item
-        
-        // 设置名称
-        val displayName = itemConfig.getString("name")?.let {
-            processPlaceholders(it, player, data)
-        }
-        if (displayName != null) {
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
-        }
-        
-        // 设置Lore
-        val lore = itemConfig.getStringList("lore")
-        if (lore.isNotEmpty()) {
-            val processedLore = lore.map { 
-                ChatColor.translateAlternateColorCodes('&', processPlaceholders(it, player, data))
-            }
-            meta.lore = processedLore
-        }
-        
-        item.itemMeta = meta
-        return item
+        return menuItemProcessor.createMenuItem(itemConfig, player, data)
     }
-    
+
+
+
     /**
      * 创建地标物品
      */
@@ -375,11 +298,9 @@ open class Menu(
             }
         }
         
-        // 处理普通按钮
-        return when {
-            itemConfig.isList("action") -> itemConfig.getStringList("action")
-            itemConfig.isString("action") -> listOf(itemConfig.getString("action") ?: "")
-            else -> emptyList()
-        }
+        // 处理普通按钮 - 支持子图标动作
+        return menuItemProcessor.getMenuItemActions(itemConfig, player, data)
     }
+
+
 }

@@ -1,0 +1,264 @@
+# 子图标功能示例菜单
+# 此文件展示了如何使用子图标功能和权限判断
+
+title: "&8【 &3子图标示例 &8】"
+layout:
+  - "         "
+  - " A B C D "
+  - "    E    "
+  - " F G H I "
+  - "         "
+
+items:
+  # 权限检查示例
+  A:
+    material: STONE
+    name: "&7权限检查示例"
+    lore:
+      - "&7根据权限显示不同图标"
+      - ""
+      - "&e► 点击查看效果"
+    icons:
+      # 有管理员权限
+      - condition: 'perm postwarps.admin'
+        material: DIAMOND
+        name: "&b&l管理员专用"
+        lore:
+          - "&7你拥有管理员权限"
+          - "&a可以执行所有操作"
+          - ""
+          - "&e► 点击执行管理员命令"
+        action:
+          - "[message] &a你是管理员！"
+          - "[sound] LEVEL_UP 1.0 1.0"
+      # 有创建权限但不是管理员
+      - condition: 'perm postwarps.create'
+        material: IRON_INGOT
+        name: "&a普通用户"
+        lore:
+          - "&7你有创建地标的权限"
+          - "&7但不是管理员"
+          - ""
+          - "&e► 点击执行普通操作"
+        action:
+          - "[message] &a你可以创建地标！"
+          - "[sound] NOTE_PLING 1.0 1.0"
+      # 没有权限
+      - condition: '!perm postwarps.create'
+        material: BARRIER
+        name: "&c权限不足"
+        lore:
+          - "&7你没有足够的权限"
+          - "&c请联系管理员获取权限"
+          - ""
+          - "&e► 点击了解更多"
+        action:
+          - "[message] &c你需要 postwarps.create 权限！"
+          - "[sound] VILLAGER_NO 1.0 1.0"
+    # 默认动作（理论上不会执行，因为上面的条件覆盖了所有情况）
+    action:
+      - "[message] &7默认动作"
+
+  # OP检查示例
+  B:
+    material: REDSTONE
+    name: "&cOP检查示例"
+    lore:
+      - "&7根据OP状态显示不同图标"
+      - ""
+      - "&e► 点击查看效果"
+    icons:
+      # OP玩家
+      - condition: 'op'
+        material: NETHER_STAR
+        name: "&d&lOP玩家"
+        lore:
+          - "&7你是服务器OP"
+          - "&d拥有最高权限"
+          - ""
+          - "&e► 点击执行OP命令"
+        action:
+          - "[message] &d你是OP！条件检查成功！"
+          - "[sound] ENDERDRAGON_GROWL 0.5 1.0"
+      # 非OP玩家
+      - condition: '!op'
+        material: COAL
+        name: "&7普通玩家"
+        lore:
+          - "&7你不是OP"
+          - "&7权限有限"
+          - ""
+          - "&e► 点击执行普通命令"
+        action:
+          - "[message] &7你不是OP！条件检查成功！"
+          - "[sound] NOTE_PLING 1.0 1.0"
+    # 默认动作（如果条件检查失败才会执行）
+    action:
+      - "[message] &c条件检查失败！执行了默认动作！"
+      - "[sound] VILLAGER_NO 1.0 1.0"
+
+  # 数据条件示例
+  C:
+    material: BOOK
+    name: "&9数据条件示例"
+    lore:
+      - "&7根据数据状态显示不同图标"
+      - "&7当前状态: {test_data}"
+      - ""
+      - "&e► 点击切换状态"
+    icons:
+      # 数据为true时
+      - condition: 'data test_data'
+        material: EMERALD
+        name: "&a状态：开启"
+        lore:
+          - "&7测试数据当前为 true"
+          - "&a功能已启用"
+          - ""
+          - "&e► 点击关闭"
+        action:
+          - "[message] &a功能已关闭！"
+          - "[sound] NOTE_PLING 1.0 0.5"
+      # 数据为false时
+      - condition: '!data test_data'
+        material: REDSTONE
+        name: "&c状态：关闭"
+        lore:
+          - "&7测试数据当前为 false"
+          - "&c功能已禁用"
+          - ""
+          - "&e► 点击开启"
+        action:
+          - "[message] &a功能已开启！"
+          - "[sound] NOTE_PLING 1.0 2.0"
+
+  # 玩家名称检查示例
+  D:
+    material: PLAYER_HEAD
+    name: "&e玩家检查示例"
+    lore:
+      - "&7根据玩家名称显示不同图标"
+      - ""
+      - "&e► 点击查看效果"
+    icons:
+      # 特定玩家
+      - condition: 'player postyizhan'
+        material: GOLDEN_APPLE
+        name: "&6&l作者专用"
+        lore:
+          - "&7你是插件作者！"
+          - "&6感谢你的使用"
+          - ""
+          - "&e► 点击获得特殊奖励"
+        action:
+          - "[message] &6感谢作者的辛勤工作！"
+          - "[sound] LEVEL_UP 1.0 2.0"
+    # 其他玩家的默认动作
+    action:
+      - "[message] &7你好，{player}！"
+      - "[sound] NOTE_PLING 1.0 1.0"
+
+  # 复合条件示例（通过多个子图标实现）
+  E:
+    material: COMPASS
+    name: "&b复合条件示例"
+    lore:
+      - "&7展示多种条件的组合使用"
+      - ""
+      - "&e► 点击查看效果"
+    icons:
+      # 管理员且OP
+      - condition: 'perm postwarps.admin'
+        material: BEACON
+        name: "&d&l超级管理员"
+        lore:
+          - "&7你既是管理员又是OP"
+          - "&d拥有所有权限"
+          - ""
+          - "&e► 点击执行超级命令"
+        action:
+          - "[console] say {player} 是超级管理员！"
+          - "[sound] ENDERDRAGON_GROWL 1.0 1.0"
+      # 只有创建权限
+      - condition: 'perm postwarps.create'
+        material: CRAFTING_TABLE
+        name: "&a建造者"
+        lore:
+          - "&7你可以创建地标"
+          - "&a继续努力！"
+          - ""
+          - "&e► 点击鼓励"
+        action:
+          - "[message] &a继续加油，建造者！"
+          - "[sound] NOTE_PLING 1.0 1.5"
+    # 默认情况
+    action:
+      - "[message] &7欢迎新手！"
+      - "[sound] NOTE_PLING 1.0 1.0"
+
+  # 返回主菜单
+  F:
+    material: ARROW
+    name: "&a返回主菜单"
+    lore:
+      - "&7返回到主菜单"
+      - ""
+      - "&e► 点击返回"
+    action:
+      - "[menu] main"
+      - "[sound] NOTE_PLING 0.6 1.2"
+
+  # 关闭菜单
+  G:
+    material: BARRIER
+    name: "&c关闭菜单"
+    lore:
+      - "&7关闭当前菜单"
+      - ""
+      - "&e► 点击关闭"
+    action:
+      - "[close]"
+      - "[sound] CHEST_CLOSE 0.5 1.0"
+
+  # 帮助信息
+  H:
+    material: BOOK
+    name: "&e帮助信息"
+    lore:
+      - "&7子图标功能说明："
+      - "&7- 支持权限检查 (perm)"
+      - "&7- 支持OP检查 (op)"
+      - "&7- 支持数据检查 (data)"
+      - "&7- 支持玩家检查 (player)"
+      - "&7- 支持反向检查 (!)"
+      - ""
+      - "&e► 点击了解更多"
+    action:
+      - "[message] &a查看配置文件了解更多用法！"
+      - "[sound] NOTE_PLING 1.0 1.0"
+
+  # 测试按钮
+  I:
+    material: LEVER
+    name: "&6测试按钮"
+    lore:
+      - "&7用于测试各种功能"
+      - ""
+      - "&e► 点击测试"
+    icons:
+      # 管理员测试
+      - condition: 'perm postwarps.admin'
+        material: COMMAND_BLOCK
+        name: "&c&l管理员测试"
+        lore:
+          - "&7执行管理员测试"
+          - "&c请谨慎使用"
+          - ""
+          - "&e► 点击执行"
+        action:
+          - "[console] say 管理员 {player} 执行了测试"
+          - "[sound] NOTE_BLOCK_PLING 1.0 1.0"
+    # 普通测试
+    action:
+      - "[message] &7测试完成！"
+      - "[sound] NOTE_PLING 1.0 1.0"
