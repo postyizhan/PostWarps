@@ -24,7 +24,8 @@ items:
       - ""
       - "&e► 点击切换状态"
     icons:
-      - condition: 'data public'
+      # 公开状态时显示火把
+      - condition: 'data is_public'
         material: TORCH
         name: "&a公开地标"
         lore:
@@ -32,7 +33,8 @@ items:
           - "&7其他玩家可以看到此地标"
           - ""
           - "&e► 点击设为私有"
-      - condition: '!data public'
+      # 私有状态时显示红石火把
+      - condition: '!data is_public'
         material: REDSTONE_TORCH
         name: "&c私有地标"
         lore:
@@ -41,7 +43,7 @@ items:
           - ""
           - "&e► 点击设为公开"
     action:
-      - "[warp_toggle] public"
+      - "[warp_toggle]"
       - "[sound] CLICK 0.5 1.5"
   # 显示材质
   C:

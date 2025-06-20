@@ -15,7 +15,7 @@ class WarpCreateAction(plugin: PostWarps) : AbstractAction(plugin) {
         val data = plugin.getMenuManager().getPlayerData(player)
         val name = data["name"] as? String
         val description = data["desc"] as? String ?: ""
-        val isPublic = data["public"] as? Boolean ?: false
+        val isPublic = data["is_public"] as? Boolean ?: false
         
         // 检查名称是否存在
         if (name.isNullOrBlank()) {

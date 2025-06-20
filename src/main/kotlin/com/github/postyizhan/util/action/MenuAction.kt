@@ -14,6 +14,17 @@ class MenuAction(plugin: PostWarps) : AbstractAction(plugin) {
         // 获取当前玩家数据
         val playerData = plugin.getMenuManager().getPlayerData(player)
         
+        // 如果是打开创建菜单，设置默认值
+        if (menuName == "create") {
+            (playerData as? MutableMap<String, Any>)?.apply {
+                // 设置默认的公开状态为false（私有）
+                if (!containsKey("is_public")) {
+                    put("is_public", false)
+                }
+            }
+            logDebug("Player ${player.name} opening create menu, set default is_public=${playerData["is_public"]}")
+        }
+
         // 如果是打开设置菜单，确保传递当前选中的地标ID
         if (menuName == "settings") {
             val warpId = playerData["warp_id"] as? Int
@@ -27,7 +38,7 @@ class MenuAction(plugin: PostWarps) : AbstractAction(plugin) {
                     (playerData as? MutableMap<String, Any>)?.apply {
                         put("name", warp.name)
                         put("desc", warp.description)
-                        put("public", warp.isPublic)
+                        put("is_public", warp.isPublic)
                     }
                     logDebug("Added warp data to player data: name=${warp.name}, desc=${warp.description}, public=${warp.isPublic}")
                 }

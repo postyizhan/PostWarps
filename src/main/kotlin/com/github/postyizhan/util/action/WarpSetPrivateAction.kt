@@ -69,7 +69,7 @@ class WarpSetPrivateAction(plugin: PostWarps) : AbstractAction(plugin) {
             
             // 刷新数据
             val data = plugin.getMenuManager().getPlayerData(player)
-            data["public"] = false
+            data["is_public"] = false
             
             // 重新打开当前菜单
             val currentMenu = plugin.getMenuManager().getOpenMenu(player) ?: return

@@ -230,7 +230,7 @@ open class Menu(
         result = result.replace("{desc}", data["desc"]?.toString() ?: "")
         
         // 公开/私有状态显示
-        val isPublic = data["public"] as? Boolean ?: false
+        val isPublic = data["is_public"] as? Boolean ?: false
         val publicState = if (isPublic) "&a公开" else "&c私有"
         result = result.replace("{public_state}", publicState)
         
