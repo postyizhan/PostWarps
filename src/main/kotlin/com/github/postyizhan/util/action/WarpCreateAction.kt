@@ -34,7 +34,12 @@ class WarpCreateAction(plugin: PostWarps) : AbstractAction(plugin) {
         }
         
         logDebug("Creating warp: name=$name, desc=$description, public=$isPublic")
-        
+
+        // 检查经济费用
+        if (!plugin.getEconomyService().chargeCreateCost(player)) {
+            return
+        }
+
         // 创建地标
         val warp = Warp.fromLocation(
             name = name,

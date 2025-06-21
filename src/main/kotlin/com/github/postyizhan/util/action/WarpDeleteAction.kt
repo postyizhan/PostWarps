@@ -40,7 +40,10 @@ class WarpDeleteAction(plugin: PostWarps) : AbstractAction(plugin) {
         val success = plugin.getDatabaseManager().deleteWarp(warp.id)
         if (success) {
             sendMessage(player, "warp_delete.success", "name" to warp.name)
-            
+
+            // 退还费用
+            plugin.getEconomyService().refundDeleteCost(player)
+
             // 关闭菜单
             player.closeInventory()
         } else {

@@ -4,6 +4,7 @@ main: com.github.postyizhan.PostWarps
 api-version: '1.13'
 description: '一个简单的Minecraft地标传送插件，支持公开和私有地标'
 authors: [postyizhan]
+softdepend: [Vault]
 
 commands:
   postwarps:

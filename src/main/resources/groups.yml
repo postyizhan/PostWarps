@@ -1,0 +1,137 @@
+# 权限组经济配置
+# 支持多种经济系统：vault (金钱), playerpoints (点券)
+# 玩家会使用其所在的最高优先级组的配置
+
+# 默认组配置
+default:
+  priority: 0                       # 优先级，数字越大优先级越高
+  vault:
+    enabled: false                  # 是否启用Vault经济
+    costs:
+      create: 100.0                 # 创建地标费用
+      teleport: 10.0                # 传送费用（通用，如果没有指定公开/私有费用）
+      public_teleport: 5.0          # 传送到公开地标费用
+      private_teleport: 10.0        # 传送到私有地标费用
+      set_public: 50.0              # 设置地标为公开费用
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.5               # 退款比例 (0.0-1.0)
+  playerpoints:
+    enabled: false                  # 是否启用PlayerPoints点券系统
+    costs:
+      create: 50                    # 创建地标费用（点券）
+      teleport: 5                   # 传送费用（点券）
+      public_teleport: 3            # 传送到公开地标费用（点券）
+      private_teleport: 5           # 传送到私有地标费用（点券）
+      set_public: 25                # 设置地标为公开费用（点券）
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.5               # 退款比例 (0.0-1.0)
+
+# VIP组配置
+vip:
+  priority: 10                      # 优先级高于默认组
+  vault:
+    enabled: false                  # 是否启用Vault经济
+    costs:
+      create: 80.0                  # VIP创建费用（20%折扣）
+      teleport: 8.0                 # VIP传送费用（20%折扣）
+      public_teleport: 4.0          # VIP公开传送费用（20%折扣）
+      private_teleport: 8.0         # VIP私有传送费用（20%折扣）
+      set_public: 40.0              # VIP公开设置费用（20%折扣）
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.7               # VIP退款比例更高
+  playerpoints:
+    enabled: false                  # 是否启用PlayerPoints点券系统
+    costs:
+      create: 40                    # VIP创建费用（20%折扣）
+      teleport: 4                   # VIP传送费用（20%折扣）
+      public_teleport: 2            # VIP公开传送费用（33%折扣）
+      private_teleport: 4           # VIP私有传送费用（20%折扣）
+      set_public: 20                # VIP公开设置费用（20%折扣）
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.7               # VIP退款比例更高
+
+# 高级VIP组配置
+premium:
+  priority: 20                      # 优先级高于VIP组
+  vault:
+    enabled: false                  # 是否启用Vault经济
+    costs:
+      create: 60.0                  # Premium创建费用（40%折扣）
+      teleport: 6.0                 # Premium传送费用（40%折扣）
+      public_teleport: 3.0          # Premium公开传送费用（40%折扣）
+      private_teleport: 6.0         # Premium私有传送费用（40%折扣）
+      set_public: 30.0              # Premium公开设置费用（40%折扣）
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.8               # Premium退款比例更高
+  playerpoints:
+    enabled: false                  # 是否启用PlayerPoints点券系统
+    costs:
+      create: 30                    # Premium创建费用（40%折扣）
+      teleport: 3                   # Premium传送费用（40%折扣）
+      public_teleport: 1            # Premium公开传送费用（67%折扣）
+      private_teleport: 3           # Premium私有传送费用（40%折扣）
+      set_public: 15                # Premium公开设置费用（40%折扣）
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.8               # Premium退款比例更高
+
+# 捐赠者组配置
+donator:
+  priority: 15                      # 优先级介于VIP和Premium之间
+  vault:
+    enabled: false                  # 是否启用Vault经济
+    costs:
+      create: 70.0                  # Donator创建费用（30%折扣）
+      teleport: 7.0                 # Donator传送费用（30%折扣）
+      public_teleport: 3.5          # Donator公开传送费用（30%折扣）
+      private_teleport: 7.0         # Donator私有传送费用（30%折扣）
+      set_public: 35.0              # Donator公开设置费用（30%折扣）
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.75              # Donator退款比例
+  playerpoints:
+    enabled: false                  # 是否启用PlayerPoints点券系统
+    costs:
+      create: 35                    # Donator创建费用（30%折扣）
+      teleport: 3                   # Donator传送费用（40%折扣）
+      public_teleport: 2            # Donator公开传送费用（33%折扣）
+      private_teleport: 3           # Donator私有传送费用（40%折扣）
+      set_public: 18                # Donator公开设置费用（28%折扣）
+    refund_on_delete: true          # 删除地标时是否退款
+    refund_ratio: 0.75              # Donator退款比例
+
+# 管理员组配置
+admin:
+  priority: 100                     # 最高优先级
+  vault:
+    enabled: false                  # 管理员通常免费
+    costs:
+      create: 0.0                   # 管理员免费
+      teleport: 0.0                 # 管理员免费
+      public_teleport: 0.0          # 管理员免费
+      private_teleport: 0.0         # 管理员免费
+      set_public: 0.0               # 管理员免费
+    refund_on_delete: false         # 管理员不需要退款（因为免费）
+    refund_ratio: 0.0               # 管理员退款比例
+  playerpoints:
+    enabled: false                  # 管理员通常免费
+    costs:
+      create: 0                     # 管理员免费
+      teleport: 0                   # 管理员免费
+      public_teleport: 0            # 管理员免费
+      private_teleport: 0           # 管理员免费
+      set_public: 0                 # 管理员免费
+    refund_on_delete: false         # 管理员不需要退款（因为免费）
+    refund_ratio: 0.0               # 管理员退款比例
+
+# 配置说明：
+# 1. priority: 优先级，当玩家属于多个组时，使用优先级最高的组配置
+# 2. vault: Vault经济系统配置（金钱）
+# 3. playerpoints: PlayerPoints点券系统配置
+# 4. enabled: 是否启用该经济系统，可以同时启用多个系统
+# 5. costs: 各项操作的费用
+# 6. refund_on_delete: 删除地标时是否退款
+# 7. refund_ratio: 退款比例，0.0-1.0之间
+#
+# 使用优先级：
+# - 当玩家属于多个组时，使用优先级最高的组配置
+# - 如果玩家不属于任何已配置的组，使用default组配置
+# - 可以为不同的组配置不同的经济系统（有些用金钱，有些用点券）

@@ -88,7 +88,12 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                         ))
                         return true
                     }
-                    
+
+                    // 检查经济费用
+                    if (!plugin.getEconomyService().chargeCreateCost(sender)) {
+                        return true
+                    }
+
                     // 创建地标
                     val warp = Warp.fromLocation(
                         name = name,
@@ -157,6 +162,9 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                             MessageUtil.getMessage("delete.success")
                                 .replace("{name}", name)
                         ))
+
+                        // 退还费用
+                        plugin.getEconomyService().refundDeleteCost(sender)
                     } else {
                         sender.sendMessage("${ChatColor.RED}删除地标失败，请稍后再试。")
                     }
@@ -241,7 +249,12 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                         sender.sendMessage("${ChatColor.RED}你没有权限传送到此地标。")
                         return true
                     }
-                    
+
+                    // 检查传送费用
+                    if (!plugin.getEconomyService().chargeTeleportCost(sender, warp.isPublic)) {
+                        return true
+                    }
+
                     // 获取位置
                     val location = warp.getLocation()
                     if (location == null) {
@@ -366,7 +379,12 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                         ))
                         return true
                     }
-                    
+
+                    // 检查设置公开的费用
+                    if (!plugin.getEconomyService().chargeSetPublicCost(sender)) {
+                        return true
+                    }
+
                     // 更新状态
                     val success = plugin.getDatabaseManager().setWarpPublic(warp.id, true)
                     if (success) {
@@ -473,6 +491,24 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                     ))
                 }
                 
+                "economy", "eco" -> {
+                    if (sender !is Player) {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("messages.player-only")
+                        ))
+                        return true
+                    }
+
+                    // 显示经济信息
+                    sender.sendMessage("${ChatColor.GREEN}===== 经济信息 =====")
+                    sender.sendMessage(MessageUtil.color(plugin.getEconomyService().getBalanceInfo(sender)))
+
+                    val costInfo = plugin.getEconomyService().getCostInfo(sender)
+                    costInfo.forEach { info ->
+                        sender.sendMessage(MessageUtil.color(info))
+                    }
+                }
+
                 "version" -> {
                     sender.sendMessage("${ChatColor.GREEN}PostWarps 版本: ${plugin.description.version}")
                     sender.sendMessage("${ChatColor.GREEN}作者: postyizhan")
@@ -535,6 +571,10 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                 if (sender.hasPermission("postwarps.public")) subCommands.add("public")
                 if (sender.hasPermission("postwarps.private")) subCommands.add("private")
                 if (sender.hasPermission("postwarps.menu")) subCommands.add("menu")
+                if (sender is Player) {
+                    subCommands.add("economy")
+                    subCommands.add("eco")
+                }
                 if (sender.hasPermission("postwarps.admin")) {
                     subCommands.add("reload")
                 }
@@ -622,7 +662,11 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
         
         if (sender.hasPermission("postwarps.menu"))
             sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.menu")))
-        
+
+        // 经济命令对所有玩家开放
+        if (sender is Player)
+            sender.sendMessage("&7/pw economy &f- 查看经济信息和费用")
+
         if (sender.hasPermission("postwarps.admin")) {
             sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.reload")))
         }

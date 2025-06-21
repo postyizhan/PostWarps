@@ -46,12 +46,17 @@ class WarpTeleportAction(plugin: PostWarps) : AbstractAction(plugin) {
         }
         
         logDebug("Found warp: ${warp.name}, owner: ${warp.ownerName}, world: ${warp.worldName}, coords: ${warp.getFormattedCoordinates()}")
-        
+
         // 检查权限
         if (warp.owner != player.uniqueId && !warp.isPublic && !player.hasPermission("postwarps.admin")) {
             player.sendMessage(MessageUtil.color(
                 MessageUtil.getMessage("teleport.no-permission")
             ))
+            return
+        }
+
+        // 检查传送费用
+        if (!plugin.getEconomyService().chargeTeleportCost(player, warp.isPublic)) {
             return
         }
         

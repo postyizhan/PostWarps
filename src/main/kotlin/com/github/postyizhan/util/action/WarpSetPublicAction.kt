@@ -60,7 +60,12 @@ class WarpSetPublicAction(plugin: PostWarps) : AbstractAction(plugin) {
         }
         
         logDebug("Setting warp ${warp.name} (ID: ${warp.id}) to ${if (isPublic) "public" else "private"}")
-        
+
+        // 如果设置为公开，检查费用
+        if (isPublic && !plugin.getEconomyService().chargeSetPublicCost(player)) {
+            return
+        }
+
         // 更新状态
         val success = plugin.getDatabaseManager().setWarpPublic(warp.id, isPublic)
         if (success) {

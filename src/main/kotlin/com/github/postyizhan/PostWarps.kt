@@ -2,10 +2,13 @@ package com.github.postyizhan
 
 import com.github.postyizhan.command.CommandManager
 import com.github.postyizhan.config.ConfigManager
+import com.github.postyizhan.config.GroupConfig
 import com.github.postyizhan.database.DatabaseManager
 import com.github.postyizhan.gui.MenuManager
+import com.github.postyizhan.integration.VaultManager
 import com.github.postyizhan.listener.MenuListener
 import com.github.postyizhan.listener.PlayerListener
+import com.github.postyizhan.service.EconomyService
 import com.github.postyizhan.util.MessageUtil
 import com.github.postyizhan.util.UpdateChecker
 import org.bukkit.Bukkit
@@ -24,6 +27,9 @@ class PostWarps : JavaPlugin() {
     private lateinit var menuManager: MenuManager
     private lateinit var commandManager: CommandManager
     private lateinit var updateChecker: UpdateChecker
+    private lateinit var vaultManager: VaultManager
+    private lateinit var groupConfig: GroupConfig
+    private lateinit var economyService: EconomyService
     private var debugEnabled: Boolean = false
     private lateinit var actionFactory: com.github.postyizhan.util.action.ActionFactory
     
@@ -52,10 +58,21 @@ class PostWarps : JavaPlugin() {
         
         // 初始化数据库管理器
         databaseManager = DatabaseManager(this).apply { init() }
-        
+
+        // 初始化Vault集成
+        vaultManager = VaultManager(this)
+        vaultManager.initialize()
+
+        // 初始化权限组配置
+        groupConfig = GroupConfig(this)
+        groupConfig.initialize()
+
+        // 初始化经济服务
+        economyService = EconomyService(this, vaultManager, groupConfig)
+
         // 初始化菜单管理器
         menuManager = MenuManager(this).apply { loadMenus() }
-        
+
         // 初始化动作工厂
         actionFactory = com.github.postyizhan.util.action.ActionFactory(this)
         
@@ -95,6 +112,11 @@ class PostWarps : JavaPlugin() {
             menuManager.shutdown()
         }
 
+        // 关闭Vault集成
+        if (this::vaultManager.isInitialized) {
+            vaultManager.shutdown()
+        }
+
         // 关闭数据库连接
         if (this::databaseManager.isInitialized) {
             databaseManager.close()
@@ -110,6 +132,7 @@ class PostWarps : JavaPlugin() {
     fun reload() {
         configManager.loadAll()
         MessageUtil.init(this)
+        groupConfig.reload()
         menuManager.loadMenus()
         debugEnabled = configManager.getConfig().getBoolean("debug", false)
     }
@@ -129,6 +152,9 @@ class PostWarps : JavaPlugin() {
     fun getDatabaseManager(): DatabaseManager = databaseManager
     fun getMenuManager(): MenuManager = menuManager
     fun getUpdateChecker(): UpdateChecker = updateChecker
+    fun getVaultManager(): VaultManager = vaultManager
+    fun getGroupConfig(): GroupConfig = groupConfig
+    fun getEconomyService(): EconomyService = economyService
     
     /**
      * 获取动作工厂
