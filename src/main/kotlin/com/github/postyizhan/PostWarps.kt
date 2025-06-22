@@ -6,6 +6,7 @@ import com.github.postyizhan.config.GroupConfig
 import com.github.postyizhan.database.DatabaseManager
 import com.github.postyizhan.gui.MenuManager
 import com.github.postyizhan.integration.VaultManager
+import com.github.postyizhan.integration.PlayerPointsManager
 import com.github.postyizhan.listener.MenuListener
 import com.github.postyizhan.listener.PlayerListener
 import com.github.postyizhan.service.EconomyService
@@ -28,6 +29,7 @@ class PostWarps : JavaPlugin() {
     private lateinit var commandManager: CommandManager
     private lateinit var updateChecker: UpdateChecker
     private lateinit var vaultManager: VaultManager
+    private lateinit var playerPointsManager: PlayerPointsManager
     private lateinit var groupConfig: GroupConfig
     private lateinit var economyService: EconomyService
     private var debugEnabled: Boolean = false
@@ -63,12 +65,16 @@ class PostWarps : JavaPlugin() {
         vaultManager = VaultManager(this)
         vaultManager.initialize()
 
+        // 初始化PlayerPoints集成
+        playerPointsManager = PlayerPointsManager(this)
+        playerPointsManager.initialize()
+
         // 初始化权限组配置
         groupConfig = GroupConfig(this)
         groupConfig.initialize()
 
         // 初始化经济服务
-        economyService = EconomyService(this, vaultManager, groupConfig)
+        economyService = EconomyService(this, vaultManager, playerPointsManager, groupConfig)
 
         // 初始化菜单管理器
         menuManager = MenuManager(this).apply { loadMenus() }
@@ -117,6 +123,11 @@ class PostWarps : JavaPlugin() {
             vaultManager.shutdown()
         }
 
+        // 关闭PlayerPoints集成
+        if (this::playerPointsManager.isInitialized) {
+            playerPointsManager.shutdown()
+        }
+
         // 关闭数据库连接
         if (this::databaseManager.isInitialized) {
             databaseManager.close()
@@ -153,6 +164,7 @@ class PostWarps : JavaPlugin() {
     fun getMenuManager(): MenuManager = menuManager
     fun getUpdateChecker(): UpdateChecker = updateChecker
     fun getVaultManager(): VaultManager = vaultManager
+    fun getPlayerPointsManager(): PlayerPointsManager = playerPointsManager
     fun getGroupConfig(): GroupConfig = groupConfig
     fun getEconomyService(): EconomyService = economyService
     

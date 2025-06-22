@@ -13,12 +13,16 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-snapshots/")
     // Vault仓库
     maven("https://nexus.hc.to/content/repositories/pub_releases")
+    // PlayerPoints仓库
+    maven("https://repo.rosewooddev.io/repository/public/")
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT")
     // Vault API
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
+    // PlayerPoints API (使用反射调用，不需要直接依赖)
+    // compileOnly("dev.rosewood:playerpoints:3.2.7")
     implementation("net.wesjd:anvilgui:1.10.5-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

@@ -27,7 +27,7 @@ class GroupConfig(private val plugin: PostWarps) {
         }
         
         config = YamlConfiguration.loadConfiguration(configFile)
-        plugin.logger.info("权限组配置已加载")
+        plugin.logger.info("Group configuration loaded")
     }
     
     /**
@@ -35,7 +35,7 @@ class GroupConfig(private val plugin: PostWarps) {
      */
     fun reload() {
         config = YamlConfiguration.loadConfiguration(configFile)
-        plugin.logger.info("权限组配置已重新加载")
+        plugin.logger.info("Group configuration reloaded")
     }
     
     /**
