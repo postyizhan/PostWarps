@@ -227,6 +227,31 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
     }
     
     /**
+     * 获取所有地标
+     */
+    override fun getAllWarps(): List<Warp> {
+        val warps = mutableListOf<Warp>()
+
+        try {
+            val sql = "SELECT * FROM warps ORDER BY name ASC"
+            val statement = connection?.createStatement()
+            val resultSet = statement?.executeQuery(sql)
+
+            while (resultSet?.next() == true) {
+                val warp = createWarpFromResultSet(resultSet)
+                warps.add(warp)
+            }
+
+            resultSet?.close()
+            statement?.close()
+        } catch (e: SQLException) {
+            plugin.logger.severe("Failed to get all warps: ${e.message}")
+        }
+
+        return warps
+    }
+
+    /**
      * 获取所有公开地标
      */
     override fun getAllPublicWarps(): List<Warp> {

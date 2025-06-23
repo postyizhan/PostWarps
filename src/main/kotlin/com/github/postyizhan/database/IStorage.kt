@@ -48,6 +48,11 @@ interface IStorage {
     fun getPublicWarp(name: String): Warp?
     
     /**
+     * 获取所有地标
+     */
+    fun getAllWarps(): List<Warp>
+
+    /**
      * 获取所有公开地标
      */
     fun getAllPublicWarps(): List<Warp>

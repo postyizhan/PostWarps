@@ -7,6 +7,7 @@ import com.github.postyizhan.database.DatabaseManager
 import com.github.postyizhan.gui.MenuManager
 import com.github.postyizhan.integration.VaultManager
 import com.github.postyizhan.integration.PlayerPointsManager
+import com.github.postyizhan.integration.PlaceholderAPIManager
 import com.github.postyizhan.listener.MenuListener
 import com.github.postyizhan.listener.PlayerListener
 import com.github.postyizhan.service.EconomyService
@@ -30,6 +31,7 @@ class PostWarps : JavaPlugin() {
     private lateinit var updateChecker: UpdateChecker
     private lateinit var vaultManager: VaultManager
     private lateinit var playerPointsManager: PlayerPointsManager
+    private lateinit var placeholderAPIManager: PlaceholderAPIManager
     private lateinit var groupConfig: GroupConfig
     private lateinit var economyService: EconomyService
     private var debugEnabled: Boolean = false
@@ -68,6 +70,10 @@ class PostWarps : JavaPlugin() {
         // 初始化PlayerPoints集成
         playerPointsManager = PlayerPointsManager(this)
         playerPointsManager.initialize()
+
+        // 初始化PlaceholderAPI集成
+        placeholderAPIManager = PlaceholderAPIManager(this)
+        placeholderAPIManager.initialize()
 
         // 初始化权限组配置
         groupConfig = GroupConfig(this)
@@ -128,6 +134,11 @@ class PostWarps : JavaPlugin() {
             playerPointsManager.shutdown()
         }
 
+        // 关闭PlaceholderAPI集成
+        if (this::placeholderAPIManager.isInitialized) {
+            placeholderAPIManager.shutdown()
+        }
+
         // 关闭数据库连接
         if (this::databaseManager.isInitialized) {
             databaseManager.close()
@@ -165,6 +176,7 @@ class PostWarps : JavaPlugin() {
     fun getUpdateChecker(): UpdateChecker = updateChecker
     fun getVaultManager(): VaultManager = vaultManager
     fun getPlayerPointsManager(): PlayerPointsManager = playerPointsManager
+    fun getPlaceholderAPIManager(): PlaceholderAPIManager = placeholderAPIManager
     fun getGroupConfig(): GroupConfig = groupConfig
     fun getEconomyService(): EconomyService = economyService
     

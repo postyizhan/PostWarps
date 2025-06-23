@@ -15,6 +15,8 @@ repositories {
     maven("https://nexus.hc.to/content/repositories/pub_releases")
     // PlayerPoints仓库
     maven("https://repo.rosewooddev.io/repository/public/")
+    // PlaceholderAPI仓库
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
@@ -23,6 +25,8 @@ dependencies {
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
     // PlayerPoints API (使用反射调用，不需要直接依赖)
     // compileOnly("dev.rosewood:playerpoints:3.2.7")
+    // PlaceholderAPI
+    compileOnly("me.clip:placeholderapi:2.11.6")
     implementation("net.wesjd:anvilgui:1.10.5-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

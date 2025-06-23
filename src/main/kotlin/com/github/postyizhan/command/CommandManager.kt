@@ -535,7 +535,17 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                         }
                     }
                 }
-                
+
+                "placeholders", "papi" -> {
+                    if (!sender.hasPermission("postwarps.admin")) {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("messages.no-permission")
+                        ))
+                        return true
+                    }
+                    showPlaceholders(sender)
+                }
+
                 else -> {
                     sender.sendMessage(MessageUtil.color(
                         MessageUtil.getMessage("messages.invalid-command")
@@ -577,6 +587,8 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                 }
                 if (sender.hasPermission("postwarps.admin")) {
                     subCommands.add("reload")
+                    subCommands.add("placeholders")
+                    subCommands.add("papi")
                 }
                 // version命令不需要特殊权限
                 subCommands.add("version")
@@ -669,12 +681,34 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
 
         if (sender.hasPermission("postwarps.admin")) {
             sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.reload")))
+            sender.sendMessage("&7/pw placeholders &f- 查看PlaceholderAPI占位符")
         }
 
         // version命令对所有人开放
         sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.version")))
     }
     
+    /**
+     * 显示PlaceholderAPI占位符信息
+     */
+    private fun showPlaceholders(sender: CommandSender) {
+        if (!plugin.getPlaceholderAPIManager().isAvailable()) {
+            sender.sendMessage("${ChatColor.RED}PlaceholderAPI未安装或未启用")
+            return
+        }
+
+        sender.sendMessage("${ChatColor.GREEN}=== PostWarps PlaceholderAPI 占位符 ===")
+
+        val helpLines = plugin.getPlaceholderAPIManager().getPlaceholderHelp()
+        helpLines.forEach { line ->
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', line))
+        }
+
+        sender.sendMessage("")
+        sender.sendMessage("${ChatColor.YELLOW}注意: 将 <name> 替换为实际的地标名称")
+        sender.sendMessage("${ChatColor.YELLOW}例如: %postwarps_has_warp_home% 检查是否有名为 'home' 的地标")
+    }
+
     /**
      * 格式化时间戳
      */

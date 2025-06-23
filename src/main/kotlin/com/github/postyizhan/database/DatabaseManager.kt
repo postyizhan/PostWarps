@@ -95,6 +95,13 @@ class DatabaseManager(private val plugin: PostWarps) {
     }
     
     /**
+     * 获取所有地标
+     */
+    fun getAllWarps(): List<Warp> {
+        return storage.getAllWarps()
+    }
+
+    /**
      * 获取所有公开地标
      */
     fun getAllPublicWarps(): List<Warp> {
