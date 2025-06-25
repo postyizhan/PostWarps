@@ -4,7 +4,7 @@ layout:
   - " WWWWWWW "
   - " WWWWWWW "
   - " WWWWWWW "
-  - "  P B N "
+  - " P S B N "
 items:
   P:
     material: BARRIER
@@ -66,6 +66,41 @@ items:
     action:
       - "[page_next]"
       - "[sound] CLICK 0.5 1.0"
+  S:
+    material: OAK_SIGN
+    name: "&e搜索地标"
+    lore:
+      - "&7搜索地标名称、描述或世界"
+      - ""
+      - "&e► 点击搜索"
+    icons:
+      # 正在搜索时显示不同的图标
+      - condition: 'data is_searching'
+        material: WRITABLE_BOOK
+        name: "&e搜索地标 &7(搜索中)"
+        lore:
+          - "&7当前搜索: &f{search_keyword}"
+          - "&7找到 &e{warp_count} &7个地标"
+          - ""
+          - "&e► 左键修改搜索"
+          - "&c► 右键清除搜索"
+        action:
+          - "[warp_search]"
+          - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
+      # 没有搜索时显示普通图标
+      - condition: '!data is_searching'
+        material: OAK_SIGN
+        name: "&e搜索地标"
+        lore:
+          - "&7搜索地标名称、描述或世界"
+          - ""
+          - "&e► 点击搜索"
+        action:
+          - "[warp_search]"
+          - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
+    action:
+      - "[warp_search]"
+      - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
   B:
     material: COMPASS
     name: "&a返回菜单"

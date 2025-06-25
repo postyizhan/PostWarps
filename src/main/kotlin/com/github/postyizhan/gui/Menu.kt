@@ -50,7 +50,7 @@ open class Menu(
         val currentPage = data["page"] as? Int ?: 0
         
         // 准备地标数据（如果是地标菜单）
-        val warps = when (name) {
+        val allWarps = when (name) {
             "private_warps" -> {
                 // 获取玩家的地标
                 plugin.getDatabaseManager().getPlayerWarps(player.uniqueId)
@@ -61,6 +61,40 @@ open class Menu(
             }
             else -> null
         }
+
+        // 应用搜索过滤器
+        val searchFilter = data["search_filter"] as? String
+        val warps = if (allWarps != null && !searchFilter.isNullOrEmpty()) {
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.info("DEBUG: Menu search - Filter: '$searchFilter', Total warps: ${allWarps.size}")
+            }
+
+            val filtered = when (name) {
+                "private_warps" -> {
+                    allWarps.filter { warp ->
+                        warp.name.contains(searchFilter, ignoreCase = true) ||
+                        warp.description.contains(searchFilter, ignoreCase = true) ||
+                        warp.worldName.contains(searchFilter, ignoreCase = true)
+                    }
+                }
+                "public_warps" -> {
+                    allWarps.filter { warp ->
+                        warp.name.contains(searchFilter, ignoreCase = true) ||
+                        warp.description.contains(searchFilter, ignoreCase = true) ||
+                        warp.worldName.contains(searchFilter, ignoreCase = true) ||
+                        warp.ownerName.contains(searchFilter, ignoreCase = true)
+                    }
+                }
+                else -> allWarps
+            }
+
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.info("DEBUG: Menu search - Filtered warps: ${filtered.size}")
+            }
+            filtered
+        } else {
+            allWarps
+        }
         
         // 每页显示的地标数量
         val warpsPerPage = 12
@@ -70,12 +104,19 @@ open class Menu(
         val startIndex = currentPage * warpsPerPage
         val endIndex = minOf(startIndex + warpsPerPage, warps?.size ?: 0)
         
-        // 存储分页相关数据
+        // 存储分页相关数据和搜索相关数据
         (data as? MutableMap<String, Any>)?.apply {
             this["total_pages"] = totalPages
             this["current_page"] = currentPage + 1 // 显示给用户从1开始
             this["has_next"] = currentPage < totalPages - 1 && totalPages > 0
             this["has_prev"] = currentPage > 0
+
+            // 搜索相关数据
+            this["warp_count"] = warps?.size ?: 0
+            this["total_warp_count"] = allWarps?.size ?: 0
+            this["has_warps"] = (warps?.size ?: 0) > 0
+            this["is_searching"] = !searchFilter.isNullOrEmpty()
+            this["search_keyword"] = data["search_display"] as? String ?: searchFilter ?: ""
         }
         
         // 处理标题中的占位符
@@ -298,8 +339,16 @@ open class Menu(
             }
         }
         
-        // 处理普通按钮 - 支持子图标动作
-        return menuItemProcessor.getMenuItemActions(itemConfig, player, data)
+        // 处理普通按钮 - 支持子图标动作和点击类型
+        val actions = menuItemProcessor.getMenuItemActions(itemConfig, player, data)
+
+        // 特殊处理搜索按钮的右键点击
+        if (symbol == "S" && !(data["is_left_click"] as? Boolean ?: true)) {
+            // 右键点击搜索按钮，执行清除搜索
+            return listOf("[warp_search_clear]")
+        }
+
+        return actions
     }
 
 

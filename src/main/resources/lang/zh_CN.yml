@@ -31,7 +31,7 @@ actions:
     no_permission: "{prefix}&c你没有权限修改这个地标"
     not_found: "{prefix}&c找不到指定的地标"
     success_public: "{prefix}&a地标状态已更改为：&a公开"
-    success_private: "{prefix}&a地标状态已更改为：&c私有" 
+    success_private: "{prefix}&a地标状态已更改为：&c私有"
     failed: "{prefix}&c无法更新地标状态，请稍后再试"
   
   warp_location:
@@ -152,3 +152,15 @@ economy:
   cost_teleport_public_points: "{prefix}&7传送到公开地标费用: &e{cost} &7点券"
   cost_teleport_private_points: "{prefix}&7传送到私有地标费用: &e{cost} &7点券"
   cost_set_public_points: "{prefix}&7设置地标为公开费用: &e{cost} &7点券"
+
+# 搜索相关消息
+search:
+  cleared: "{prefix}&a已清除搜索过滤器"
+  set: "{prefix}&a已设置搜索关键词: &e{keyword}"
+  no_results: "{prefix}&c没有找到匹配的地标"
+  results_found: "{prefix}&a找到 &e{count} &a个匹配的地标"
+
+# 菜单相关消息
+menu:
+  no_warps: "{prefix}&7你还没有创建任何地标"
+  no_public_warps: "{prefix}&7暂时没有公开地标"

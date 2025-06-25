@@ -20,6 +20,8 @@ enum class ActionType(val prefix: String) {
     WARP_SET_PUBLIC("[warp_public]"),
     WARP_SET_PRIVATE("[warp_private]"),
     WARP_SET("[warp_set]"),
+    WARP_SEARCH("[warp_search]"),
+    WARP_SEARCH_CLEAR("[warp_search_clear]"),
     WARP_TOGGLE("[warp_toggle]"),
     WARP_LOCATION("[warp_location]"),
     MENU("[menu]"),
