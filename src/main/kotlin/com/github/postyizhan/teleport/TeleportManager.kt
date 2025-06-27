@@ -193,23 +193,32 @@ class TeleportManager(private val plugin: PostWarps) : Listener {
         
         // 检查原位置是否安全
         if (isSafeLocation(world.getBlockAt(x, y, z).location)) {
-            return location
+            // 确保玩家站在方块上方，并保持原始视角
+            val safeLocation = location.clone()
+            safeLocation.add(0.0, 1.0, 0.0) // Y+1让玩家站在方块上方
+            return safeLocation
         }
         
         // 向上寻找安全位置
         for (i in 1..10) {
             val checkLocation = world.getBlockAt(x, y + i, z).location
             if (isSafeLocation(checkLocation)) {
-                return checkLocation.add(0.5, 0.0, 0.5)
+                val safeLocation = checkLocation.add(0.5, 1.0, 0.5) // Y+1让玩家站在方块上方
+                safeLocation.yaw = location.yaw // 保持原始视角
+                safeLocation.pitch = location.pitch
+                return safeLocation
             }
         }
-        
+
         // 向下寻找安全位置
         for (i in 1..5) {
             if (y - i < 0) break
             val checkLocation = world.getBlockAt(x, y - i, z).location
             if (isSafeLocation(checkLocation)) {
-                return checkLocation.add(0.5, 0.0, 0.5)
+                val safeLocation = checkLocation.add(0.5, 1.0, 0.5) // Y+1让玩家站在方块上方
+                safeLocation.yaw = location.yaw // 保持原始视角
+                safeLocation.pitch = location.pitch
+                return safeLocation
             }
         }
         
@@ -217,17 +226,20 @@ class TeleportManager(private val plugin: PostWarps) : Listener {
     }
     
     /**
-     * 检查位置是否安全
+     * 检查位置是否安全（玩家可以站在这个位置上方）
      */
     private fun isSafeLocation(location: Location): Boolean {
         val world = location.world ?: return false
-        val block = world.getBlockAt(location)
-        val above = world.getBlockAt(location.blockX, location.blockY + 1, location.blockZ)
-        
-        // 脚下必须是固体方块，头上两格必须是空气
-        return block.type.isSolid &&
-               above.isEmpty &&
-               world.getBlockAt(location.blockX, location.blockY + 2, location.blockZ).isEmpty
+        val x = location.blockX
+        val y = location.blockY
+        val z = location.blockZ
+
+        // 检查脚下是固体方块，脚部和头部位置是空气
+        val ground = world.getBlockAt(x, y, z)
+        val feet = world.getBlockAt(x, y + 1, z)
+        val head = world.getBlockAt(x, y + 2, z)
+
+        return ground.type.isSolid && feet.isEmpty && head.isEmpty
     }
     
     /**

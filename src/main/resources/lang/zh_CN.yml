@@ -3,14 +3,14 @@ messages:
   enabled: "{prefix}&7插件已启用"
   disabled: "{prefix}&7插件已卸载"
   reload: "{prefix}&7插件重载成功！"
-  menus_loaded: "{prefix}&7成功加载 &a{count} &7个菜单"
-  database_connected: "{prefix}&7成功连接到 &a{type} &7数据库"
+  menus_loaded: "{prefix}&7成功加载 &7{count} &7个菜单"
+  database_connected: "{prefix}&7成功连接到 &7{type} &7数据库"
   database_closed: "{prefix}&7数据库连接已关闭"
   plugin-hooked: '{prefix}&7已成功载入对 &f{0} &7插件的支持'
   no-permission: "{prefix}&c你没有权限执行此命令！"
   invalid-command: "{prefix}&c无效的命令！使用 &7/pw help &c查看帮助。"
   player-only: "{prefix}&c这个命令只能由玩家执行！"
-  teleported: "{prefix}&a已传送到地标 &e{name}&a！"
+  teleported: "{prefix}&7已传送到地标 &e{name}&7！"
   teleport-failed: "{prefix}&c传送失败：地标位置无效！"
   invalid-field: "{prefix}&c无效的输入字段：&e{field}"
 
@@ -25,21 +25,21 @@ actions:
   warp_delete:
     not_found: "{prefix}&c找不到名为 &e{name} &c的地标"
     not_owner: "{prefix}&c你不能删除其他玩家的地标"
-    success: "{prefix}&a成功删除地标 &e{name}"
+    success: "{prefix}&7成功删除地标 &e{name}"
     failed: "{prefix}&c删除地标失败，请稍后再试"
   
   warp_toggle:
     no_permission: "{prefix}&c你没有权限修改这个地标"
     not_found: "{prefix}&c找不到指定的地标"
-    success_public: "{prefix}&a地标状态已更改为：&a公开"
-    success_private: "{prefix}&a地标状态已更改为：&c私有"
+    success_public: "{prefix}&7地标状态已更改为：&7公开"
+    success_private: "{prefix}&7地标状态已更改为：&c私有"
     failed: "{prefix}&c无法更新地标状态，请稍后再试"
   
   warp_location:
     not_found: "{prefix}&c错误: 找不到指定的地标"
     no_warp_selected: "{prefix}&c错误: 未选中地标"
     no_permission: "{prefix}&c你没有权限修改这个地标"
-    success: "{prefix}&a地标位置已更新到你当前的位置"
+    success: "{prefix}&7地标位置已更新到你当前的位置"
     failed: "{prefix}&c地标位置更新失败"
   
   warp_tp:
@@ -48,46 +48,61 @@ actions:
     no_warp_id: "{prefix}&c没有选择任何地标"
     no_permission: "{prefix}&c你没有权限传送到此地标"
     failed: "{prefix}&c传送失败：地标位置无效"
-    success: "{prefix}&a成功传送到地标 &e{name}"
+    success: "{prefix}&7成功传送到地标 &e{name}"
   
   warp_set:
     name_exists: "{prefix}&c已存在同名地标"
-    success: "{prefix}&a设置成功"
+    success: "{prefix}&7设置成功"
     failed: "{prefix}&c设置失败，请稍后再试"
     no_permission: "{prefix}&c你没有权限修改这个地标"
-    desc_success: "{prefix}&a地标描述更新成功"
+    desc_success: "{prefix}&7地标描述更新成功"
     desc_failed: "{prefix}&c地标描述更新失败，请稍后再试"
   
   warp_create:
     no_name: "{prefix}&c请先设置地标名称"
     name_exists: "{prefix}&c已存在同名地标"
-    success: "{prefix}&a成功创建地标 &e{name}"
+    success: "{prefix}&7成功创建地标 &e{name}"
     failed: "{prefix}&c创建地标失败，请稍后再试"
 
 help:
-  header: "&a===== PostWarps 帮助 &a====="
-  create: "&7/pw create <名称> [描述] [公开(true/false)] &f- 创建新地标"
-  delete: "&7/pw delete <名称> &f- 删除一个地标"
-  list: "&7/pw list [public/private] &f- 查看地标列表"
-  tp: "&7/pw tp <名称> &f- 传送到地标"
-  info: "&7/pw info <名称> &f- 查看地标信息"
-  public: "&7/pw public <名称> &f- 将地标设为公开"
-  private: "&7/pw private <名称> &f- 将地标设为私有"
-  menu: "&7/pw menu [menu] &f- 打开菜单"
-  reload: "&7/pw reload &f- 重载插件"
-  version: "&7/pw version &f- 显示版本信息"
+  header: "&8========== &3Post&bWarps &e帮助 &8=========="
+  warp: "&e/pw warp &7- 地标管理命令"
+  language: "&e/pw language <语言> &7- 设置语言"
+  menu: "&e/pw menu [菜单名] &7- 打开菜单"
+  version: "&e/pw version &7- 查看版本信息"
+  reload: "&e/pw reload &7- 重载插件"
+  admin: "&e/pw admin &7- 管理员命令"
+  footer: "&8=================================="
+
+help_warp:
+  header: "&8========== &3地标命令帮助 &8=========="
+  create: "&e/pw warp create <名称> [描述] &7- 创建新地标"
+  delete: "&e/pw warp delete <名称> &7- 删除地标"
+  edit: "&e/pw warp edit <名称> <描述> &7- 编辑地标描述"
+  list: "&e/pw warp list [页码] &7- 列出你的地标"
+  tp: "&e/pw warp tp <名称> &7- 传送到地标"
+  info: "&e/pw warp info <名称> &7- 查看地标信息"
+  public: "&e/pw warp public <名称> &7- 设置地标为公开"
+  private: "&e/pw warp private <名称> &7- 设置地标为私有"
+  footer: "&8=================================="
+
+help_admin:
+  header: "&8========== &c管理员命令帮助 &8=========="
+  info: "&e/pw admin info &7- 查看插件信息"
+  economy: "&e/pw admin economy <玩家> &7- 查看玩家经济信息"
+  footer: "&8=================================="
 
 create:
   usage: "{prefix}&c用法: /pw create <名称> [描述] [是否公开]"
   name-exists: "{prefix}&c已经存在同名地标！"
-  success: "{prefix}&7成功创建地标 &e{name}&a！"
+  success: "{prefix}&7成功创建地标 &e{name}&7！"
   invalid-name: "{prefix}&c无效的地标名称！名称不能为空或超过32个字符。"
   no-name: "{prefix}&c请先设置地标名称！"
 
 delete:
   usage: "{prefix}&c用法: /pw delete <名称>"
   not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
-  success: "{prefix}&7成功删除地标 &e{name}&a！"
+  success: "{prefix}&7成功删除地标 &e{name}&7！"
 
 list:
   usage: "{prefix}&c用法: /pw list [public/private]"
@@ -95,9 +110,9 @@ list:
 teleport:
   usage: "{prefix}&c用法: /pw tp <名称>"
   not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
-  success: "{prefix}&a成功传送到地标 &e{name}&a！"
+  success: "{prefix}&7成功传送到地标 &e{name}&7！"
   failed: "{prefix}&c传送到地标 &e{name} &c失败！"
-  starting: "{prefix}&e正在传送到地标 &a{name}&e，请等待 &c{delay} &e秒..."
+  starting: "{prefix}&e正在传送到地标 &7{name}&e，请等待 &c{delay} &e秒..."
   cancelled: "{prefix}&c传送已取消！"
   unsafe_location: "{prefix}&c不安全的传送位置，传送已取消。"
   no_pending: "{prefix}&c你没有待处理的传送请求。"
@@ -105,7 +120,7 @@ teleport:
 info:
   usage: "{prefix}&c用法: /pw info <名称>"
   not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
-  header: "{prefix}&a===== 地标信息 ====="
+  header: "{prefix}&7===== 地标信息 ====="
   name: "{prefix}&7名称: &f{name}"
   owner: "{prefix}&7创建者: &f{owner}"
   world: "{prefix}&7世界: &f{world}"
@@ -118,13 +133,13 @@ public:
   usage: "{prefix}&c用法: /pw public <名称>"
   not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
   already-public: "{prefix}&c地标 &e{name} &c已经是公开的！"
-  success: "{prefix}&7地标 &e{name} &a已设为公开！"
+  success: "{prefix}&7地标 &e{name} &7已设为公开！"
 
 private:
   usage: "{prefix}&c用法: /pw private <名称>"
   not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
   already-private: "{prefix}&c地标 &e{name} &c已经是私有的！"
-  success: "{prefix}&7地标 &e{name} &a已设为私有！"
+  success: "{prefix}&7地标 &e{name} &7已设为私有！"
 
 # 经济系统消息
 economy:
@@ -132,16 +147,16 @@ economy:
   insufficient_funds: "{prefix}&c余额不足！需要 &e{cost}&c，当前余额 &e{balance}"
   insufficient_points: "{prefix}&c点券不足！需要 &e{cost} &c点券，当前点券 &e{balance} &c点"
   transaction_failed: "{prefix}&c交易失败，请稍后再试"
-  charged_create: "{prefix}&a已扣除创建费用 &e{cost}"
-  charged_create_points: "{prefix}&a已扣除创建费用 &e{cost} &a点券"
-  charged_teleport: "{prefix}&a已扣除传送费用 &e{cost}"
-  charged_teleport_points: "{prefix}&a已扣除传送费用 &e{cost} &a点券"
-  charged_set_public: "{prefix}&a已扣除公开设置费用 &e{cost}"
-  charged_set_public_points: "{prefix}&a已扣除公开设置费用 &e{cost} &a点券"
-  refunded_delete: "{prefix}&a已退还删除费用 &e{amount}"
-  refunded_delete_points: "{prefix}&a已退还删除费用 &e{amount} &a点券"
-  refunded_teleport: "{prefix}&a已退还传送费用 &e{amount}"
-  refunded_teleport_points: "{prefix}&a已退还传送费用 &e{amount} &a点券"
+  charged_create: "{prefix}&7已扣除创建费用 &e{cost}"
+  charged_create_points: "{prefix}&7已扣除创建费用 &e{cost} &7点券"
+  charged_teleport: "{prefix}&7已扣除传送费用 &e{cost}"
+  charged_teleport_points: "{prefix}&7已扣除传送费用 &e{cost} &7点券"
+  charged_set_public: "{prefix}&7已扣除公开设置费用 &e{cost}"
+  charged_set_public_points: "{prefix}&7已扣除公开设置费用 &e{cost} &7点券"
+  refunded_delete: "{prefix}&7已退还删除费用 &e{amount}"
+  refunded_delete_points: "{prefix}&7已退还删除费用 &e{amount} &7点券"
+  refunded_teleport: "{prefix}&7已退还传送费用 &e{amount}"
+  refunded_teleport_points: "{prefix}&7已退还传送费用 &e{amount} &7点券"
   balance_info: "{prefix}&7当前余额: &e{balance} {currency}"
   points_balance_info: "{prefix}&7当前点券: &e{points} &7点"
   group_info: "{prefix}&7当前权限组: &e{group}"
@@ -156,17 +171,17 @@ economy:
 
 # 搜索相关消息
 search:
-  cleared: "{prefix}&a已清除搜索过滤器"
-  set: "{prefix}&a已设置搜索关键词: &e{keyword}"
+  cleared: "{prefix}&7已清除搜索过滤器"
+  set: "{prefix}&7已设置搜索关键词: &e{keyword}"
   no_results: "{prefix}&c没有找到匹配的地标"
-  results_found: "{prefix}&a找到 &e{count} &a个匹配的地标"
+  results_found: "{prefix}&7找到 &e{count} &7个匹配的地标"
 
 # 语言相关消息
 language:
   unsupported: "{prefix}&c不支持的语言: &e{language}&c。支持的语言: &f{supported}"
-  switched: "{prefix}&a语言已切换为: &e{language}"
-  auto_enabled: "{prefix}&a已启用自动语言检测"
-  files_reloaded: "{prefix}&a语言文件已重新加载"
+  switched: "{prefix}&7语言已切换为: &e{language}"
+  auto_enabled: "{prefix}&7已启用自动语言检测"
+  files_reloaded: "{prefix}&7语言文件已重新加载"
 
 # 菜单相关消息
 menu:
@@ -177,7 +192,7 @@ menu:
 status:
   public: "&a公开"
   private: "&c私有"
-  yes: "&a是"
+  yes: "&7是"
   no: "&c否"
 
 # 铁砧输入提示
@@ -193,10 +208,148 @@ anvil:
 system:
   updater:
     update_checking: "{prefix}&7正在检查更新..."
-    update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"
+    update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&7{latest_version}"
     update_url: "{prefix}&e请访问：&bhttps://github.com/postyizhan/PostWarps/releases/latest &e获取最新版本"
     up_to_date: "{prefix}&7您使用的是最新版本！"
   vault:
     no_group_support: "权限系统不支持组权限查询，将使用默认组配置"
     group_query_error: "获取玩家组时发生错误: {error}"
     primary_group_error: "获取玩家主要组时发生错误: {error}"
+
+# 通用消息
+general:
+  no-permission: "{prefix}&c你没有权限执行此命令"
+  player-only: "{prefix}&c此命令只能由玩家执行"
+  unknown-command: "{prefix}&c未知命令，使用 &e/pw help &c查看帮助"
+
+# 命令消息
+commands:
+  warp:
+    description: "地标管理命令"
+    unknown-subcommand: "{prefix}&c未知的地标子命令，使用 &e/pw warp &c查看帮助"
+
+    create:
+      description: "创建新地标"
+      usage: "{prefix}&c用法: /pw warp create <名称> [描述]"
+      name-exists: "{prefix}&c已存在名为 &e{name} &c的地标"
+      limit-reached: "{prefix}&c你已达到最大地标数量限制 ({max})"
+      success: "{prefix}&a成功创建地标 &e{name}"
+      failed: "{prefix}&c创建地标失败"
+      error: "{prefix}&c创建地标时发生错误"
+
+    delete:
+      description: "删除地标"
+      usage: "{prefix}&c用法: /pw warp delete <名称>"
+      not-found: "{prefix}&c找不到名为 &e{name} &c的地标"
+      no-permission: "{prefix}&c你没有权限删除此地标"
+      success: "{prefix}&a成功删除地标 &e{name}"
+      failed: "{prefix}&c删除地标失败"
+      error: "{prefix}&c删除地标时发生错误"
+
+    edit:
+      description: "编辑地标描述"
+      usage: "{prefix}&c用法: /pw warp edit <名称> <描述>"
+      not-found: "{prefix}&c找不到名为 &e{name} &c的地标"
+      no-permission: "{prefix}&c你没有权限编辑此地标"
+      success: "{prefix}&a成功编辑地标 &e{name} &a的描述"
+      failed: "{prefix}&c编辑地标失败"
+      error: "{prefix}&c编辑地标时发生错误"
+
+    list:
+      description: "列出你的地标"
+      invalid-page: "{prefix}&c无效的页码"
+      no-warps: "{prefix}&c你还没有创建任何地标"
+      page-not-found: "{prefix}&c页码超出范围，最大页数: {max}"
+      header: "{prefix}&e你的地标列表 &7(第 {page}/{total} 页)"
+      item: "&7- &e{name} &7[&a{world}&7] &7({visibility}) &f{description}"
+      footer: "&7使用 &e/pw warp list <页码> &7查看其他页面"
+
+    tp:
+      description: "传送到地标"
+      usage: "{prefix}&c用法: /pw warp tp <名称>"
+      not-found: "{prefix}&c找不到名为 &e{name} &c的地标"
+      no-permission: "{prefix}&c你没有权限传送到此地标"
+      insufficient-funds: "{prefix}&c余额不足，需要 {cost} 金币"
+      error: "{prefix}&c传送时发生错误"
+
+    info:
+      description: "查看地标信息"
+      usage: "{prefix}&c用法: /pw warp info <名称>"
+      not-found: "{prefix}&c找不到名为 &e{name} &c的地标"
+      header: "{prefix}&e地标信息: &a{name}"
+      owner: "&7所有者: &e{owner}"
+      world: "&7世界: &e{world}"
+      coordinates: "&7坐标: &e{x}, {y}, {z}"
+      visibility: "&7可见性: &e{visibility}"
+      warp-description: "&7描述: &f{description}"
+      created: "&7创建时间: &e{time}"
+
+    public:
+      description: "设置地标为公开"
+      usage: "{prefix}&c用法: /pw warp public <名称>"
+      not-found: "{prefix}&c找不到名为 &e{name} &c的地标"
+      no-permission: "{prefix}&c你没有权限修改此地标"
+      already-public: "{prefix}&c地标 &e{name} &c已经是公开的"
+      success: "{prefix}&a成功将地标 &e{name} &a设置为公开"
+      failed: "{prefix}&c设置地标为公开失败"
+      error: "{prefix}&c设置地标为公开时发生错误"
+
+    private:
+      description: "设置地标为私有"
+      usage: "{prefix}&c用法: /pw warp private <名称>"
+      not-found: "{prefix}&c找不到名为 &e{name} &c的地标"
+      no-permission: "{prefix}&c你没有权限修改此地标"
+      already-private: "{prefix}&c地标 &e{name} &c已经是私有的"
+      success: "{prefix}&a成功将地标 &e{name} &a设置为私有"
+      failed: "{prefix}&c设置地标为私有失败"
+      error: "{prefix}&c设置地标为私有时发生错误"
+
+  language:
+    description: "设置语言"
+    usage: "{prefix}&c用法: /pw language <语言>"
+    invalid: "{prefix}&c无效的语言，支持: zh_CN, en_US"
+    success: "{prefix}&a语言已设置为: {language}"
+
+  menu:
+    description: "打开菜单"
+    error: "{prefix}&c打开菜单时发生错误"
+
+  version:
+    description: "查看版本信息"
+    info: "{prefix}&e{name} &7版本: &a{version}"
+
+  reload:
+    description: "重载插件"
+    success: "{prefix}&a插件重载成功"
+    error: "{prefix}&c重载插件时发生错误"
+
+  admin:
+    description: "管理员命令"
+    unknown-subcommand: "{prefix}&c未知的管理员子命令"
+
+    info:
+      description: "查看插件信息"
+      header: "{prefix}&e插件信息"
+      version: "&7插件: &e{name} &7版本: &a{version}"
+      database: "&7数据库: 总计 &e{total} &7个地标 (&a{public} &7公开, &c{private} &7私有)"
+      players: "&7玩家: &e{online}&7/&e{max} &7在线"
+      integrations: "&7集成: 经济系统 &e{economy}&7, 权限系统 &e{permission}"
+      playerpoints: "&7PlayerPoints: &e{status}"
+      placeholderapi: "&7PlaceholderAPI: &e{status}"
+      config: "&7配置: 调试模式 &e{debug}&7, 语言 &e{language}"
+      footer: "&7===================="
+
+    economy:
+      description: "查看玩家经济信息"
+      usage: "{prefix}&c用法: /pw admin economy <玩家>"
+      player-not-found: "{prefix}&c找不到玩家: {player}"
+      header: "{prefix}&e玩家 &a{player} &e的经济信息"
+      balance: "&7余额: &e{balance}"
+      teleport-cost: "&7传送费用: &e{cost}"
+      create-cost: "&7创建费用: &e{cost}"
+      disabled: "&7经济系统未启用"
+      playerpoints: "&7PlayerPoints: &e{points}"
+      playerpoints-disabled: "&7PlayerPoints未启用"
+      group: "&7权限组: &e{group}"
+      teleport-config: "&7传送配置: 延迟 &e{delay}&7秒, 移动取消 &e{cancel_on_move}&7, 伤害取消 &e{cancel_on_damage}"
+      footer: "&7===================="

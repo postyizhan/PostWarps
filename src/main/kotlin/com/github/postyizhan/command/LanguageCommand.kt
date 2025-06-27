@@ -101,11 +101,7 @@ class LanguageCommand(private val plugin: PostWarps) : CommandExecutor, TabCompl
      * 设置指定语言
      */
     private fun setLanguage(player: Player, language: String) {
-        val normalizedLang = when (language.lowercase()) {
-            "zh", "cn", "chinese", "中文" -> "zh_CN"
-            "en", "us", "english", "英文" -> "en_US"
-            else -> language
-        }
+        val normalizedLang = language
         
         if (MessageUtil.isLanguageSupported(normalizedLang)) {
             MessageUtil.setPlayerLanguage(player, normalizedLang)
@@ -248,12 +244,9 @@ class LanguageCommand(private val plugin: PostWarps) : CommandExecutor, TabCompl
                 
                 // 添加语言代码
                 suggestions.addAll(MessageUtil.getSupportedLanguages())
-                
+
                 // 添加特殊命令
                 suggestions.addAll(listOf("auto", "list", "reload"))
-                
-                // 添加语言别名
-                suggestions.addAll(listOf("zh", "cn", "chinese", "中文", "en", "us", "english", "英文"))
                 
                 // 过滤匹配的建议
                 suggestions.filter { it.lowercase().startsWith(input) }
