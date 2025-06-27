@@ -199,11 +199,16 @@ open class Menu(
     private fun createWarpItem(symbol: String, player: Player, data: Map<String, Any>, warp: com.github.postyizhan.model.Warp): org.bukkit.inventory.ItemStack? {
         val itemConfig = items?.getConfigurationSection(symbol) ?: return null
 
-        // 获取物品材质
+        // 获取物品材质 - 优先使用地标的显示材质
         val material = try {
-            org.bukkit.Material.valueOf(itemConfig.getString("material", "STONE")!!.uppercase())
+            org.bukkit.Material.valueOf(warp.displayMaterial.uppercase())
         } catch (e: IllegalArgumentException) {
-            org.bukkit.Material.STONE
+            // 如果地标材质无效，回退到配置文件中的材质
+            try {
+                org.bukkit.Material.valueOf(itemConfig.getString("material", "STONE")!!.uppercase())
+            } catch (e2: IllegalArgumentException) {
+                org.bukkit.Material.STONE
+            }
         }
 
         // 创建物品

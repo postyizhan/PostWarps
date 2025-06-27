@@ -129,6 +129,14 @@ warp_create:
   success: "{prefix}&7Successfully created warp &e{name}"
   failed: "{prefix}&cFailed to create warp, please try again later"
 
+# Warp material action messages
+warp_material:
+  no_warp: "{prefix}&cWarp information not found"
+  no_item: "{prefix}&cPlease hold an item to set the display material"
+  invalid_material: "{prefix}&cInvalid material: &e{material}"
+  success: "{prefix}&7Successfully set warp &e{name} &7display material to &a{material}"
+  failed: "{prefix}&cFailed to set display material"
+
 # Update checker messages
 update:
   checking: "{prefix}&7Checking for updates..."

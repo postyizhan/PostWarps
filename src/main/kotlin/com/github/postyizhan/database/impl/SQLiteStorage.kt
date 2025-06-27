@@ -63,10 +63,13 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
                 pitch FLOAT NOT NULL,
                 is_public BOOLEAN NOT NULL,
                 description TEXT,
+                material TEXT DEFAULT 'ENDER_PEARL',
                 create_time BIGINT NOT NULL
             )
             """.trimIndent()
         )
+
+
         
         // 创建索引
         statement?.executeUpdate("CREATE INDEX IF NOT EXISTS idx_warps_owner ON warps (owner)")
@@ -93,12 +96,12 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
     override fun createWarp(warp: Warp): Boolean {
         try {
             val sql = """
-                INSERT INTO warps (name, owner, owner_name, world_name, x, y, z, yaw, pitch, is_public, description, create_time)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO warps (name, owner, owner_name, world_name, x, y, z, yaw, pitch, is_public, description, material, create_time)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """.trimIndent()
-            
+
             val preparedStatement = connection?.prepareStatement(sql)
-            
+
             preparedStatement?.setString(1, warp.name)
             preparedStatement?.setString(2, warp.owner.toString())
             preparedStatement?.setString(3, warp.ownerName)
@@ -110,7 +113,8 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             preparedStatement?.setFloat(9, warp.pitch)
             preparedStatement?.setBoolean(10, warp.isPublic)
             preparedStatement?.setString(11, warp.description)
-            preparedStatement?.setLong(12, warp.createTime)
+            preparedStatement?.setString(12, warp.displayMaterial)
+            preparedStatement?.setLong(13, warp.createTime)
             
             val result = preparedStatement?.executeUpdate() ?: 0
             preparedStatement?.close()
@@ -480,7 +484,47 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             pitch = rs.getFloat("pitch"),
             isPublic = rs.getBoolean("is_public"),
             description = rs.getString("description") ?: "",
+            displayMaterial = rs.getString("material") ?: "ENDER_PEARL",
             createTime = rs.getLong("create_time")
         )
+    }
+
+    /**
+     * 更新地标显示材质
+     */
+    override fun updateWarpMaterial(id: Int, material: String): Boolean {
+        try {
+            val sql = "UPDATE warps SET material = ? WHERE id = ?"
+            val preparedStatement = connection?.prepareStatement(sql)
+            preparedStatement?.setString(1, material)
+            preparedStatement?.setInt(2, id)
+            val result = preparedStatement?.executeUpdate() ?: 0
+            preparedStatement?.close()
+
+            return result > 0
+        } catch (e: SQLException) {
+            plugin.logger.severe("更新地标显示材质时出错: ${e.message}")
+            return false
+        }
+    }
+
+    /**
+     * 根据名称和所有者更新地标显示材质
+     */
+    override fun updateWarpMaterial(name: String, owner: UUID, material: String): Boolean {
+        try {
+            val sql = "UPDATE warps SET material = ? WHERE name = ? AND owner = ?"
+            val preparedStatement = connection?.prepareStatement(sql)
+            preparedStatement?.setString(1, material)
+            preparedStatement?.setString(2, name)
+            preparedStatement?.setString(3, owner.toString())
+            val result = preparedStatement?.executeUpdate() ?: 0
+            preparedStatement?.close()
+
+            return result > 0
+        } catch (e: SQLException) {
+            plugin.logger.severe("更新地标显示材质时出错: ${e.message}")
+            return false
+        }
     }
 }

@@ -96,4 +96,14 @@ interface IStorage {
      * 更新地标位置
      */
     fun updateWarpLocation(id: Int, worldName: String, x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Boolean
+
+    /**
+     * 更新地标显示材质
+     */
+    fun updateWarpMaterial(id: Int, material: String): Boolean
+
+    /**
+     * 根据名称和所有者更新地标显示材质
+     */
+    fun updateWarpMaterial(name: String, owner: UUID, material: String): Boolean
 }

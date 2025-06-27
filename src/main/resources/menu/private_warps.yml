@@ -235,6 +235,7 @@ items:
           - "&7状态: &f{public_state}"
           - ""
           - "&e► 左键 &7传送到此地标"
+          - "&e► Shift+左键 &7编辑此地标"
       en_US:
         name: "&b{name}"
         lore:
@@ -245,6 +246,7 @@ items:
           - "&7Status: &f{public_state}"
           - ""
           - "&e► Left click &7to teleport to this warp"
+          - "&e► Shift+Left click &7to edit this warp"
     action:
       - "[warp_tp]"
       - "[sound] ENDERMAN_TELEPORT 0.5 1.0"

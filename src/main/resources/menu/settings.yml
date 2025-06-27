@@ -89,18 +89,16 @@ items:
         name: "&a显示材质"
         lore:
           - "&7将手持物品设置为此地标显示头颅"
-          - "&7若无物品则设置为你的头颅"
           - ""
           - "&e► 点击设置"
       en_US:
         name: "&aDisplay Material"
         lore:
           - "&7Set held item as this warp's display skull"
-          - "&7If no item, set as your skull"
           - ""
           - "&e► Click to set"
     action:
-      - "[warp_set] material"
+      - "[warp_material]"
       - "[sound] ORB_PICKUP 0.5 1.2"
   # 名称输入按钮
   D:

@@ -24,6 +24,7 @@ enum class ActionType(val prefix: String) {
     WARP_SEARCH_CLEAR("[warp_search_clear]"),
     WARP_TOGGLE("[warp_toggle]"),
     WARP_LOCATION("[warp_location]"),
+    WARP_MATERIAL("[warp_material]"),
     MENU("[menu]"),
     CLOSE("[close]"),
     PAGE_NEXT("[page_next]"),

@@ -64,6 +64,13 @@ actions:
     success: "{prefix}&7成功创建地标 &e{name}"
     failed: "{prefix}&c创建地标失败，请稍后再试"
 
+  warp_material:
+    no_warp: "{prefix}&c未找到地标信息"
+    no_item: "{prefix}&c请手持一个物品来设置显示材质"
+    invalid_material: "{prefix}&c无效的材质: &e{material}"
+    success: "{prefix}&7成功将地标 &e{name} &7的显示材质设置为 &a{material}"
+    failed: "{prefix}&c设置显示材质失败"
+
 help:
   header: "&8========== &3Post&bWarps &e帮助 &8=========="
   warp: "&e/pw warp &7- 地标管理命令"
