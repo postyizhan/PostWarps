@@ -11,11 +11,11 @@ import java.util.regex.Pattern
  * 更新检查器，负责检查插件是否有更新
  */
 class UpdateChecker(private val plugin: PostWarps, private val repository: String) {
-    
+
     private val currentVersion = plugin.description.version
     private var latestVersion: String? = null
     private val apiUrl = "https://api.github.com/repos/$repository/releases/latest"
-    
+
     /**
      * 检查更新
      * @param callback 回调函数，参数为 (是否有更新, 最新版本)
@@ -31,7 +31,7 @@ class UpdateChecker(private val plugin: PostWarps, private val repository: Strin
                 connection.readTimeout = 5000
                 connection.setRequestProperty("Accept", "application/vnd.github.v3+json")
                 connection.setRequestProperty("User-Agent", "PostWarps UpdateChecker")
-                
+
                 val reader = BufferedReader(InputStreamReader(connection.getInputStream()))
                 val content = StringBuilder()
                 var line: String?
@@ -39,15 +39,15 @@ class UpdateChecker(private val plugin: PostWarps, private val repository: Strin
                     content.append(line)
                 }
                 reader.close()
-                
+
                 // 解析版本号
                 val jsonContent = content.toString()
                 val tagPattern = Pattern.compile("\"tag_name\"\\s*:\\s*\"(.*?)\"")
                 val matcher = tagPattern.matcher(jsonContent)
-                
+
                 if (matcher.find()) {
                     latestVersion = matcher.group(1).replace("v", "")
-                    
+
                     // 在主线程中执行回调
                     Bukkit.getScheduler().runTask(plugin, Runnable {
                         val hasUpdate = compareVersions(currentVersion, latestVersion!!) < 0
@@ -68,25 +68,27 @@ class UpdateChecker(private val plugin: PostWarps, private val repository: Strin
             }
         })
     }
-    
+
     /**
-     * 比较两个版本号
-     * @return 0: 相等, 1: v1 > v2, -1: v1 < v2
+     * 比较版本号
+     * @return 如果v1 < v2返回负数，v1 > v2返回正数，v1 = v2返回0
      */
     private fun compareVersions(v1: String, v2: String): Int {
-        val v1Parts = v1.replace("SNAPSHOT", "").split(".")
-        val v2Parts = v2.replace("SNAPSHOT", "").split(".")
-        
-        val length = maxOf(v1Parts.size, v2Parts.size)
-        
-        for (i in 0 until length) {
-            val part1 = if (i < v1Parts.size) v1Parts[i].toIntOrNull() ?: 0 else 0
-            val part2 = if (i < v2Parts.size) v2Parts[i].toIntOrNull() ?: 0 else 0
-            
-            if (part1 < part2) return -1
-            if (part1 > part2) return 1
+        val parts1 = v1.split(".")
+        val parts2 = v2.split(".")
+        val maxLength = maxOf(parts1.size, parts2.size)
+
+        for (i in 0 until maxLength) {
+            val part1 = if (i < parts1.size) parts1[i].toIntOrNull() ?: 0 else 0
+            val part2 = if (i < parts2.size) parts2[i].toIntOrNull() ?: 0 else 0
+
+            if (part1 < part2) {
+                return -1
+            } else if (part1 > part2) {
+                return 1
+            }
         }
-        
+
         return 0
     }
 }

@@ -529,24 +529,7 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
 
                     // 只有管理员可以检查更新
                     if (sender.hasPermission("postwarps.admin")) {
-                        plugin.getUpdateChecker().checkForUpdates { isUpdateAvailable, newVersion ->
-                            if (isUpdateAvailable) {
-                                sender.sendMessage(MessageUtil.color(
-                                    MessageUtil.getMessage("updater.update_available")
-                                        .replace("{current_version}", plugin.description.version)
-                                        .replace("{latest_version}", newVersion)
-                                ))
-                                sender.sendMessage(MessageUtil.color(
-                                    MessageUtil.getMessage("updater.update_url")
-                                        .replace("{current_version}", plugin.description.version)
-                                        .replace("{latest_version}", newVersion)
-                                ))
-                            } else {
-                                sender.sendMessage(MessageUtil.color(
-                                    MessageUtil.getMessage("updater.up_to_date")
-                                ))
-                            }
-                        }
+                        plugin.sendUpdateInfo(sender)
                     }
                 }
 

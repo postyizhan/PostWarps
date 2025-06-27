@@ -63,12 +63,6 @@ actions:
     success: "{prefix}&a成功创建地标 &e{name}"
     failed: "{prefix}&c创建地标失败，请稍后再试"
 
-updater:
-  update_checking: "{prefix}&7正在检查更新..."
-  update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"
-  update_url: "{prefix}&e请访问：&bhttps://github.com/postyizhan/PostWarps/releases/latest &e获取最新版本"
-  up_to_date: "{prefix}&7您使用的是最新版本！"
-
 help:
   header: "&a===== PostWarps 帮助 &a====="
   create: "&7/pw create <名称> [描述] [公开(true/false)] &f- 创建新地标"
@@ -187,3 +181,11 @@ anvil:
   title:
     name: "设置地标名称"
     desc: "设置地标描述"
+
+# 系统消息
+system:
+  updater:
+    update_checking: "{prefix}&7正在检查更新..."
+    update_available: "{prefix}&e发现新版本！当前版本：&c{current_version}&e，最新版本：&a{latest_version}"
+    update_url: "{prefix}&e请访问：&bhttps://github.com/postyizhan/PostWarps/releases/latest &e获取最新版本"
+    up_to_date: "{prefix}&7您使用的是最新版本！"

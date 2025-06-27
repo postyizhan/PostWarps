@@ -179,3 +179,11 @@ anvil:
   title:
     name: "Set Warp Name"
     desc: "Set Warp Description"
+
+# System messages
+system:
+  updater:
+    update_checking: "{prefix}&7Checking for updates..."
+    update_available: "{prefix}&eNew version available! Current version: &c{current_version}&e, Latest version: &a{latest_version}"
+    update_url: "{prefix}&eDownload: &bhttps://github.com/postyizhan/PostWarps/releases/latest"
+    up_to_date: "{prefix}&7You are using the latest version!"

@@ -104,12 +104,25 @@ class PostWarps : JavaPlugin() {
 
         // 初始化更新检查器
         updateChecker = UpdateChecker(this, "postyizhan/PostWarps")
+
+        // 检查更新
         if (configManager.getConfig().getBoolean("update-checker.enabled", true)) {
             updateChecker.checkForUpdates { isUpdateAvailable, newVersion ->
                 if (isUpdateAvailable) {
-                    logger.info("发现新版本：$newVersion，当前版本：${description.version}")
+                    server.consoleSender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.update_available")
+                            .replace("{current_version}", description.version)
+                            .replace("{latest_version}", newVersion)
+                    ))
+                    server.consoleSender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.update_url")
+                            .replace("{current_version}", description.version)
+                            .replace("{latest_version}", newVersion)
+                    ))
                 } else {
-                    logger.info("插件已是最新版本 ${description.version}")
+                    server.consoleSender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.up_to_date")
+                    ))
                 }
             }
         }
@@ -175,12 +188,52 @@ class PostWarps : JavaPlugin() {
     }
     
     /**
-     * 发送更新信息给指定发送者
+     * 向玩家发送更新检查信息
      */
-    fun sendUpdateInfo(sender: CommandSender) {
+    fun sendUpdateInfo(player: Player) {
         updateChecker.checkForUpdates { isUpdateAvailable, newVersion ->
             if (isUpdateAvailable) {
-                sender.sendMessage("§a发现新版本：$newVersion，当前版本：${description.version}")
+                val updateAvailableMsg = MessageUtil.getMessage("system.updater.update_available")
+                    .replace("{current_version}", description.version)
+                    .replace("{latest_version}", newVersion)
+
+                val updateUrlMsg = MessageUtil.getMessage("system.updater.update_url")
+                    .replace("{current_version}", description.version)
+                    .replace("{latest_version}", newVersion)
+
+                MessageUtil.sendMessage(player, updateAvailableMsg)
+                MessageUtil.sendMessage(player, updateUrlMsg)
+            } else {
+                val upToDateMsg = MessageUtil.getMessage("system.updater.up_to_date")
+                MessageUtil.sendMessage(player, upToDateMsg)
+            }
+        }
+    }
+
+    /**
+     * 向命令发送者发送更新检查信息（兼容性方法）
+     */
+    fun sendUpdateInfo(sender: CommandSender) {
+        if (sender is Player) {
+            sendUpdateInfo(sender)
+        } else {
+            updateChecker.checkForUpdates { isUpdateAvailable, newVersion ->
+                if (isUpdateAvailable) {
+                    sender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.update_available")
+                            .replace("{current_version}", description.version)
+                            .replace("{latest_version}", newVersion)
+                    ))
+                    sender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.update_url")
+                            .replace("{current_version}", description.version)
+                            .replace("{latest_version}", newVersion)
+                    ))
+                } else {
+                    sender.sendMessage(MessageUtil.color(
+                        MessageUtil.getMessage("system.updater.up_to_date")
+                    ))
+                }
             }
         }
     }
