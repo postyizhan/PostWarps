@@ -36,6 +36,7 @@ class PostWarps : JavaPlugin() {
     private lateinit var placeholderAPIManager: PlaceholderAPIManager
     private lateinit var groupConfig: GroupConfig
     private lateinit var economyService: EconomyService
+    private lateinit var teleportManager: com.github.postyizhan.teleport.TeleportManager
     private var debugEnabled: Boolean = false
     private lateinit var actionFactory: com.github.postyizhan.util.action.ActionFactory
     
@@ -83,6 +84,10 @@ class PostWarps : JavaPlugin() {
 
         // 初始化经济服务
         economyService = EconomyService(this, vaultManager, playerPointsManager, groupConfig)
+
+        // 初始化传送管理器
+        teleportManager = com.github.postyizhan.teleport.TeleportManager(this)
+        teleportManager.initialize()
 
         // 初始化菜单管理器
         menuManager = MenuManager(this).apply { loadMenus() }
@@ -140,6 +145,11 @@ class PostWarps : JavaPlugin() {
         // 注销动态命令
         if (this::dynamicCommandRegistrar.isInitialized) {
             dynamicCommandRegistrar.unregisterCommands()
+        }
+
+        // 关闭传送管理器
+        if (this::teleportManager.isInitialized) {
+            teleportManager.shutdown()
         }
 
         // 关闭所有菜单
@@ -248,7 +258,8 @@ class PostWarps : JavaPlugin() {
     fun getPlaceholderAPIManager(): PlaceholderAPIManager = placeholderAPIManager
     fun getGroupConfig(): GroupConfig = groupConfig
     fun getEconomyService(): EconomyService = economyService
-    
+    fun getTeleportManager(): com.github.postyizhan.teleport.TeleportManager = teleportManager
+
     /**
      * 获取动作工厂
      * @return 动作工厂实例

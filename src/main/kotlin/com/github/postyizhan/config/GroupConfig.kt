@@ -91,6 +91,11 @@ class GroupConfig(private val plugin: PostWarps) {
         return GroupEconomyConfig(
             groupName = groupName,
             priority = groupSection.getInt("priority", 0),
+            teleportConfig = TeleportConfig(
+                delay = groupSection.getInt("teleport.delay", 3),
+                cancelOnMove = groupSection.getBoolean("teleport.cancel_on_move", true),
+                cancelOnDamage = groupSection.getBoolean("teleport.cancel_on_damage", true)
+            ),
             vaultConfig = EconomySystemConfig(
                 enabled = groupSection.getBoolean("vault.enabled", false),
                 createCost = groupSection.getDouble("vault.costs.create", 0.0),
@@ -135,6 +140,7 @@ class GroupConfig(private val plugin: PostWarps) {
 data class GroupEconomyConfig(
     val groupName: String,
     val priority: Int,
+    val teleportConfig: TeleportConfig,
     val vaultConfig: EconomySystemConfig,
     val playerPointsConfig: EconomySystemConfig
 ) {
@@ -190,4 +196,28 @@ data class EconomySystemConfig(
             0.0
         }
     }
+}
+
+/**
+ * 传送配置数据类
+ */
+data class TeleportConfig(
+    val delay: Int,                 // 传送延迟时间（秒）
+    val cancelOnMove: Boolean,      // 移动时是否取消传送
+    val cancelOnDamage: Boolean     // 受到伤害时是否取消传送
+) {
+    /**
+     * 是否需要延迟传送
+     */
+    fun needsDelay(): Boolean = delay > 0
+
+    /**
+     * 获取延迟时间（毫秒）
+     */
+    fun getDelayMillis(): Long = delay * 1000L
+
+    /**
+     * 获取延迟时间（tick）
+     */
+    fun getDelayTicks(): Long = delay * 20L
 }

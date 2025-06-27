@@ -71,6 +71,8 @@ teleport:
   no-warp-id: "{prefix}&cNo warp ID specified."
   cooldown: "{prefix}&cYou must wait &e{time} &cseconds before teleporting again."
   unsafe-location: "{prefix}&cUnsafe teleport location. Teleportation cancelled."
+  starting: "{prefix}&eTeleporting to &a{name}&e, please wait &c{delay} &eseconds..."
+  cancelled: "{prefix}&cTeleportation cancelled!"
 
 # Warp listing messages
 list:
@@ -114,6 +116,8 @@ economy:
   charge-teleport: "{prefix}&aCharged &e{amount} &afor teleportation."
   charge-set-public: "{prefix}&aCharged &e{amount} &afor making warp public."
   refund-delete: "{prefix}&aRefunded &e{amount} &afor deleting warp."
+  refunded_teleport: "{prefix}&aRefunded &e{amount} &afor cancelled teleportation."
+  refunded_teleport_points: "{prefix}&aRefunded &e{amount} &apoints for cancelled teleportation."
   vault-not-available: "{prefix}&cVault economy system not available."
   playerpoints-not-available: "{prefix}&cPlayerPoints economy system not available."
 

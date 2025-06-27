@@ -94,8 +94,11 @@ list:
 teleport:
   usage: "{prefix}&c用法: /pw tp <名称>"
   not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
-  success: "{prefix}&7成功传送到地标 &e{name}&a！"
+  success: "{prefix}&a成功传送到地标 &e{name}&a！"
   failed: "{prefix}&c传送到地标 &e{name} &c失败！"
+  starting: "{prefix}&e正在传送到地标 &a{name}&e，请等待 &c{delay} &e秒..."
+  cancelled: "{prefix}&c传送已取消！"
+  unsafe_location: "{prefix}&c不安全的传送位置，传送已取消。"
 
 info:
   usage: "{prefix}&c用法: /pw info <名称>"
@@ -135,6 +138,8 @@ economy:
   charged_set_public_points: "{prefix}&a已扣除公开设置费用 &e{cost} &a点券"
   refunded_delete: "{prefix}&a已退还删除费用 &e{amount}"
   refunded_delete_points: "{prefix}&a已退还删除费用 &e{amount} &a点券"
+  refunded_teleport: "{prefix}&a已退还传送费用 &e{amount}"
+  refunded_teleport_points: "{prefix}&a已退还传送费用 &e{amount} &a点券"
   balance_info: "{prefix}&7当前余额: &e{balance} {currency}"
   points_balance_info: "{prefix}&7当前点券: &e{points} &7点"
   group_info: "{prefix}&7当前权限组: &e{group}"

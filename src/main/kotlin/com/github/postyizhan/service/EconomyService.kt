@@ -148,7 +148,38 @@ class EconomyService(
 
         return true
     }
-    
+
+    /**
+     * 退还传送费用（当传送被取消时）
+     */
+    fun refundTeleportCost(player: Player, isPublic: Boolean) {
+        val playerConfig = getPlayerConfig(player)
+
+        // 退还Vault经济系统费用
+        if (playerConfig.vaultConfig.enabled && vaultManager.hasEconomy()) {
+            val cost = playerConfig.vaultConfig.getActualTeleportCost(isPublic)
+            if (cost > 0.0) {
+                vaultManager.deposit(player, cost)
+                player.sendMessage(MessageUtil.color(
+                    MessageUtil.getMessage("economy.refunded_teleport", player)
+                        .replace("{amount}", vaultManager.format(cost))
+                ))
+            }
+        }
+
+        // 退还PlayerPoints系统费用
+        if (playerConfig.playerPointsConfig.enabled && playerPointsManager.isAvailable()) {
+            val cost = playerConfig.playerPointsConfig.getActualTeleportCost(isPublic).toInt()
+            if (cost > 0) {
+                playerPointsManager.deposit(player, cost)
+                player.sendMessage(MessageUtil.color(
+                    MessageUtil.getMessage("economy.refunded_teleport_points", player)
+                        .replace("{amount}", cost.toString())
+                ))
+            }
+        }
+    }
+
     /**
      * 检查并扣除设置公开的费用
      */

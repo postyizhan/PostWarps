@@ -59,7 +59,7 @@ class WarpTeleportAction(plugin: PostWarps) : AbstractAction(plugin) {
         if (!plugin.getEconomyService().chargeTeleportCost(player, warp.isPublic)) {
             return
         }
-        
+
         // 获取位置
         val location = warp.getLocation()
         if (location == null) {
@@ -70,12 +70,28 @@ class WarpTeleportAction(plugin: PostWarps) : AbstractAction(plugin) {
             logDebug("Failed to get location for warp ${warp.name}, world ${warp.worldName} may not exist")
             return
         }
-        
-        // 传送
-        logDebug("Teleporting ${player.name} to warp ${warp.name} (${location.world?.name}, ${location.x}, ${location.y}, ${location.z})")
-        player.teleport(location)
-        
+
+        // 获取玩家的传送配置
+        val groupConfig = plugin.getGroupConfig().getPlayerGroupConfig(player)
+        val teleportConfig = groupConfig.teleportConfig
+
         // 关闭菜单
         player.closeInventory()
+
+        // 使用传送管理器执行传送
+        logDebug("Teleporting ${player.name} to warp ${warp.name} with delay ${teleportConfig.delay}s")
+        plugin.getTeleportManager().teleportToWarp(
+            player = player,
+            warp = warp,
+            teleportConfig = teleportConfig,
+            onSuccess = {
+                logDebug("Successfully teleported ${player.name} to warp ${warp.name}")
+            },
+            onCancel = {
+                logDebug("Teleportation cancelled for ${player.name} to warp ${warp.name}")
+                // 如果传送被取消，退还费用
+                plugin.getEconomyService().refundTeleportCost(player, warp.isPublic)
+            }
+        )
     }
 }

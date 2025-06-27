@@ -272,13 +272,24 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                         ))
                         return true
                     }
-                    
-                    // 传送
-                    sender.teleport(location)
-                    sender.sendMessage(MessageUtil.color(
-                        MessageUtil.getMessage("teleported")
-                            .replace("{name}", name)
-                    ))
+
+                    // 获取玩家的传送配置
+                    val groupConfig = plugin.getGroupConfig().getPlayerGroupConfig(sender)
+                    val teleportConfig = groupConfig.teleportConfig
+
+                    // 使用传送管理器执行传送
+                    plugin.getTeleportManager().teleportToWarp(
+                        player = sender,
+                        warp = warp,
+                        teleportConfig = teleportConfig,
+                        onSuccess = {
+                            // 传送成功消息已在TeleportManager中处理
+                        },
+                        onCancel = {
+                            // 如果传送被取消，退还费用
+                            plugin.getEconomyService().refundTeleportCost(sender, warp.isPublic)
+                        }
+                    )
                 }
                 
                 "info" -> {
@@ -504,7 +515,7 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                         ))
                     }
                 }
-                
+
                 "economy", "eco" -> {
                     if (sender !is Player) {
                         sender.sendMessage(MessageUtil.color(
