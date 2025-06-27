@@ -550,6 +550,16 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                     }
                 }
 
+                "commands", "cmd" -> {
+                    if (!sender.hasPermission("postwarps.admin")) {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("messages.no-permission")
+                        ))
+                        return true
+                    }
+                    showDynamicCommands(sender)
+                }
+
                 "placeholders", "papi" -> {
                     if (!sender.hasPermission("postwarps.admin")) {
                         if (sender is Player) {
@@ -631,6 +641,8 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                     subCommands.add("reload")
                     subCommands.add("placeholders")
                     subCommands.add("papi")
+                    subCommands.add("commands")
+                    subCommands.add("cmd")
                 }
                 // version命令不需要特殊权限
                 subCommands.add("version")
@@ -778,6 +790,7 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
             if (sender.hasPermission("postwarps.admin")) {
                 sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.reload")))
                 sender.sendMessage("&7/pw placeholders &f- 查看PlaceholderAPI占位符")
+                sender.sendMessage("&7/pw commands &f- 查看动态注册的菜单命令")
             }
 
             // version命令对所有人开放
@@ -804,6 +817,36 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
         sender.sendMessage("")
         sender.sendMessage("${ChatColor.YELLOW}注意: 将 <name> 替换为实际的地标名称")
         sender.sendMessage("${ChatColor.YELLOW}例如: %postwarps_has_warp_home% 检查是否有名为 'home' 的地标")
+    }
+
+    /**
+     * 显示动态注册的命令信息
+     */
+    private fun showDynamicCommands(sender: CommandSender) {
+        val registeredCommands = plugin.getDynamicCommandRegistrar().getRegisteredCommands()
+
+        sender.sendMessage("${ChatColor.GREEN}=== 动态注册的菜单命令 ===")
+
+        if (registeredCommands.isEmpty()) {
+            sender.sendMessage("${ChatColor.YELLOW}当前没有动态注册的命令")
+            return
+        }
+
+        sender.sendMessage("${ChatColor.GRAY}命令名称 ${ChatColor.WHITE}-> ${ChatColor.GRAY}对应菜单")
+        sender.sendMessage("${ChatColor.STRIKETHROUGH}${"-".repeat(30)}")
+
+        registeredCommands.forEach { (commandName, menuName) ->
+            sender.sendMessage("${ChatColor.AQUA}/$commandName ${ChatColor.WHITE}-> ${ChatColor.GREEN}$menuName")
+        }
+
+        sender.sendMessage("")
+        sender.sendMessage("${ChatColor.YELLOW}这些命令是根据菜单配置文件中的 'open_command' 节点自动注册的")
+        sender.sendMessage("${ChatColor.YELLOW}权限格式: postwarps.menu.<菜单名>")
+
+        if (plugin.isDebugEnabled()) {
+            sender.sendMessage("")
+            sender.sendMessage("${ChatColor.GRAY}[DEBUG] 总共注册了 ${registeredCommands.size} 个动态命令")
+        }
     }
 
     /**

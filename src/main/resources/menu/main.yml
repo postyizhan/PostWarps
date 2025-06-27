@@ -2,6 +2,10 @@ title:
   zh_CN: "&8【 &3Post&bWarps &8】&7主菜单"
   en_US: "&8【 &3Post&bWarps &8】&7Main Menu"
 
+open_command:
+  - warp
+  - warps
+
 layout:
   - "?       X"
   - "  A B C  "

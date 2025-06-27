@@ -230,6 +230,21 @@ class MenuManager(private val plugin: PostWarps) {
      */
     fun reloadMenus() {
         loadMenus()
+
+        // 重新注册动态命令
+        try {
+            plugin.getDynamicCommandRegistrar().unregisterCommands()
+            plugin.getDynamicCommandRegistrar().registerMenuCommands()
+
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.info("[DEBUG] Reregistered dynamic menu commands after menu reload")
+            }
+        } catch (e: Exception) {
+            plugin.logger.warning("Failed to reregister dynamic commands after menu reload: ${e.message}")
+            if (plugin.isDebugEnabled()) {
+                e.printStackTrace()
+            }
+        }
     }
     
     /**
