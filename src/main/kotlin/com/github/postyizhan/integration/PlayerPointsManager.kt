@@ -45,17 +45,26 @@ class PlayerPointsManager(private val plugin: PostWarps) {
                     takeMethod = apiClass.getMethod("take", UUID::class.java, Int::class.java)
 
                     isPlayerPointsEnabled = true
-                    plugin.logger.info("Connected to PlayerPoints economy system")
+                    plugin.server.consoleSender.sendMessage(
+                        com.github.postyizhan.util.MessageUtil.color(
+                            com.github.postyizhan.util.MessageUtil.getMessage("messages.plugin-hooked")
+                                .replace("{0}", "PlayerPoints")
+                        )
+                    )
                     return true
                 } else {
-                    plugin.logger.warning("Failed to get PlayerPoints API instance")
+                    if (plugin.isDebugEnabled()) {
+                        plugin.logger.warning("Failed to get PlayerPoints API instance")
+                    }
                 }
             } else {
-                plugin.logger.warning("Failed to get PlayerPoints plugin instance")
+                if (plugin.isDebugEnabled()) {
+                    plugin.logger.warning("Failed to get PlayerPoints plugin instance")
+                }
             }
         } catch (e: Exception) {
-            plugin.logger.warning("Failed to initialize PlayerPoints integration: ${e.message}")
             if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Failed to initialize PlayerPoints integration: ${e.message}")
                 plugin.logger.info("DEBUG: PlayerPoints integration error details: ${e.stackTraceToString()}")
             }
         }
@@ -163,6 +172,8 @@ class PlayerPointsManager(private val plugin: PostWarps) {
         giveMethod = null
         takeMethod = null
         isPlayerPointsEnabled = false
-        plugin.logger.info("PlayerPoints integration has been shutdown")
+        if (plugin.isDebugEnabled()) {
+            plugin.logger.info("PlayerPoints integration has been shutdown")
+        }
     }
 }

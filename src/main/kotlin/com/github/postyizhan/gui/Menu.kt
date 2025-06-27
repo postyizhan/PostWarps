@@ -230,7 +230,9 @@ open class Menu(
             val currentDisplayName = meta.displayName ?: ""
             meta.setDisplayName("$currentDisplayName§r§0§${warp.id}")
         } catch (e: Exception) {
-            plugin.logger.warning("无法设置物品的NBT标签: ${e.message}")
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Failed to set item NBT tags: ${e.message}")
+            }
         }
         
         item.itemMeta = meta

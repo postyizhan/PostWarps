@@ -179,7 +179,7 @@ class PostWarps : JavaPlugin() {
         }
 
         // 输出关闭消息
-        logger.info("PostWarps 插件已禁用")
+        logger.info("PostWarps plugin disabled")
     }
     
     /**

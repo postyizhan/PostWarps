@@ -21,6 +21,7 @@ messages:
   menus_loaded: "{prefix}&7Successfully loaded &a{count} &7menus"
   database_connected: "{prefix}&7Successfully connected to &a{type} &7database"
   database_closed: "{prefix}&7Database connection closed"
+  plugin-hooked: "{prefix}&7Successfully hooked into &a{0}"
   no-permission: "{prefix}&cYou don't have permission to execute this command!"
   invalid-command: "{prefix}&cInvalid command! Use &7/pw help &cfor help."
   player-only: "{prefix}&cThis command can only be executed by players!"
@@ -73,6 +74,7 @@ teleport:
   unsafe-location: "{prefix}&cUnsafe teleport location. Teleportation cancelled."
   starting: "{prefix}&eTeleporting to &a{name}&e, please wait &c{delay} &eseconds..."
   cancelled: "{prefix}&cTeleportation cancelled!"
+  no_pending: "{prefix}&cYou have no pending teleportation requests."
 
 # Warp listing messages
 list:

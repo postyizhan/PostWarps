@@ -48,7 +48,9 @@ object MessageUtil {
         messages = try {
             YamlConfiguration.loadConfiguration(langFile)
         } catch (e: Exception) {
-            plugin.logger.warning("无法从文件加载语言文件，使用内置资源: ${e.message}")
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Failed to load language file from disk, using built-in resource: ${e.message}")
+            }
             val resource = plugin.getResource("lang/$language.yml") ?: plugin.getResource("lang/zh_CN.yml")
             if (resource != null) {
                 YamlConfiguration.loadConfiguration(InputStreamReader(resource))
@@ -67,8 +69,10 @@ object MessageUtil {
     fun getMessage(path: String): String {
         var message = messages.getString(path)
         if (message == null) {
-            plugin.logger.warning("找不到消息路径: $path")
-            message = "&c找不到消息: $path"
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Message path not found: $path")
+            }
+            message = "&cMessage not found: $path"
         }
         return message.replace("{prefix}", prefix)
     }
@@ -85,8 +89,10 @@ object MessageUtil {
             // 回退到默认语言
             message = messages.getString(path)
             if (message == null) {
-                plugin.logger.warning("找不到消息路径: $path")
-                message = "&c找不到消息: $path"
+                if (plugin.isDebugEnabled()) {
+                    plugin.logger.warning("Message path not found: $path")
+                }
+                message = "&cMessage not found: $path"
             }
         }
 
@@ -188,7 +194,9 @@ object MessageUtil {
                 plugin.logger.info("Successfully loaded language file: $language.yml from data folder")
                 return config
             } catch (e: Exception) {
-                plugin.logger.warning("无法加载语言文件 $language.yml: ${e.message}")
+                if (plugin.isDebugEnabled()) {
+                    plugin.logger.warning("Failed to load language file $language.yml: ${e.message}")
+                }
             }
         } else {
             // 尝试从资源文件加载
@@ -201,12 +209,16 @@ object MessageUtil {
                     }
                 }
             } catch (e: Exception) {
-                plugin.logger.warning("无法从资源加载语言文件 $language.yml: ${e.message}")
+                if (plugin.isDebugEnabled()) {
+                    plugin.logger.warning("Failed to load language file $language.yml from resources: ${e.message}")
+                }
             }
         }
 
         // 如果加载失败，返回默认消息配置
-        plugin.logger.warning("语言文件 $language.yml 不存在，使用默认语言")
+        if (plugin.isDebugEnabled()) {
+            plugin.logger.warning("Language file $language.yml not found, using default language")
+        }
         return messages
     }
 

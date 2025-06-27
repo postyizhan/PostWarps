@@ -31,9 +31,16 @@ class VaultManager(private val plugin: PostWarps) {
         
         if (economyProvider != null) {
             economy = economyProvider.provider
-            plugin.logger.info("已连接到经济系统: ${economy?.name}")
+            plugin.server.consoleSender.sendMessage(
+                com.github.postyizhan.util.MessageUtil.color(
+                    com.github.postyizhan.util.MessageUtil.getMessage("messages.plugin-hooked")
+                        .replace("{0}", economy?.name ?: "Unknown")
+                )
+            )
         } else {
-            plugin.logger.warning("未找到经济系统提供者")
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Economy provider not found")
+            }
         }
         
         // 设置权限系统
@@ -42,17 +49,28 @@ class VaultManager(private val plugin: PostWarps) {
         
         if (permissionProvider != null) {
             permission = permissionProvider.provider
-            plugin.logger.info("已连接到权限系统: ${permission?.name}")
+            plugin.server.consoleSender.sendMessage(
+                com.github.postyizhan.util.MessageUtil.color(
+                    com.github.postyizhan.util.MessageUtil.getMessage("messages.plugin-hooked")
+                        .replace("{0}", permission?.name ?: "Unknown")
+                )
+            )
         } else {
-            plugin.logger.warning("未找到权限系统提供者")
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Permission provider not found")
+            }
         }
         
         isVaultEnabled = economy != null || permission != null
         
         if (isVaultEnabled) {
-            plugin.logger.info("Vault集成已启用")
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.info("Vault integration enabled")
+            }
         } else {
-            plugin.logger.warning("Vault集成失败，未找到任何支持的服务提供者")
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Vault integration failed, no supported service providers found")
+            }
         }
         
         return isVaultEnabled
@@ -137,14 +155,40 @@ class VaultManager(private val plugin: PostWarps) {
      * 获取玩家的主要组
      */
     fun getPrimaryGroup(player: Player): String? {
-        return permission?.getPrimaryGroup(player)
+        return try {
+            permission?.getPrimaryGroup(player)
+        } catch (e: UnsupportedOperationException) {
+            // SuperPerms doesn't support group permissions, return null
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Permission system doesn't support group permissions, using default group configuration")
+            }
+            null
+        } catch (e: Exception) {
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Error getting player primary group: ${e.message}")
+            }
+            null
+        }
     }
     
     /**
      * 获取玩家的所有组
      */
     fun getPlayerGroups(player: Player): Array<String> {
-        return permission?.getPlayerGroups(player) ?: emptyArray()
+        return try {
+            permission?.getPlayerGroups(player) ?: emptyArray()
+        } catch (e: UnsupportedOperationException) {
+            // SuperPerms doesn't support group permissions, return empty array
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Permission system doesn't support group permissions query, using default group configuration")
+            }
+            emptyArray()
+        } catch (e: Exception) {
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Error getting player groups: ${e.message}")
+            }
+            emptyArray()
+        }
     }
     
     /**
@@ -161,6 +205,8 @@ class VaultManager(private val plugin: PostWarps) {
         economy = null
         permission = null
         isVaultEnabled = false
-        plugin.logger.info("Vault集成已关闭")
+        if (plugin.isDebugEnabled()) {
+            plugin.logger.info("Vault integration shutdown")
+        }
     }
 }

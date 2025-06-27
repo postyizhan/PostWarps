@@ -186,7 +186,9 @@ class ItemBuilder(private val context: MenuContext) {
             val currentDisplayName = meta.displayName ?: ""
             meta.setDisplayName("$currentDisplayName§r§0§${warp.id}")
         } catch (e: Exception) {
-            context.plugin.logger.warning("无法设置物品的地标ID: ${e.message}")
+            if (context.plugin.isDebugEnabled()) {
+                context.plugin.logger.warning("Failed to set warp ID on item: ${e.message}")
+            }
         }
     }
 }
