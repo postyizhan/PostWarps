@@ -2,6 +2,7 @@ package com.github.postyizhan.gui.builder
 
 import com.github.postyizhan.PostWarps
 import com.github.postyizhan.gui.icon.IconConfig
+import com.github.postyizhan.util.MessageUtil
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
@@ -15,6 +16,9 @@ import org.bukkit.inventory.meta.ItemMeta
  * 物品构建器，支持继承机制
  */
 class ItemBuilder(private val plugin: PostWarps) {
+
+    // 国际化处理器
+    private val i18nProcessor = com.github.postyizhan.gui.util.MenuI18nProcessor(plugin)
     
     /**
      * 从配置创建物品（支持子图标继承）
@@ -89,7 +93,8 @@ class ItemBuilder(private val plugin: PostWarps) {
         player: Player,
         data: Map<String, Any>
     ) {
-        val displayName = iconConfig?.name ?: mainConfig.getString("name")
+        // 优先使用子图标的名称，然后是本地化名称，最后是默认名称
+        val displayName = iconConfig?.name ?: i18nProcessor.getLocalizedName(mainConfig, player)
         if (displayName != null) {
             val processedName = processPlaceholders(displayName, player, data)
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', processedName))
@@ -106,9 +111,10 @@ class ItemBuilder(private val plugin: PostWarps) {
         player: Player,
         data: Map<String, Any>
     ) {
-        val lore = iconConfig?.lore ?: mainConfig.getStringList("lore")
+        // 优先使用子图标的lore，然后是本地化lore，最后是默认lore
+        val lore = iconConfig?.lore ?: i18nProcessor.getLocalizedLore(mainConfig, player) ?: emptyList()
         if (lore.isNotEmpty()) {
-            val processedLore = lore.map { 
+            val processedLore = lore.map {
                 ChatColor.translateAlternateColorCodes('&', processPlaceholders(it, player, data))
             }
             meta.lore = processedLore
@@ -176,9 +182,13 @@ class ItemBuilder(private val plugin: PostWarps) {
         result = result.replace("{name}", data["name"]?.toString() ?: "")
         result = result.replace("{desc}", data["desc"]?.toString() ?: "")
         
-        // 公开/私有状态显示
+        // 公开/私有状态显示（国际化）
         val isPublic = data["is_public"] as? Boolean ?: false
-        val publicState = if (isPublic) "&a公开" else "&c私有"
+        val publicState = if (isPublic) {
+            MessageUtil.getMessage("status.public", player)
+        } else {
+            MessageUtil.getMessage("status.private", player)
+        }
         result = result.replace("{public_state}", publicState)
         
         return result

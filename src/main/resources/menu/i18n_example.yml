@@ -1,0 +1,344 @@
+# 国际化菜单示例
+# 展示如何在菜单中使用多语言支持
+
+title: "&8【 &b国际化示例 &8】"
+
+i18n:
+  en_US:
+    title: "&8【 &bInternationalization Example &8】"
+
+layout:
+  - "ABCDEFGHI"
+  - "         "
+  - "    X    "
+
+items:
+  # 基本i18n示例
+  A:
+    material: STONE
+    name: "&7基本示例"
+    lore:
+      - "&7这是默认语言的描述"
+      - "&7如果没有找到对应语言"
+      - "&7将显示这个默认内容"
+    i18n:
+      zh_CN:
+        name: "&7基本示例 &8(中文)"
+        lore:
+          - "&7这是中文描述"
+          - "&7支持多行文本"
+          - "&a点击查看效果"
+      en_US:
+        name: "&7Basic Example &8(English)"
+        lore:
+          - "&7This is English description"
+          - "&7Supports multiple lines"
+          - "&aClick to see effect"
+    action:
+      - "[message] &a你点击了基本示例！"
+      - "[sound] NOTE_PLING 1.0 1.0"
+
+  # 带占位符的i18n示例
+  B:
+    material: PLAYER_HEAD
+    name: "&b玩家信息"
+    lore:
+      - "&7玩家: &f{player}"
+      - "&7世界: &f{world}"
+    i18n:
+      zh_CN:
+        name: "&b玩家信息 &8(中文)"
+        lore:
+          - "&7玩家名称: &f{player}"
+          - "&7当前世界: &f{world}"
+          - "&7在线时间: &f{playtime}"
+          - ""
+          - "&e► 点击查看详细信息"
+      en_US:
+        name: "&bPlayer Info &8(English)"
+        lore:
+          - "&7Player Name: &f{player}"
+          - "&7Current World: &f{world}"
+          - "&7Play Time: &f{playtime}"
+          - ""
+          - "&e► Click for details"
+    action:
+      - "[message] &a玩家信息已显示！"
+
+  # 子图标与i18n结合示例
+  C:
+    material: DIAMOND
+    name: "&e权限检查"
+    lore:
+      - "&7根据权限显示不同内容"
+    i18n:
+      zh_CN:
+        name: "&e权限检查 &8(中文)"
+        lore:
+          - "&7根据你的权限显示不同内容"
+          - "&7管理员和普通用户看到的不同"
+      en_US:
+        name: "&ePermission Check &8(English)"
+        lore:
+          - "&7Shows different content based on permissions"
+          - "&7Admins and users see different things"
+    icons:
+      # 管理员图标（也支持i18n）
+      - condition: 'perm postwarps.admin'
+        material: COMMAND_BLOCK
+        name: "&c&l管理员专用"
+        lore:
+          - "&7你拥有管理员权限"
+          - "&a可以执行所有操作"
+        # 子图标也可以有i18n配置
+        i18n:
+          zh_CN:
+            name: "&c&l管理员专用 &8(中文)"
+            lore:
+              - "&7你拥有管理员权限"
+              - "&a可以执行所有管理操作"
+              - "&c请谨慎使用管理功能"
+          en_US:
+            name: "&c&lAdmin Only &8(English)"
+            lore:
+              - "&7You have administrator permissions"
+              - "&aYou can perform all operations"
+              - "&cPlease use admin features carefully"
+        action:
+          - "[message] &c管理员功能已激活！"
+          - "[sound] LEVEL_UP 1.0 1.0"
+      # 普通用户图标
+      - condition: '!perm postwarps.admin'
+        material: IRON_INGOT
+        name: "&a普通用户"
+        lore:
+          - "&7你是普通用户"
+          - "&7功能有限"
+        i18n:
+          zh_CN:
+            name: "&a普通用户 &8(中文)"
+            lore:
+              - "&7你是普通用户"
+              - "&7可以使用基本功能"
+              - "&e如需更多权限请联系管理员"
+          en_US:
+            name: "&aRegular User &8(English)"
+            lore:
+              - "&7You are a regular user"
+              - "&7You can use basic features"
+              - "&eContact admin for more permissions"
+        action:
+          - "[message] &a普通用户功能已激活！"
+
+  # 动态内容i18n示例
+  D:
+    material: BOOK
+    name: "&6动态内容"
+    lore:
+      - "&7显示动态数据"
+      - "&7当前页: &f{current_page}"
+      - "&7总页数: &f{total_pages}"
+    i18n:
+      zh_CN:
+        name: "&6动态内容示例 &8(中文)"
+        lore:
+          - "&7这里显示动态数据"
+          - "&7当前页码: &f{current_page}"
+          - "&7总页数: &f{total_pages}"
+          - "&7是否有下一页: &f{has_next}"
+          - ""
+          - "&e► 点击刷新数据"
+      en_US:
+        name: "&6Dynamic Content &8(English)"
+        lore:
+          - "&7Shows dynamic data here"
+          - "&7Current Page: &f{current_page}"
+          - "&7Total Pages: &f{total_pages}"
+          - "&7Has Next Page: &f{has_next}"
+          - ""
+          - "&e► Click to refresh data"
+    action:
+      - "[message] &a动态内容已刷新！"
+
+  # 经济系统i18n示例
+  E:
+    material: GOLD_INGOT
+    name: "&e经济信息"
+    lore:
+      - "&7显示经济相关信息"
+    i18n:
+      zh_CN:
+        name: "&e经济信息 &8(中文)"
+        lore:
+          - "&7当前余额: &f{balance}"
+          - "&7创建费用: &f{create_cost}"
+          - "&7传送费用: &f{teleport_cost}"
+          - ""
+          - "&e► 点击查看详细信息"
+      en_US:
+        name: "&eEconomy Info &8(English)"
+        lore:
+          - "&7Current Balance: &f{balance}"
+          - "&7Create Cost: &f{create_cost}"
+          - "&7Teleport Cost: &f{teleport_cost}"
+          - ""
+          - "&e► Click for details"
+    action:
+      - "[message] &a经济信息已显示！"
+
+  # 搜索功能i18n示例
+  F:
+    material: OAK_SIGN
+    name: "&e搜索功能"
+    lore:
+      - "&7搜索地标"
+    i18n:
+      zh_CN:
+        name: "&e搜索地标 &8(中文)"
+        lore:
+          - "&7搜索地标名称、描述或世界"
+          - ""
+          - "&e► 左键搜索"
+          - "&c► 右键清除"
+      en_US:
+        name: "&eSearch Warps &8(English)"
+        lore:
+          - "&7Search warp names, descriptions or worlds"
+          - ""
+          - "&e► Left click to search"
+          - "&c► Right click to clear"
+    icons:
+      - condition: 'data is_searching'
+        material: WRITABLE_BOOK
+        name: "&e搜索中"
+        lore:
+          - "&7当前搜索: &f{search_keyword}"
+          - "&7找到结果: &e{warp_count}"
+        i18n:
+          zh_CN:
+            name: "&e搜索中 &8(中文)"
+            lore:
+              - "&7当前搜索关键词: &f{search_keyword}"
+              - "&7找到 &e{warp_count} &7个地标"
+              - ""
+              - "&e► 左键修改搜索"
+              - "&c► 右键清除搜索"
+          en_US:
+            name: "&eSearching &8(English)"
+            lore:
+              - "&7Current Search: &f{search_keyword}"
+              - "&7Found &e{warp_count} &7warps"
+              - ""
+              - "&e► Left click to modify"
+              - "&c► Right click to clear"
+    action:
+      - "[warp_search]"
+
+  # 帮助信息i18n示例
+  G:
+    material: BOOK
+    name: "&a帮助信息"
+    lore:
+      - "&7查看帮助信息"
+    i18n:
+      zh_CN:
+        name: "&a帮助信息 &8(中文)"
+        lore:
+          - "&7PostWarps 插件帮助"
+          - "&7版本: &f{version}"
+          - ""
+          - "&e功能说明:"
+          - "&7- 创建和管理地标"
+          - "&7- 公开和私有地标"
+          - "&7- 搜索和分页功能"
+          - "&7- 多语言支持"
+          - ""
+          - "&e► 点击查看更多帮助"
+      en_US:
+        name: "&aHelp Information &8(English)"
+        lore:
+          - "&7PostWarps Plugin Help"
+          - "&7Version: &f{version}"
+          - ""
+          - "&eFeatures:"
+          - "&7- Create and manage warps"
+          - "&7- Public and private warps"
+          - "&7- Search and pagination"
+          - "&7- Multi-language support"
+          - ""
+          - "&e► Click for more help"
+    action:
+      - "[message] &a帮助信息已显示！"
+
+  # 设置菜单i18n示例
+  H:
+    material: REDSTONE
+    name: "&c设置"
+    lore:
+      - "&7插件设置"
+    i18n:
+      zh_CN:
+        name: "&c插件设置 &8(中文)"
+        lore:
+          - "&7配置插件选项"
+          - "&7语言: &f{language}"
+          - "&7调试模式: &f{debug}"
+          - ""
+          - "&e► 点击进入设置"
+      en_US:
+        name: "&cSettings &8(English)"
+        lore:
+          - "&7Configure plugin options"
+          - "&7Language: &f{language}"
+          - "&7Debug Mode: &f{debug}"
+          - ""
+          - "&e► Click to enter settings"
+    action:
+      - "[menu] settings"
+
+  # 语言切换示例
+  I:
+    material: GLOBE_BANNER_PATTERN
+    name: "&b语言切换"
+    lore:
+      - "&7切换界面语言"
+    i18n:
+      zh_CN:
+        name: "&b语言切换 &8(中文)"
+        lore:
+          - "&7当前语言: &f中文 (zh_CN)"
+          - "&7客户端语言: &f{client_locale}"
+          - ""
+          - "&e► 点击切换到英文"
+      en_US:
+        name: "&bLanguage Switch &8(English)"
+        lore:
+          - "&7Current Language: &fEnglish (en_US)"
+          - "&7Client Locale: &f{client_locale}"
+          - ""
+          - "&e► Click to switch to Chinese"
+    action:
+      - "[message] &a语言切换功能演示！"
+
+  # 关闭按钮
+  X:
+    material: BARRIER
+    name: "&c关闭菜单"
+    lore:
+      - "&7关闭当前菜单"
+    i18n:
+      zh_CN:
+        name: "&c关闭菜单 &8(中文)"
+        lore:
+          - "&7关闭当前菜单界面"
+          - ""
+          - "&e► 点击关闭"
+      en_US:
+        name: "&cClose Menu &8(English)"
+        lore:
+          - "&7Close current menu interface"
+          - ""
+          - "&e► Click to close"
+    action:
+      - "[close]"
+      - "[sound] CHEST_CLOSE 0.5 1.0"

@@ -1,6 +1,7 @@
 package com.github.postyizhan.util.action
 
 import com.github.postyizhan.PostWarps
+import com.github.postyizhan.util.MessageUtil
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.entity.Player
 
@@ -78,20 +79,23 @@ class WarpSetAction(plugin: PostWarps) : AbstractAction(plugin) {
                     emptyList()
                 }
             }
-            .text("输入${getDisplayName(key)}")
-            .title("设置${getDisplayName(key)}")
+            .text(getInputPrompt(player, key))
+            .title(getTitlePrompt(player, key))
             .plugin(plugin)
             .open(player)
     }
     
     /**
-     * 获取字段显示名
+     * 获取输入提示文本（国际化）
      */
-    private fun getDisplayName(key: String): String {
-        return when (key) {
-            "name" -> "地标名称"
-            "desc" -> "地标描述"
-            else -> key
-        }
+    private fun getInputPrompt(player: Player, key: String): String {
+        return MessageUtil.getMessage("anvil.input.$key", player)
+    }
+
+    /**
+     * 获取标题提示文本（国际化）
+     */
+    private fun getTitlePrompt(player: Player, key: String): String {
+        return MessageUtil.getMessage("anvil.title.$key", player)
     }
 }

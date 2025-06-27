@@ -1,4 +1,7 @@
-title: "&8【 &3Post&bWarps &8】&7创建地标"
+title:
+  zh_CN: "&8【 &3Post&bWarps &8】&7创建地标"
+  en_US: "&8【 &3Post&bWarps &8】&7Create Warp"
+
 layout:
   - "         "
   - "  A B C  "
@@ -9,33 +12,57 @@ items:
   # 名称输入按钮
   A:
     material: NAME_TAG
-    name: "&b设置名称"
-    lore:
-      - "&7当前名称: &f{name}"
-      - ""
-      - "&e► 点击设置地标名称"
+    i18n:
+      zh_CN:
+        name: "&b设置名称"
+        lore:
+          - "&7当前名称: &f{name}"
+          - ""
+          - "&e► 点击设置地标名称"
+      en_US:
+        name: "&bSet Name"
+        lore:
+          - "&7Current name: &f{name}"
+          - ""
+          - "&e► Click to set warp name"
     action:
       - "[warp_set] name"
       - "[sound] NOTE_PLING 0.5 1.0"
   # 描述输入按钮
   B:
     material: BOOK
-    name: "&b设置描述"
-    lore:
-      - "&7当前描述: &f{desc}"
-      - ""
-      - "&e► 点击设置地标描述"
+    i18n:
+      zh_CN:
+        name: "&b设置描述"
+        lore:
+          - "&7当前描述: &f{desc}"
+          - ""
+          - "&e► 点击设置地标描述"
+      en_US:
+        name: "&bSet Description"
+        lore:
+          - "&7Current description: &f{desc}"
+          - ""
+          - "&e► Click to set warp description"
     action:
       - "[warp_set] desc"
       - "[sound] NOTE_PLING 0.5 1.2"
   # 公开/私有设置按钮
   C:
     material: REDSTONE_TORCH
-    name: "&b公开/私有"
-    lore:
-      - "&7当前状态: {public_state}"
-      - ""
-      - "&e► 点击切换状态"
+    i18n:
+      zh_CN:
+        name: "&b公开/私有"
+        lore:
+          - "&7当前状态: {public_state}"
+          - ""
+          - "&e► 点击切换状态"
+      en_US:
+        name: "&bPublic/Private"
+        lore:
+          - "&7Current status: {public_state}"
+          - ""
+          - "&e► Click to toggle status"
     action:
       - "[warp_toggle]"
       - "[sound] CLICK 0.5 1.5"
@@ -43,55 +70,101 @@ items:
       # 公开状态时显示火把
       - condition: 'data is_public'
         material: TORCH
-        name: "&a公开地标"
-        lore:
-          - "&7当前状态: &a公开"
-          - "&7其他玩家可以看到此地标"
-          - ""
-          - "&e► 点击设为私有"
+        i18n:
+          zh_CN:
+            name: "&a公开地标"
+            lore:
+              - "&7当前状态: &a公开"
+              - "&7其他玩家可以看到此地标"
+              - ""
+              - "&e► 点击设为私有"
+          en_US:
+            name: "&aPublic Warp"
+            lore:
+              - "&7Current status: &aPublic"
+              - "&7Other players can see this warp"
+              - ""
+              - "&e► Click to make private"
       # 私有状态时显示红石火把
       - condition: '!data is_public'
         material: REDSTONE_TORCH
-        name: "&c私有地标"
-        lore:
-          - "&7当前状态: &c私有"
-          - "&7只有你可以看到此地标"
-          - ""
-          - "&e► 点击设为公开"
+        i18n:
+          zh_CN:
+            name: "&c私有地标"
+            lore:
+              - "&7当前状态: &c私有"
+              - "&7只有你可以看到此地标"
+              - ""
+              - "&e► 点击设为公开"
+          en_US:
+            name: "&cPrivate Warp"
+            lore:
+              - "&7Current status: &cPrivate"
+              - "&7Only you can see this warp"
+              - ""
+              - "&e► Click to make public"
   # 创建按钮
   D:
     material: EMERALD
-    name: "&a确认创建"
-    lore:
-      - "&7点击确认创建地标"
-      - ""
-      - "&7名称: &f{name}"
-      - "&7描述: &f{desc}"
-      - "&7公开: {public_state}"
-      - ""
-      - "&e► 点击确认"
+    i18n:
+      zh_CN:
+        name: "&a确认创建"
+        lore:
+          - "&7点击确认创建地标"
+          - ""
+          - "&7名称: &f{name}"
+          - "&7描述: &f{desc}"
+          - "&7公开: {public_state}"
+          - ""
+          - "&e► 点击确认"
+      en_US:
+        name: "&aConfirm Create"
+        lore:
+          - "&7Click to confirm warp creation"
+          - ""
+          - "&7Name: &f{name}"
+          - "&7Description: &f{desc}"
+          - "&7Public: {public_state}"
+          - ""
+          - "&e► Click to confirm"
     action:
       - "[warp_create]"
       - "[sound] LEVEL_UP 0.7 1.0"
   # 返回按钮
   E:
     material: ARROW
-    name: "&a返回"
-    lore:
-      - "&7返回上一级菜单"
-      - ""
-      - "&e► 点击返回"
+    i18n:
+      zh_CN:
+        name: "&a返回"
+        lore:
+          - "&7返回上一级菜单"
+          - ""
+          - "&e► 点击返回"
+      en_US:
+        name: "&aBack"
+        lore:
+          - "&7Return to previous menu"
+          - ""
+          - "&e► Click to go back"
     action:
       - "[menu] main"
       - "[sound] NOTE_PLING 0.6 1.2"
   # 关闭菜单按钮
   F:
     material: BARRIER
-    name: "&c关闭"
-    lore:
-      - "&7关闭此菜单"
-      - ""
-      - "&e► 点击关闭"
+    i18n:
+      zh_CN:
+        name: "&c关闭"
+        lore:
+          - "&7关闭此菜单"
+          - ""
+          - "&e► 点击关闭"
+      en_US:
+        name: "&cClose"
+        lore:
+          - "&7Close this menu"
+          - ""
+          - "&e► Click to close"
     action:
       - "[close]"
       - "[sound] CHEST_CLOSE 0.5 1.0"

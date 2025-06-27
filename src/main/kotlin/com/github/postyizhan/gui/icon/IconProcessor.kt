@@ -2,6 +2,7 @@ package com.github.postyizhan.gui.icon
 
 import com.github.postyizhan.PostWarps
 import com.github.postyizhan.gui.condition.ConditionManager
+import com.github.postyizhan.gui.util.MenuI18nProcessor
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 
@@ -9,8 +10,9 @@ import org.bukkit.entity.Player
  * 子图标处理器
  */
 class IconProcessor(private val plugin: PostWarps) {
-    
+
     private val conditionManager = ConditionManager(plugin)
+    private val i18nProcessor = MenuI18nProcessor(plugin)
     
     /**
      * 处理子图标配置，找到第一个满足条件的子图标
@@ -28,8 +30,8 @@ class IconProcessor(private val plugin: PostWarps) {
         
         // 遍历子图标，找到第一个满足条件的
         for (iconMap in iconsList) {
-            val iconConfig = IconConfig.fromMap(iconMap)
-            
+            val iconConfig = createLocalizedIconConfig(iconMap, player)
+
             // 检查条件
             val condition = iconConfig.condition
             if (condition == null || conditionManager.checkCondition(condition, player, data)) {
@@ -72,6 +74,40 @@ class IconProcessor(private val plugin: PostWarps) {
         }
     }
     
+    /**
+     * 创建本地化的图标配置
+     * @param iconMap 图标配置Map
+     * @param player 玩家
+     * @return 本地化的IconConfig
+     */
+    private fun createLocalizedIconConfig(iconMap: Map<String, Any>, player: Player): IconConfig {
+        // 首先创建基础配置
+        val baseConfig = IconConfig.fromMap(iconMap)
+
+        // 检查是否有i18n配置
+        @Suppress("UNCHECKED_CAST")
+        val i18nMap = iconMap["i18n"] as? Map<String, Any>
+        if (i18nMap != null) {
+            val language = com.github.postyizhan.util.MessageUtil.getPlayerLanguage(player)
+
+            @Suppress("UNCHECKED_CAST")
+            val langMap = i18nMap[language] as? Map<String, Any>
+            if (langMap != null) {
+                // 使用本地化的name和lore覆盖基础配置
+                val localizedName = langMap["name"] as? String
+                @Suppress("UNCHECKED_CAST")
+                val localizedLore = langMap["lore"] as? List<String>
+
+                return baseConfig.copy(
+                    name = localizedName ?: baseConfig.name,
+                    lore = localizedLore ?: baseConfig.lore
+                )
+            }
+        }
+
+        return baseConfig
+    }
+
     /**
      * 获取条件管理器
      * @return 条件管理器实例

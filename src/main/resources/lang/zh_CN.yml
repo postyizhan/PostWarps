@@ -70,7 +70,7 @@ updater:
   up_to_date: "{prefix}&7您使用的是最新版本！"
 
 help:
-  header: "&a===== {prefix} &a====="
+  header: "&a===== PostWarps 帮助 &a====="
   create: "&7/pw create <名称> [描述] [公开(true/false)] &f- 创建新地标"
   delete: "&7/pw delete <名称> &f- 删除一个地标"
   list: "&7/pw list [public/private] &f- 查看地标列表"
@@ -106,14 +106,14 @@ teleport:
 info:
   usage: "{prefix}&c用法: /pw info <名称>"
   not-found: "{prefix}&c找不到名为 &e{name} &c的地标！"
-  header: "&a===== 地标信息 ====="
-  name: "&7名称: &f{name}"
-  owner: "&7创建者: &f{owner}"
-  world: "&7世界: &f{world}"
-  coordinates: "&7坐标: &f{coords}"
-  created: "&7创建时间: &f{time}"
-  public: "&7公开状态: &f{public}"
-  description: "&7描述: &f{desc}"
+  header: "{prefix}&a===== 地标信息 ====="
+  name: "{prefix}&7名称: &f{name}"
+  owner: "{prefix}&7创建者: &f{owner}"
+  world: "{prefix}&7世界: &f{world}"
+  coordinates: "{prefix}&7坐标: &f{coords}"
+  created: "{prefix}&7创建时间: &f{time}"
+  public: "{prefix}&7公开状态: &f{public}"
+  description: "{prefix}&7描述: &f{desc}"
 
 public:
   usage: "{prefix}&c用法: /pw public <名称>"
@@ -160,7 +160,30 @@ search:
   no_results: "{prefix}&c没有找到匹配的地标"
   results_found: "{prefix}&a找到 &e{count} &a个匹配的地标"
 
+# 语言相关消息
+language:
+  unsupported: "{prefix}&c不支持的语言: &e{language}&c。支持的语言: &f{supported}"
+  switched: "{prefix}&a语言已切换为: &e{language}"
+  auto_enabled: "{prefix}&a已启用自动语言检测"
+  files_reloaded: "{prefix}&a语言文件已重新加载"
+
 # 菜单相关消息
 menu:
   no_warps: "{prefix}&7你还没有创建任何地标"
   no_public_warps: "{prefix}&7暂时没有公开地标"
+
+# 状态变量
+status:
+  public: "&a公开"
+  private: "&c私有"
+  yes: "&a是"
+  no: "&c否"
+
+# 铁砧输入提示
+anvil:
+  input:
+    name: "输入地标名称"
+    desc: "输入地标描述"
+  title:
+    name: "设置地标名称"
+    desc: "设置地标描述"

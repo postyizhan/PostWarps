@@ -1,4 +1,7 @@
-title: "&8【 &3Post&bWarps &8】&7公开地标 &f(&e{current_page}&f/&e{total_pages}&f)"
+title:
+  zh_CN: "&8【 &3Post&bWarps &8】&7公开地标 &f(&e{current_page}&f/&e{total_pages}&f)"
+  en_US: "&8【 &3Post&bWarps &8】&7Public Warps &f(&e{current_page}&f/&e{total_pages}&f)"
+
 layout:
   - "<       X"
   - " WWWWWWW "
@@ -8,29 +11,38 @@ layout:
 items:
   P:
     material: BARRIER
-    name: "&a上一页"
-    lore:
-      - "&7查看上一页地标"
-      - ""
-      - "&e► 点击查看"
     icons:
       # 有上一页时显示箭头
       - condition: 'data has_prev'
         material: ARROW
-        name: "&a上一页"
-        lore:
-          - "&7查看上一页地标"
-          - ""
-          - "&e► 点击查看"
+        i18n:
+          zh_CN:
+            name: "&a上一页"
+            lore:
+              - "&7查看上一页地标"
+              - ""
+              - "&e► 点击查看"
+          en_US:
+            name: "&aPrevious Page"
+            lore:
+              - "&7View previous page of warps"
+              - ""
+              - "&e► Click to view"
         action:
           - "[page_prev]"
           - "[sound] CLICK 0.5 1.0"
       # 没有上一页时显示屏障
       - condition: '!data has_prev'
         material: BARRIER
-        name: "&7上一页"
-        lore:
-          - "&7没有上一页了"
+        i18n:
+          zh_CN:
+            name: "&7上一页"
+            lore:
+              - "&7没有上一页了"
+          en_US:
+            name: "&7Previous Page"
+            lore:
+              - "&7No previous page"
         action: []
     # 默认动作
     action:
@@ -38,29 +50,38 @@ items:
       - "[sound] CLICK 0.5 1.0"
   N:
     material: BARRIER
-    name: "&a下一页"
-    lore:
-      - "&7查看下一页地标"
-      - ""
-      - "&e► 点击查看"
     icons:
       # 有下一页时显示箭头
       - condition: 'data has_next'
         material: ARROW
-        name: "&a下一页"
-        lore:
-          - "&7查看下一页地标"
-          - ""
-          - "&e► 点击查看"
+        i18n:
+          zh_CN:
+            name: "&a下一页"
+            lore:
+              - "&7查看下一页地标"
+              - ""
+              - "&e► 点击查看"
+          en_US:
+            name: "&aNext Page"
+            lore:
+              - "&7View next page of warps"
+              - ""
+              - "&e► Click to view"
         action:
           - "[page_next]"
           - "[sound] CLICK 0.5 1.0"
       # 没有下一页时显示屏障
       - condition: '!data has_next'
         material: BARRIER
-        name: "&7下一页"
-        lore:
-          - "&7没有下一页了"
+        i18n:
+          zh_CN:
+            name: "&7下一页"
+            lore:
+              - "&7没有下一页了"
+          en_US:
+            name: "&7Next Page"
+            lore:
+              - "&7No next page"
         action: []
     # 默认动作
     action:
@@ -68,33 +89,59 @@ items:
       - "[sound] CLICK 0.5 1.0"
   S:
     material: OAK_SIGN
-    name: "&e搜索地标"
-    lore:
-      - "&7搜索地标名称、描述或创建者"
-      - ""
-      - "&e► 点击搜索"
+    i18n:
+      zh_CN:
+        name: "&e搜索地标"
+        lore:
+          - "&7搜索地标名称、描述或创建者"
+          - ""
+          - "&e► 点击搜索"
+      en_US:
+        name: "&eSearch Warps"
+        lore:
+          - "&7Search warp names, descriptions or owners"
+          - ""
+          - "&e► Click to search"
     icons:
       # 正在搜索时显示不同的图标
       - condition: 'data is_searching'
         material: WRITABLE_BOOK
-        name: "&e搜索地标 &7(搜索中)"
-        lore:
-          - "&7当前搜索: &f{search_keyword}"
-          - "&7找到 &e{warp_count} &7个地标"
-          - ""
-          - "&e► 左键修改搜索"
-          - "&c► 右键清除搜索"
+        i18n:
+          zh_CN:
+            name: "&e搜索地标 &7(搜索中)"
+            lore:
+              - "&7当前搜索: &f{search_keyword}"
+              - "&7找到 &e{warp_count} &7个地标"
+              - ""
+              - "&e► 左键修改搜索"
+              - "&c► 右键清除搜索"
+          en_US:
+            name: "&eSearch Warps &7(Searching)"
+            lore:
+              - "&7Current search: &f{search_keyword}"
+              - "&7Found &e{warp_count} &7warps"
+              - ""
+              - "&e► Left click to modify search"
+              - "&c► Right click to clear search"
         action:
           - "[warp_search]"
           - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
       # 没有搜索时显示普通图标
       - condition: '!data is_searching'
         material: OAK_SIGN
-        name: "&e搜索地标"
-        lore:
-          - "&7搜索地标名称、描述或创建者"
-          - ""
-          - "&e► 点击搜索"
+        i18n:
+          zh_CN:
+            name: "&e搜索地标"
+            lore:
+              - "&7搜索地标名称、描述或创建者"
+              - ""
+              - "&e► 点击搜索"
+          en_US:
+            name: "&eSearch Warps"
+            lore:
+              - "&7Search warp names, descriptions or owners"
+              - ""
+              - "&e► Click to search"
         action:
           - "[warp_search]"
           - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
@@ -103,43 +150,73 @@ items:
       - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
   B:
     material: COMPASS
-    name: "&a返回菜单"
-    lore:
-      - "&7返回主菜单"
-      - ""
-      - "&e► 点击返回"
+    i18n:
+      zh_CN:
+        name: "&a返回菜单"
+        lore:
+          - "&7返回主菜单"
+          - ""
+          - "&e► 点击返回"
+      en_US:
+        name: "&aBack to Menu"
+        lore:
+          - "&7Back to main menu"
+          - ""
+          - "&e► Click to back"
     action:
       - "[menu] main"
       - "[sound] NOTE_PLING 0.6 1.2"
   X:
     material: BARRIER
-    name: "&c关闭"
-    lore:
-      - "&7关闭此菜单"
-      - ""
-      - "&e► 点击关闭"
+    i18n:
+      zh_CN:
+        name: "&c关闭"
+        lore:
+          - "&7关闭此菜单"
+          - ""
+          - "&e► 点击关闭"
+      en_US:
+        name: "&cClose"
+        lore:
+          - "&7Close this menu"
+          - ""
+          - "&e► Click to close"
     action:
       - "[close]"
       - "[sound] CHEST_CLOSE 0.5 1.0"
   # <
   <:
     material: ARROW
-    name: "&a返回"
+    i18n:
+      zh_CN:
+        name: "&a返回"
+      en_US:
+        name: "&aBack"
     action:
       - "[menu] main"
       - "[sound] NOTE_PLING 0.6 1.2"
   W:
     material: ENDER_EYE
     warp_item: true
-    name: "&b{name}"
-    lore:
-      - "&7描述: &f{desc}"
-      - "&7创建者: &f{owner}"
-      - "&7世界: &f{world}"
-      - "&7坐标: &f{coords}"
-      - "&7状态: &f{public_state}"
-      - ""
-      - "&e► 左键 &7传送到此地标"
+    i18n:
+      zh_CN:
+        name: "&b{name}"
+        lore:
+          - "&7描述: &f{desc}"
+          - "&7创建者: &f{owner}"
+          - "&7世界: &f{world}"
+          - "&7坐标: &f{coords}"
+          - ""
+          - "&e► 左键 &7传送到此地标"
+      en_US:
+        name: "&b{name}"
+        lore:
+          - "&7Description: &f{desc}"
+          - "&7Owner: &f{owner}"
+          - "&7World: &f{world}"
+          - "&7Coordinates: &f{coords}"
+          - ""
+          - "&e► Left click &7to teleport to this warp"
     action:
       - "[warp_tp]"
       - "[sound] ENDERMAN_TELEPORT 0.5 1.0"

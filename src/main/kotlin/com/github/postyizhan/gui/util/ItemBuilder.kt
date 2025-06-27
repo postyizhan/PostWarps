@@ -14,6 +14,9 @@ import org.bukkit.inventory.meta.ItemMeta
  * 负责根据配置创建菜单物品
  */
 class ItemBuilder(private val context: MenuContext) {
+
+    // 国际化处理器
+    private val i18nProcessor = MenuI18nProcessor(context.plugin)
     
     /**
      * 创建普通菜单物品
@@ -123,7 +126,9 @@ class ItemBuilder(private val context: MenuContext) {
      * 设置显示名称
      */
     private fun setDisplayName(meta: ItemMeta, itemConfig: ConfigurationSection) {
-        val displayName = itemConfig.getString("name")?.let {
+        // 优先使用本地化名称
+        val rawName = i18nProcessor.getLocalizedName(itemConfig, context.player)
+        val displayName = rawName?.let {
             PlaceholderProcessor.processPlaceholders(it, context)
         }
         if (displayName != null) {
@@ -135,7 +140,9 @@ class ItemBuilder(private val context: MenuContext) {
      * 设置地标显示名称
      */
     private fun setWarpDisplayName(meta: ItemMeta, itemConfig: ConfigurationSection, warp: Warp) {
-        val displayName = itemConfig.getString("name")?.let {
+        // 优先使用本地化名称
+        val rawName = i18nProcessor.getLocalizedName(itemConfig, context.player)
+        val displayName = rawName?.let {
             PlaceholderProcessor.processWarpPlaceholders(it, context, warp)
         }
         if (displayName != null) {
@@ -147,10 +154,11 @@ class ItemBuilder(private val context: MenuContext) {
      * 设置描述
      */
     private fun setLore(meta: ItemMeta, itemConfig: ConfigurationSection) {
-        val lore = itemConfig.getStringList("lore")
-        if (lore.isNotEmpty()) {
-            meta.lore = lore.map { 
-                ChatColor.translateAlternateColorCodes('&', 
+        // 优先使用本地化描述
+        val rawLore = i18nProcessor.getLocalizedLore(itemConfig, context.player)
+        if (rawLore != null && rawLore.isNotEmpty()) {
+            meta.lore = rawLore.map {
+                ChatColor.translateAlternateColorCodes('&',
                     PlaceholderProcessor.processPlaceholders(it, context))
             }
         }
@@ -160,9 +168,10 @@ class ItemBuilder(private val context: MenuContext) {
      * 设置地标描述
      */
     private fun setWarpLore(meta: ItemMeta, itemConfig: ConfigurationSection, warp: Warp) {
-        val lore = itemConfig.getStringList("lore")
-        if (lore.isNotEmpty()) {
-            meta.lore = lore.map { 
+        // 优先使用本地化描述
+        val rawLore = i18nProcessor.getLocalizedLore(itemConfig, context.player)
+        if (rawLore != null && rawLore.isNotEmpty()) {
+            meta.lore = rawLore.map {
                 MessageUtil.color(PlaceholderProcessor.processWarpPlaceholders(it, context, warp))
             }
         }

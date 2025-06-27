@@ -16,6 +16,9 @@ import java.util.*
  * 命令管理器，处理插件命令
  */
 class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabCompleter {
+
+    // 语言命令处理器
+    private val languageCommand = LanguageCommand(plugin)
     
     /**
      * 注册命令
@@ -24,6 +27,11 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
         val pluginCommand = plugin.getCommand("postwarps")
         pluginCommand?.setExecutor(this)
         pluginCommand?.tabCompleter = this
+
+        // 注册语言命令
+        val langCommand = plugin.getCommand("lang")
+        langCommand?.setExecutor(languageCommand)
+        langCommand?.tabCompleter = languageCommand
     }
     
     /**
@@ -486,9 +494,15 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                     }
 
                     plugin.reload()
-                    sender.sendMessage(MessageUtil.color(
-                        MessageUtil.getMessage("messages.reload")
-                    ))
+                    if (sender is Player) {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("messages.reload", sender)
+                        ))
+                    } else {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("messages.reload")
+                        ))
+                    }
                 }
                 
                 "economy", "eco" -> {
@@ -538,18 +552,44 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
 
                 "placeholders", "papi" -> {
                     if (!sender.hasPermission("postwarps.admin")) {
-                        sender.sendMessage(MessageUtil.color(
-                            MessageUtil.getMessage("messages.no-permission")
-                        ))
+                        if (sender is Player) {
+                            sender.sendMessage(MessageUtil.color(
+                                MessageUtil.getMessage("messages.no-permission", sender)
+                            ))
+                        } else {
+                            sender.sendMessage(MessageUtil.color(
+                                MessageUtil.getMessage("messages.no-permission")
+                            ))
+                        }
                         return true
                     }
                     showPlaceholders(sender)
                 }
 
+                "lang", "language" -> {
+                    // 语言命令处理
+                    if (sender !is Player) {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("general.player-only")
+                        ))
+                        return true
+                    }
+
+                    // 将参数传递给语言命令处理器
+                    val langArgs = if (args.size > 1) args.sliceArray(1 until args.size) else emptyArray()
+                    languageCommand.onCommand(sender, command, label, langArgs)
+                }
+
                 else -> {
-                    sender.sendMessage(MessageUtil.color(
-                        MessageUtil.getMessage("messages.invalid-command")
-                    ))
+                    if (sender is Player) {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("messages.invalid-command", sender)
+                        ))
+                    } else {
+                        sender.sendMessage(MessageUtil.color(
+                            MessageUtil.getMessage("messages.invalid-command")
+                        ))
+                    }
                 }
             }
             
@@ -584,6 +624,8 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                 if (sender is Player) {
                     subCommands.add("economy")
                     subCommands.add("eco")
+                    subCommands.add("lang")
+                    subCommands.add("language")
                 }
                 if (sender.hasPermission("postwarps.admin")) {
                     subCommands.add("reload")
@@ -625,6 +667,12 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
                     "menu" -> {
                         return filterTabCompletions(listOf("main", "create", "public_warps", "private_warps", "settings"), args[1])
                     }
+                    "lang", "language" -> {
+                        // 语言命令的tab补全
+                        if (sender is Player) {
+                            return languageCommand.onTabComplete(sender, command, alias, args.sliceArray(1 until args.size))
+                        }
+                    }
                 }
             }
             
@@ -648,44 +696,93 @@ class CommandManager(private val plugin: PostWarps) : CommandExecutor, TabComple
      * 显示帮助信息
      */
     private fun showHelp(sender: CommandSender) {
-        sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.header")))
-        
-        // 根据权限显示命令
-        if (sender.hasPermission("postwarps.create"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.create")))
-        
-        if (sender.hasPermission("postwarps.delete"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.delete")))
-        
-        if (sender.hasPermission("postwarps.list"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.list")))
-        
-        if (sender.hasPermission("postwarps.teleport"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.tp")))
-        
-        if (sender.hasPermission("postwarps.info"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.info")))
-        
-        if (sender.hasPermission("postwarps.public"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.public")))
-        
-        if (sender.hasPermission("postwarps.private"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.private")))
-        
-        if (sender.hasPermission("postwarps.menu"))
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.menu")))
+        if (sender is Player) {
+            // 玩家发送者，使用国际化消息
+            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.header", sender)))
 
-        // 经济命令对所有玩家开放
-        if (sender is Player)
+            // 根据权限显示命令
+            if (sender.hasPermission("postwarps.create"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.create", sender)))
+
+            if (sender.hasPermission("postwarps.delete"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.delete", sender)))
+
+            if (sender.hasPermission("postwarps.list"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.list", sender)))
+
+            if (sender.hasPermission("postwarps.teleport"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.tp", sender)))
+
+            if (sender.hasPermission("postwarps.info"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.info", sender)))
+
+            if (sender.hasPermission("postwarps.public"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.public", sender)))
+
+            if (sender.hasPermission("postwarps.private"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.private", sender)))
+
+            if (sender.hasPermission("postwarps.menu"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.menu", sender)))
+
+            // 经济命令对所有玩家开放
+            val economyHelp = when (MessageUtil.getPlayerLanguage(sender)) {
+                "en_US" -> "&7/pw economy &f- View economy information and costs"
+                else -> "&7/pw economy &f- 查看经济信息和费用"
+            }
+            sender.sendMessage(MessageUtil.color(economyHelp))
+
+            if (sender.hasPermission("postwarps.admin")) {
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.reload", sender)))
+                val placeholderHelp = when (MessageUtil.getPlayerLanguage(sender)) {
+                    "en_US" -> "&7/pw placeholders &f- View PlaceholderAPI placeholders"
+                    else -> "&7/pw placeholders &f- 查看PlaceholderAPI占位符"
+                }
+                sender.sendMessage(MessageUtil.color(placeholderHelp))
+            }
+
+            // version命令对所有人开放
+            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.version", sender)))
+        } else {
+            // 控制台发送者，使用默认语言
+            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.header")))
+
+            // 根据权限显示命令
+            if (sender.hasPermission("postwarps.create"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.create")))
+
+            if (sender.hasPermission("postwarps.delete"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.delete")))
+
+            if (sender.hasPermission("postwarps.list"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.list")))
+
+            if (sender.hasPermission("postwarps.teleport"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.tp")))
+
+            if (sender.hasPermission("postwarps.info"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.info")))
+
+            if (sender.hasPermission("postwarps.public"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.public")))
+
+            if (sender.hasPermission("postwarps.private"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.private")))
+
+            if (sender.hasPermission("postwarps.menu"))
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.menu")))
+
+            // 经济命令
             sender.sendMessage("&7/pw economy &f- 查看经济信息和费用")
 
-        if (sender.hasPermission("postwarps.admin")) {
-            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.reload")))
-            sender.sendMessage("&7/pw placeholders &f- 查看PlaceholderAPI占位符")
-        }
+            if (sender.hasPermission("postwarps.admin")) {
+                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.reload")))
+                sender.sendMessage("&7/pw placeholders &f- 查看PlaceholderAPI占位符")
+            }
 
-        // version命令对所有人开放
-        sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.version")))
+            // version命令对所有人开放
+            sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("help.version")))
+        }
     }
     
     /**

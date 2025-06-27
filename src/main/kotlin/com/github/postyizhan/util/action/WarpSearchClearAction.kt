@@ -24,7 +24,7 @@ class WarpSearchClearAction(plugin: PostWarps) : AbstractAction(plugin) {
         clearMenuCache(player, currentMenu)
 
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("search.cleared")
+            MessageUtil.getMessage("search.cleared", player)
         ))
         
         // 重新打开菜单以显示清除搜索后的结果

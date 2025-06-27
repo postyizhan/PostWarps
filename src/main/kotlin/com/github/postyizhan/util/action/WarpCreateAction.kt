@@ -19,17 +19,13 @@ class WarpCreateAction(plugin: PostWarps) : AbstractAction(plugin) {
         
         // 检查名称是否存在
         if (name.isNullOrBlank()) {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("create.no-name")
-            ))
+            sendMessage(player, "warp_create.no_name")
             return
         }
-        
+
         // 检查名称是否已经存在
         if (plugin.getDatabaseManager().getWarp(name, player.uniqueId) != null) {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("create.name-exists")
-            ))
+            sendMessage(player, "warp_create.name_exists", "name" to name)
             return
         }
         
@@ -52,21 +48,16 @@ class WarpCreateAction(plugin: PostWarps) : AbstractAction(plugin) {
         
         val success = plugin.getDatabaseManager().createWarp(warp)
         if (success) {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("create.success")
-                    .replace("{name}", name)
-            ))
-            
+            sendMessage(player, "warp_create.success", "name" to name)
+
             // 清除数据
             data.remove("name")
             data.remove("desc")
-            
+
             // 关闭菜单
             player.closeInventory()
         } else {
-            player.sendMessage(MessageUtil.color(
-                MessageUtil.getMessage("create.failed")
-            ))
+            sendMessage(player, "warp_create.failed", "name" to name)
         }
     }
 }

@@ -3,6 +3,7 @@ package com.github.postyizhan.gui.core
 import org.bukkit.entity.Player
 import org.bukkit.configuration.file.YamlConfiguration
 import com.github.postyizhan.PostWarps
+import com.github.postyizhan.gui.util.MenuI18nProcessor
 
 /**
  * 菜单上下文
@@ -16,12 +17,17 @@ data class MenuContext(
     val playerData: MutableMap<String, Any>,
     val menuData: MenuData? = null
 ) {
+
+    // 国际化处理器
+    private val i18nProcessor = MenuI18nProcessor(plugin)
     
     /**
-     * 获取菜单标题
+     * 获取本地化的菜单标题
      */
     fun getTitle(): String {
-        return config.getString("title", "&8【 &b菜单 &8】") ?: "&8【 &b菜单 &8】"
+        return i18nProcessor.getLocalizedTitle(config, player)
+            ?: config.getString("title", "&8【 &b菜单 &8】")
+            ?: "&8【 &b菜单 &8】"
     }
     
     /**

@@ -72,11 +72,11 @@ class WarpSearchAction(plugin: PostWarps) : AbstractAction(plugin) {
                     // 发送搜索结果消息
                     if (searchText.isEmpty()) {
                         stateSnapshot.player.sendMessage(MessageUtil.color(
-                            MessageUtil.getMessage("search.cleared")
+                            MessageUtil.getMessage("search.cleared", stateSnapshot.player)
                         ))
                     } else {
                         stateSnapshot.player.sendMessage(MessageUtil.color(
-                            MessageUtil.getMessage("search.set")
+                            MessageUtil.getMessage("search.set", stateSnapshot.player)
                                 .replace("{keyword}", searchText)
                         ))
                     }

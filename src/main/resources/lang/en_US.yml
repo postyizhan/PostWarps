@@ -1,0 +1,181 @@
+# English Language File for PostWarps
+# This file contains all English translations for the plugin
+
+# Plugin prefix
+prefix: "&8[&3Post&bWarps&8] "
+
+# General messages
+general:
+  no-permission: "{prefix}&cYou don't have permission to do this."
+  player-only: "{prefix}&cThis command can only be used by players."
+  invalid-args: "{prefix}&cInvalid arguments. Use &e/pw help &cfor help."
+  plugin-reloaded: "{prefix}&aPlugin reloaded successfully!"
+  config-reloaded: "{prefix}&aConfiguration reloaded successfully!"
+  unknown-command: "{prefix}&cUnknown command. Use &e/pw help &cfor help."
+
+# System messages
+messages:
+  enabled: "{prefix}&7Plugin enabled"
+  disabled: "{prefix}&7Plugin disabled"
+  reload: "{prefix}&7Plugin reloaded successfully!"
+  menus_loaded: "{prefix}&7Successfully loaded &a{count} &7menus"
+  database_connected: "{prefix}&7Successfully connected to &a{type} &7database"
+  database_closed: "{prefix}&7Database connection closed"
+  no-permission: "{prefix}&cYou don't have permission to execute this command!"
+  invalid-command: "{prefix}&cInvalid command! Use &7/pw help &cfor help."
+  player-only: "{prefix}&cThis command can only be executed by players!"
+  teleported: "{prefix}&aTeleported to warp &e{name}&a!"
+  teleport-failed: "{prefix}&cTeleportation failed: Invalid warp location!"
+  invalid-field: "{prefix}&cInvalid input field: &e{field}"
+
+# Command help messages
+help:
+  header: "&8========== &3Post&bWarps &eHelp &8=========="
+  create: "&e/pw create <name> [description] &7- Create a new warp"
+  delete: "&e/pw delete <name> &7- Delete a warp"
+  list: "&e/pw list [page] &7- List your warps"
+  public: "&e/pw public [page] &7- List public warps"
+  tp: "&e/pw tp <name> &7- Teleport to a warp"
+  set: "&e/pw set <name> &7- Set warp location"
+  toggle: "&e/pw toggle <name> &7- Toggle warp public/private"
+  menu: "&e/pw menu &7- Open warp menu"
+  reload: "&e/pw reload &7- Reload plugin"
+  footer: "&8=================================="
+
+# Warp creation messages
+create:
+  success: "{prefix}&aWarp &e{name} &acreated successfully!"
+  failed: "{prefix}&cFailed to create warp &e{name}&c."
+  name-exists: "{prefix}&cWarp &e{name} &calready exists!"
+  no-name: "{prefix}&cPlease specify a warp name."
+  invalid-name: "{prefix}&cInvalid warp name. Use only letters, numbers, and underscores."
+  name-too-long: "{prefix}&cWarp name is too long. Maximum 32 characters."
+  description-too-long: "{prefix}&cWarp description is too long. Maximum 255 characters."
+  limit-reached: "{prefix}&cYou have reached the maximum number of warps ({limit})."
+
+# Warp deletion messages
+delete:
+  success: "{prefix}&aWarp &e{name} &adeleted successfully!"
+  failed: "{prefix}&cFailed to delete warp &e{name}&c."
+  not-found: "{prefix}&cWarp &e{name} &cnot found."
+  not-owner: "{prefix}&cYou don't own this warp."
+  confirm: "{prefix}&eAre you sure you want to delete warp &c{name}&e? Type &c/pw delete {name} confirm &eto confirm."
+
+# Teleportation messages
+teleport:
+  success: "{prefix}&aTeleported to &e{name}&a!"
+  failed: "{prefix}&cFailed to teleport to &e{name}&c."
+  not-found: "{prefix}&cWarp &e{name} &cnot found."
+  not-found-id: "{prefix}&cWarp with ID &e{id} &cnot found."
+  no-permission: "{prefix}&cYou don't have permission to use this warp."
+  no-warp-id: "{prefix}&cNo warp ID specified."
+  cooldown: "{prefix}&cYou must wait &e{time} &cseconds before teleporting again."
+  unsafe-location: "{prefix}&cUnsafe teleport location. Teleportation cancelled."
+
+# Warp listing messages
+list:
+  header: "&8========== &3Your Warps &8=========="
+  public-header: "&8========== &3Public Warps &8=========="
+  empty: "{prefix}&7You don't have any warps yet."
+  public-empty: "{prefix}&7No public warps available."
+  item: "{prefix}&e{name} &7- &f{world} &7({x}, {y}, {z}) &8- &7{description}"
+  public-item: "{prefix}&e{name} &7by &f{owner} &7- &f{world} &7({x}, {y}, {z}) &8- &7{description}"
+  footer: "{prefix}&7Page &e{page}&7/&e{total} &7- Use &e/pw list {next} &7for next page"
+  public-footer: "{prefix}&7Page &e{page}&7/&e{total} &7- Use &e/pw public {next} &7for next page"
+
+# Warp management messages
+manage:
+  location-updated: "{prefix}&aWarp &e{name} &alocation updated!"
+  location-failed: "{prefix}&cFailed to update warp &e{name} &clocation."
+  toggled-public: "{prefix}&aWarp &e{name} &ais now &epublic&a!"
+  toggled-private: "{prefix}&aWarp &e{name} &ais now &cprivate&a!"
+  toggle-failed: "{prefix}&cFailed to toggle warp &e{name} &cvisibility."
+  description-updated: "{prefix}&aWarp &e{name} &adescription updated!"
+  description-failed: "{prefix}&cFailed to update warp &e{name} &cdescription."
+
+# Search messages
+search:
+  cleared: "{prefix}&aSearch filter cleared!"
+  set: "{prefix}&aSearch keyword set to: &e{keyword}"
+  no-results: "{prefix}&cNo warps found matching your search."
+  results-found: "{prefix}&aFound &e{count} &awarps matching your search."
+
+# Language messages
+language:
+  unsupported: "{prefix}&cUnsupported language: &e{language}&c. Supported languages: &f{supported}"
+  switched: "{prefix}&aLanguage switched to: &e{language}"
+  auto_enabled: "{prefix}&aAuto language detection enabled"
+  files_reloaded: "{prefix}&aLanguage files reloaded"
+
+# Economy messages
+economy:
+  insufficient-funds: "{prefix}&cInsufficient funds! You need &e{amount} &cmore."
+  charge-create: "{prefix}&aCharged &e{amount} &afor creating warp."
+  charge-teleport: "{prefix}&aCharged &e{amount} &afor teleportation."
+  charge-set-public: "{prefix}&aCharged &e{amount} &afor making warp public."
+  refund-delete: "{prefix}&aRefunded &e{amount} &afor deleting warp."
+  vault-not-available: "{prefix}&cVault economy system not available."
+  playerpoints-not-available: "{prefix}&cPlayerPoints economy system not available."
+
+# Error messages
+error:
+  database: "{prefix}&cDatabase error occurred. Please contact an administrator."
+  internal: "{prefix}&cInternal error occurred. Please try again later."
+  world-not-found: "{prefix}&cWorld &e{world} &cnot found."
+  invalid-location: "{prefix}&cInvalid location specified."
+  file-not-found: "{prefix}&cConfiguration file not found."
+  permission-system: "{prefix}&cPermission system error."
+
+# Debug messages (always in English)
+debug:
+  enabled: "Debug mode enabled"
+  disabled: "Debug mode disabled"
+  player-data: "Player {player} data: {data}"
+  menu-opened: "Player {player} opened menu: {menu}"
+  action-executed: "Player {player} executed action: {action}"
+  warp-created: "Warp created: ID={id}, Name={name}, Owner={owner}"
+  warp-deleted: "Warp deleted: ID={id}, Name={name}"
+  database-query: "Database query executed: {query}"
+  cache-cleared: "Cache cleared for player: {player}"
+
+# Action messages
+actions:
+  warp_create:
+    no_name: "{prefix}&cPlease specify a warp name."
+    name_exists: "{prefix}&cWarp &e{name} &calready exists!"
+    success: "{prefix}&aWarp &e{name} &acreated successfully!"
+    failed: "{prefix}&cFailed to create warp &e{name}&c."
+
+  warp_delete:
+    not_found: "{prefix}&cWarp not found."
+    not_owner: "{prefix}&cYou don't own this warp."
+    success: "{prefix}&aWarp &e{name} &adeleted successfully!"
+    failed: "{prefix}&cFailed to delete warp."
+
+  warp_location:
+    not_found: "{prefix}&cWarp not found."
+    no_permission: "{prefix}&cYou don't have permission to modify this warp."
+    success: "{prefix}&aWarp location updated successfully!"
+    failed: "{prefix}&cFailed to update warp location."
+
+  warp_toggle:
+    not_found: "{prefix}&cWarp not found."
+    no_permission: "{prefix}&cYou don't have permission to modify this warp."
+    success: "{prefix}&aWarp visibility toggled successfully!"
+    failed: "{prefix}&cFailed to toggle warp visibility."
+
+# Status variables
+status:
+  public: "&aPublic"
+  private: "&cPrivate"
+  yes: "&aYes"
+  no: "&cNo"
+
+# Anvil input prompts
+anvil:
+  input:
+    name: "Enter warp name"
+    desc: "Enter warp description"
+  title:
+    name: "Set Warp Name"
+    desc: "Set Warp Description"

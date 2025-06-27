@@ -2,6 +2,7 @@ package com.github.postyizhan.gui.util
 
 import com.github.postyizhan.gui.core.MenuContext
 import com.github.postyizhan.model.Warp
+import com.github.postyizhan.util.MessageUtil
 import org.bukkit.entity.Player
 
 /**
@@ -19,16 +20,16 @@ class PlaceholderProcessor {
          */
         fun processPlaceholders(text: String, context: MenuContext): String {
             var result = text
-            
+
             // 处理玩家占位符
             result = processPlayerPlaceholders(result, context.player)
-            
+
             // 处理菜单数据占位符
             result = processMenuDataPlaceholders(result, context)
-            
-            // 处理玩家数据占位符
-            result = processPlayerDataPlaceholders(result, context.playerData)
-            
+
+            // 处理玩家数据占位符（带国际化支持）
+            result = processPlayerDataPlaceholders(result, context.playerData, context.player)
+
             return result
         }
         
@@ -49,8 +50,12 @@ class PlaceholderProcessor {
                 .replace("{coords}", warp.getFormattedCoordinates())
                 .replace("{desc}", warp.description)
             
-            // 公开/私有状态
-            val publicState = if (warp.isPublic) "&a公开" else "&c私有"
+            // 公开/私有状态（国际化）
+            val publicState = if (warp.isPublic) {
+                MessageUtil.getMessage("status.public", context.player)
+            } else {
+                MessageUtil.getMessage("status.private", context.player)
+            }
             result = result.replace("{public_state}", publicState)
             
             return result
@@ -96,20 +101,33 @@ class PlaceholderProcessor {
          */
         private fun processPlayerDataPlaceholders(text: String, playerData: Map<String, Any>): String {
             var result = text
-            
+
             for ((key, value) in playerData) {
                 result = result.replace("{$key}", value.toString())
             }
-            
+
             // 特殊占位符处理
             result = result.replace("{name}", playerData["name"]?.toString() ?: "")
                 .replace("{desc}", playerData["desc"]?.toString() ?: "")
-            
-            // 公开/私有状态显示
-            val isPublic = playerData["public"] as? Boolean ?: false
-            val publicState = if (isPublic) "&a公开" else "&c私有"
+
+            return result
+        }
+
+        /**
+         * 处理带玩家上下文的数据占位符（支持国际化）
+         */
+        fun processPlayerDataPlaceholders(text: String, playerData: Map<String, Any>, player: Player): String {
+            var result = processPlayerDataPlaceholders(text, playerData)
+
+            // 公开/私有状态显示（国际化）
+            val isPublic = playerData["public"] as? Boolean ?: playerData["is_public"] as? Boolean ?: false
+            val publicState = if (isPublic) {
+                MessageUtil.getMessage("status.public", player)
+            } else {
+                MessageUtil.getMessage("status.private", player)
+            }
             result = result.replace("{public_state}", publicState)
-            
+
             return result
         }
     }

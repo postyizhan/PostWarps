@@ -10,7 +10,12 @@ commands:
   postwarps:
     description: 地标插件主命令
     aliases: [pw, warp, warps]
-    usage: /postwarps [help|create|delete|list|tp|info|public|private|menu|reload|version]
+    usage: /postwarps [help|create|delete|list|tp|info|public|private|menu|reload|version|lang]
+    permission: postwarps.use
+  lang:
+    description: 语言切换命令
+    aliases: [language]
+    usage: /lang [语言代码|auto|list|reload]
     permission: postwarps.use
 
 permissions:

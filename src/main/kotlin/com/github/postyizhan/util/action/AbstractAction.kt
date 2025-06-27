@@ -37,19 +37,20 @@ abstract class AbstractAction(protected val plugin: PostWarps) : Action {
     }
     
     /**
-     * 从语言文件获取消息
+     * 从语言文件获取消息（带玩家语言支持）
+     * @param player 玩家
      * @param key 消息键
      * @param replacements 替换参数
      * @return 格式化后的消息
      */
-    protected fun getMessage(key: String, vararg replacements: Pair<String, String>): String {
-        var message = MessageUtil.getMessage("actions.$key")
+    protected fun getMessage(player: Player, key: String, vararg replacements: Pair<String, String>): String {
+        var message = MessageUtil.getMessage("actions.$key", player)
         replacements.forEach { (placeholder, value) ->
             message = message.replace("{$placeholder}", value)
         }
         return MessageUtil.color(message)
     }
-    
+
     /**
      * 向玩家发送消息
      * @param player 玩家
@@ -57,6 +58,6 @@ abstract class AbstractAction(protected val plugin: PostWarps) : Action {
      * @param replacements 替换参数
      */
     protected fun sendMessage(player: Player, key: String, vararg replacements: Pair<String, String>) {
-        player.sendMessage(getMessage(key, *replacements))
+        player.sendMessage(getMessage(player, key, *replacements))
     }
 }

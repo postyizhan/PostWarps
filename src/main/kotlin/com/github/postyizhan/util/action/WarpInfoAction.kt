@@ -37,27 +37,44 @@ class WarpInfoAction(plugin: PostWarps) : AbstractAction(plugin) {
         logDebug("Displaying info for warp ID: ${warp.id}, name: ${warp.name}")
         
         // 显示信息
-        player.sendMessage(MessageUtil.color(MessageUtil.getMessage("info.header")))
+        player.sendMessage(MessageUtil.color(MessageUtil.getMessage("info.header", player)))
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("info.name").replace("{name}", warp.name)
+            MessageUtil.getMessage("info.name", player).replace("{name}", warp.name)
         ))
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("info.owner").replace("{owner}", warp.ownerName)
+            MessageUtil.getMessage("info.owner", player).replace("{owner}", warp.ownerName)
         ))
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("info.world").replace("{world}", warp.worldName)
+            MessageUtil.getMessage("info.world", player).replace("{world}", warp.worldName)
         ))
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("info.coordinates").replace("{coords}", warp.getFormattedCoordinates())
+            MessageUtil.getMessage("info.coordinates", player).replace("{coords}", warp.getFormattedCoordinates())
         ))
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("info.created").replace("{time}", formatTimestamp(warp.createTime))
+            MessageUtil.getMessage("info.created", player).replace("{time}", formatTimestamp(warp.createTime))
         ))
+
+        // 使用国际化的公开/私有状态
+        val publicStatus = if (warp.isPublic) {
+            MessageUtil.getMessage("status.public", player)
+        } else {
+            MessageUtil.getMessage("status.private", player)
+        }
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("info.public").replace("{public}", if (warp.isPublic) "公开" else "私有")
+            MessageUtil.getMessage("info.public", player).replace("{public}", publicStatus)
         ))
+
+        // 使用国际化的描述默认值
+        val descriptionText = if (warp.description.isEmpty()) {
+            when (MessageUtil.getPlayerLanguage(player)) {
+                "en_US" -> "None"
+                else -> "无"
+            }
+        } else {
+            warp.description
+        }
         player.sendMessage(MessageUtil.color(
-            MessageUtil.getMessage("info.description").replace("{desc}", warp.description.ifEmpty { "无" })
+            MessageUtil.getMessage("info.description", player).replace("{desc}", descriptionText)
         ))
         
         // 关闭菜单

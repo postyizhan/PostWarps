@@ -249,6 +249,32 @@ class MenuManager(private val plugin: PostWarps) {
     }
 
     /**
+     * 清除玩家的菜单缓存（用于语言切换后刷新）
+     */
+    fun clearPlayerMenuCache(player: Player) {
+        // 清除玩家特定的缓存
+        cache.clearPlayerCache(player)
+
+        // 注意：不清除menuCache，因为那是全局的Menu对象缓存
+        // Menu对象本身是无状态的，问题在于国际化处理需要在每次创建inventory时进行
+    }
+
+    /**
+     * 强制刷新玩家的菜单（清除缓存并重新打开）
+     */
+    fun forceRefreshPlayerMenu(player: Player) {
+        val currentMenu = getOpenMenu(player)
+        if (currentMenu != null) {
+            // 清除玩家缓存
+            clearPlayerMenuCache(player)
+
+            // 重新打开菜单
+            val currentData = getPlayerData(player).toMap()
+            openMenu(player, currentMenu, currentData)
+        }
+    }
+
+    /**
      * 清理资源
      */
     fun shutdown() {
