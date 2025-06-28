@@ -2,6 +2,7 @@ package com.github.postyizhan.command
 
 import com.github.postyizhan.PostWarps
 import com.github.postyizhan.command.commands.RootCommand
+import com.github.postyizhan.command.LanguageCommand
 
 /**
  * 新的命令管理器，使用模块化设计
@@ -24,7 +25,7 @@ class CommandManager(private val plugin: PostWarps) {
         val langCommand = plugin.getCommand("lang")
         langCommand?.setExecutor(languageCommand)
         langCommand?.tabCompleter = languageCommand
-        
+
         if (plugin.isDebugEnabled()) {
             plugin.logger.info("[DEBUG] Registered new modular command system")
         }

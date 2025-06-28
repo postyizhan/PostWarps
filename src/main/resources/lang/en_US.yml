@@ -86,6 +86,10 @@ teleport:
   not-found: "{prefix}&cWarp &e{name} &cnot found!"
   success: "{prefix}&7Successfully teleported to warp &e{name}&a!"
   failed: "{prefix}&cFailed to teleport to warp &e{name}&c!"
+  starting: "{prefix}&eTeleporting to warp &7{name}&e, please wait &c{delay} &eseconds..."
+  cancelled: "{prefix}&cTeleportation cancelled!"
+  unsafe_location: "{prefix}&cUnsafe teleport location, teleportation cancelled."
+  no_pending: "{prefix}&cYou have no pending teleport requests."
 
 # Info messages
 info:
@@ -115,19 +119,50 @@ private:
 
 # Status messages
 status:
-  public: "Public"
-  private: "Private"
+  public: "&aPublic"
+  private: "&cPrivate"
+  yes: "&7Yes"
+  no: "&cNo"
 
 # Language messages
 language:
-  unsupported: "{prefix}&cUnsupported language: &e{language}&c. Supported languages: &7{supported}"
+  unsupported: "{prefix}&cUnsupported language: &e{language}&c. Supported languages: &f{supported}"
+  switched: "{prefix}&7Language switched to: &e{language}"
+  auto_enabled: "{prefix}&7Auto language detection enabled"
+  files_reloaded: "{prefix}&7Language files reloaded"
 
-# Warp creation action messages
-warp_create:
-  no_name: "{prefix}&cPlease set a warp name first"
-  name_exists: "{prefix}&cA warp with this name already exists"
-  success: "{prefix}&7Successfully created warp &e{name}"
-  failed: "{prefix}&cFailed to create warp, please try again later"
+# Menu related messages
+menu:
+  no_warps: "{prefix}&7You haven't created any warps yet"
+  no_public_warps: "{prefix}&7No public warps available"
+
+# Search related messages
+search:
+  cleared: "{prefix}&7Search filter cleared"
+  set: "{prefix}&7Search keyword set: &e{keyword}"
+  no_results: "{prefix}&cNo matching warps found"
+  results_found: "{prefix}&7Found &e{count} &7matching warps"
+
+# Action messages
+actions:
+  # General messages
+  no_permission: "{prefix}&cYou don't have permission to perform this action"
+  not_found: "{prefix}&cSpecified warp not found"
+  unknown_action: "{prefix}&cUnknown action: {action}"
+
+  warp_create:
+    no_name: "{prefix}&cPlease set a warp name first"
+    name_exists: "{prefix}&cA warp with this name already exists"
+    success: "{prefix}&7Successfully created warp &e{name}"
+    failed: "{prefix}&cFailed to create warp, please try again later"
+
+  warp_set:
+    name_exists: "{prefix}&cA warp with this name already exists"
+    success: "{prefix}&7Setting successful"
+    failed: "{prefix}&cSetting failed, please try again later"
+    no_permission: "{prefix}&cYou don't have permission to modify this warp"
+    desc_success: "{prefix}&7Warp description updated successfully"
+    desc_failed: "{prefix}&cFailed to update warp description, please try again later"
 
 # Warp material action messages
 warp_material:
@@ -273,3 +308,14 @@ commands:
       playerpoints: "&7PlayerPoints: &e{points}"
       playerpoints-disabled: "&7PlayerPoints not enabled"
       group: "&7Permission group: &e{group}"
+      teleport-config: "&7Teleport config: Delay &e{delay}&7s, Cancel on move &e{cancel_on_move}&7, Cancel on damage &e{cancel_on_damage}"
+      footer: "&7===================="
+
+# Anvil input prompts
+anvil:
+  input:
+    name: " "
+    desc: " "
+  title:
+    name: "Set Warp Name"
+    desc: "Set Warp Description"

@@ -227,7 +227,7 @@ object MessageUtil {
      */
     fun reloadLanguages() {
         languageMessages.clear()
-        plugin.logger.info("已清除语言缓存，将重新加载语言文件")
+        plugin.logger.info("Language cache cleared, language files will be reloaded")
     }
     
     /**

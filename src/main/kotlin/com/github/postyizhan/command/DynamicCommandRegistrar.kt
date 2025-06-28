@@ -215,7 +215,7 @@ class MenuCommandExecutor(
             }
             
         } catch (e: Exception) {
-            sender.sendMessage(MessageUtil.color("&c打开菜单时发生错误，请联系管理员"))
+            sender.sendMessage(MessageUtil.color("&cAn error occurred while opening the menu, please contact an administrator"))
             plugin.logger.warning("Failed to open menu '$menuName' for player ${sender.name}: ${e.message}")
             if (plugin.isDebugEnabled()) {
                 e.printStackTrace()

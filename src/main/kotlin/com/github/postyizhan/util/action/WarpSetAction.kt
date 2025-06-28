@@ -3,7 +3,10 @@ package com.github.postyizhan.util.action
 import com.github.postyizhan.PostWarps
 import com.github.postyizhan.util.MessageUtil
 import net.wesjd.anvilgui.AnvilGUI
+import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 
 /**
  * 设置地标数据动作处理器
@@ -18,6 +21,9 @@ class WarpSetAction(plugin: PostWarps) : AbstractAction(plugin) {
         // 关闭当前菜单
         player.closeInventory()
         
+        // 创建输入物品
+        val inputItem = createInputItem()
+
         // 创建铁砧GUI
         AnvilGUI.Builder()
             .onClose { stateSnapshot ->
@@ -28,8 +34,11 @@ class WarpSetAction(plugin: PostWarps) : AbstractAction(plugin) {
             }
             .onClick { slot, stateSnapshot ->
                 if (slot == AnvilGUI.Slot.OUTPUT) {
+                    // 获取输入文本并去掉最前面的空格
+                    val inputText = stateSnapshot.text.removePrefix(" ")
+
                     // 设置数据
-                    plugin.getMenuManager().setPlayerData(stateSnapshot.player, key, stateSnapshot.text)
+                    plugin.getMenuManager().setPlayerData(stateSnapshot.player, key, inputText)
                     
                     // 如果是描述，则保存到数据库
                     if (key == "desc") {
@@ -79,17 +88,24 @@ class WarpSetAction(plugin: PostWarps) : AbstractAction(plugin) {
                     emptyList()
                 }
             }
-            .text(getInputPrompt(player, key))
+            .itemLeft(inputItem)
             .title(getTitlePrompt(player, key))
             .plugin(plugin)
             .open(player)
     }
     
     /**
-     * 获取输入提示文本（国际化）
+     * 创建输入物品
      */
-    private fun getInputPrompt(player: Player, key: String): String {
-        return MessageUtil.getMessage("anvil.input.$key", player)
+    private fun createInputItem(): ItemStack {
+        val item = ItemStack(Material.PAPER)
+        val meta = item.itemMeta
+
+        // 设置物品显示名称为一个空格
+        meta?.setDisplayName(" ")
+
+        item.itemMeta = meta
+        return item
     }
 
     /**

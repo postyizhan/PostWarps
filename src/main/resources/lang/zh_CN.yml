@@ -57,7 +57,7 @@ actions:
     no_permission: "{prefix}&c你没有权限修改这个地标"
     desc_success: "{prefix}&7地标描述更新成功"
     desc_failed: "{prefix}&c地标描述更新失败，请稍后再试"
-  
+
   warp_create:
     no_name: "{prefix}&c请先设置地标名称"
     name_exists: "{prefix}&c已存在同名地标"
@@ -205,8 +205,8 @@ status:
 # 铁砧输入提示
 anvil:
   input:
-    name: "输入地标名称"
-    desc: "输入地标描述"
+    name: " "
+    desc: " "
   title:
     name: "设置地标名称"
     desc: "设置地标描述"

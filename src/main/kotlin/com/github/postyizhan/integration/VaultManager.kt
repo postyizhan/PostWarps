@@ -21,7 +21,7 @@ class VaultManager(private val plugin: PostWarps) {
      */
     fun initialize(): Boolean {
         if (!plugin.server.pluginManager.isPluginEnabled("Vault")) {
-            plugin.logger.info("Vault插件未找到，经济功能将被禁用")
+            plugin.logger.info("Vault plugin not found, economy features will be disabled")
             return false
         }
         

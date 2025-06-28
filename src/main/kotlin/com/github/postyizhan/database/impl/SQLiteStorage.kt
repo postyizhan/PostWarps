@@ -36,7 +36,7 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             // 创建表
             createTables()
         } catch (e: Exception) {
-            plugin.logger.severe("无法初始化SQLite数据库: ${e.message}")
+            plugin.logger.severe("Failed to initialize SQLite database: ${e.message}")
             e.printStackTrace()
         }
     }
@@ -86,7 +86,7 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
         try {
             connection?.close()
         } catch (e: SQLException) {
-            plugin.logger.warning("关闭数据库连接时出错: ${e.message}")
+            plugin.logger.warning("Error closing database connection: ${e.message}")
         }
     }
     
@@ -121,7 +121,7 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             
             return result > 0
         } catch (e: SQLException) {
-            plugin.logger.severe("创建地标时出错: ${e.message}")
+            plugin.logger.severe("Error creating warp: ${e.message}")
             return false
         }
     }
@@ -139,11 +139,11 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             
             return result > 0
         } catch (e: SQLException) {
-            plugin.logger.severe("删除地标时出错: ${e.message}")
+            plugin.logger.severe("Error deleting warp: ${e.message}")
             return false
         }
     }
-    
+
     /**
      * 根据名称和所有者删除地标
      */
@@ -155,10 +155,10 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             preparedStatement?.setString(2, owner.toString())
             val result = preparedStatement?.executeUpdate() ?: 0
             preparedStatement?.close()
-            
+
             return result > 0
         } catch (e: SQLException) {
-            plugin.logger.severe("删除地标时出错: ${e.message}")
+            plugin.logger.severe("Error deleting warp: ${e.message}")
             return false
         }
     }

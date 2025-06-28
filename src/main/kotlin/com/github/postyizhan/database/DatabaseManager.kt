@@ -35,7 +35,7 @@ class DatabaseManager(private val plugin: PostWarps) {
                     .replace("{type}", type)
             ))
         } catch (e: Exception) {
-            plugin.logger.severe("无法初始化数据库: ${e.message}")
+            plugin.logger.severe("Failed to initialize database: ${e.message}")
             e.printStackTrace()
         }
     }

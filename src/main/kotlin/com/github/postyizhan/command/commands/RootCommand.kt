@@ -5,6 +5,7 @@ import com.github.postyizhan.command.LanguageCommand
 import com.github.postyizhan.command.base.CommandExecutor
 import com.github.postyizhan.command.commands.admin.AdminCommand
 import com.github.postyizhan.command.commands.warp.WarpCommand
+import com.github.postyizhan.util.MessageUtil
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -83,10 +84,13 @@ class VersionCommand(plugin: PostWarps) : com.github.postyizhan.command.base.Abs
     override fun execute(sender: CommandSender, args: Array<String>): Boolean {
         if (!checkPermission(sender)) return true
         
-        sendMessage(sender, "commands.version.info", 
-            "version" to plugin.description.version,
-            "name" to plugin.description.name
-        )
+        sender.sendMessage(MessageUtil.color("&3Post&bWarps &8| &fv${plugin.description.version}"))
+        sender.sendMessage(MessageUtil.color("&7A simple Minecraft warp teleportation plugin."))
+        sender.sendMessage(MessageUtil.color("&7"))
+        sender.sendMessage(MessageUtil.color("&f• Author: &7postyizhan"))
+        sender.sendMessage(MessageUtil.color("&f• GitHub: &7https://github.com/postyizhan/PostWarps"))
+        sender.sendMessage(MessageUtil.color("&f• Discord: &7https://discord.com/invite/jN4Br8uhSS"))
+        sender.sendMessage(MessageUtil.color("&f• QQ Group: &7611076407"))
         
         return true
     }

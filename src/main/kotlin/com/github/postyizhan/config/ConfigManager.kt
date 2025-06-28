@@ -91,7 +91,7 @@ class ConfigManager(private val plugin: PostWarps) {
         try {
             config.save(configFile)
         } catch (e: IOException) {
-            plugin.logger.severe("无法保存配置文件: ${e.message}")
+            plugin.logger.severe("Failed to save configuration file: ${e.message}")
         }
     }
     

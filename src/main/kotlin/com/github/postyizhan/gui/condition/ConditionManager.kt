@@ -4,73 +4,76 @@ import com.github.postyizhan.PostWarps
 import org.bukkit.entity.Player
 
 /**
- * 条件管理器，统一管理所有条件检查器
+ * 条件管理器 - 重构后的版本，委托给优化的条件管理器
+ * 保持向后兼容性，同时提供更好的性能
  */
 class ConditionManager(private val plugin: PostWarps) {
-    
-    private val checkers = mutableListOf<ConditionChecker>()
-    
-    init {
-        // 注册所有条件检查器
-        registerChecker(PermissionConditionChecker())
-        registerChecker(OpConditionChecker())
-        registerChecker(DataConditionChecker())
-        registerChecker(PlayerConditionChecker())
-    }
-    
+
+    // 委托给优化的条件管理器
+    private val optimizedManager = OptimizedConditionManager(plugin)
+
     /**
      * 注册条件检查器
      * @param checker 条件检查器
      */
     fun registerChecker(checker: ConditionChecker) {
-        checkers.add(checker)
-        if (plugin.isDebugEnabled()) {
-            plugin.logger.info("[DEBUG] Registered condition checker: ${checker::class.simpleName}")
-        }
+        optimizedManager.registerChecker(checker)
     }
-    
+
     /**
-     * 检查条件是否满足
+     * 移除条件检查器
+     * @param checkerClass 检查器类
+     */
+    fun unregisterChecker(checkerClass: Class<out ConditionChecker>) {
+        optimizedManager.unregisterChecker(checkerClass)
+    }
+
+    /**
+     * 检查条件是否满足 - 委托给优化管理器
      * @param condition 条件字符串
      * @param player 玩家
      * @param data 数据上下文
      * @return 是否满足条件
      */
     fun checkCondition(condition: String, player: Player, data: Map<String, Any>): Boolean {
-        if (condition.isBlank()) {
-            if (plugin.isDebugEnabled()) {
-                plugin.logger.info("[DEBUG] Empty condition, returning true")
-            }
-            return true // 空条件默认为true
-        }
-
-        // 遍历所有检查器，找到能处理此条件的检查器
-        for (checker in checkers) {
-            for (prefix in checker.getSupportedPrefixes()) {
-                if (condition.startsWith(prefix) || condition == prefix.trim()) {
-                    val result = checker.checkCondition(condition, player, data)
-                    if (plugin.isDebugEnabled()) {
-                        plugin.logger.info("[DEBUG] Condition check: '$condition' -> $result (using ${checker::class.simpleName}) for player ${player.name}")
-                    }
-                    return result
-                }
-            }
-        }
-
-        // 没有找到合适的检查器
-        if (plugin.isDebugEnabled()) {
-            plugin.logger.warning("[DEBUG] Unknown condition type: '$condition'")
-        } else {
-            plugin.logger.warning("Unknown condition type: '$condition'")
-        }
-        return false
+        return optimizedManager.checkCondition(condition, player, data)
     }
-    
+
     /**
      * 获取所有支持的条件前缀
      * @return 支持的条件前缀列表
      */
     fun getSupportedConditions(): List<String> {
-        return checkers.flatMap { it.getSupportedPrefixes() }
+        return optimizedManager.getSupportedConditions()
+    }
+
+    /**
+     * 清理过期缓存
+     */
+    fun cleanupExpiredCache() {
+        optimizedManager.cleanupExpiredCache()
+    }
+
+    /**
+     * 清理所有缓存
+     */
+    fun clearAllCache() {
+        optimizedManager.clearAllCache()
+    }
+
+    /**
+     * 清理指定玩家的缓存
+     * @param player 玩家
+     */
+    fun clearPlayerCache(player: Player) {
+        optimizedManager.clearPlayerCache(player)
+    }
+
+    /**
+     * 获取缓存统计信息
+     * @return 缓存统计
+     */
+    fun getCacheStats(): OptimizedConditionManager.CacheStats {
+        return optimizedManager.getCacheStats()
     }
 }

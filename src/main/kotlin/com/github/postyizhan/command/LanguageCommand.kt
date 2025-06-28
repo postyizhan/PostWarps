@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 
 /**
  * 语言切换命令处理器
- * 允许玩家切换界面语言
+ * 允许玩家切换界面语言，支持完整的多语言功能
  */
 class LanguageCommand(private val plugin: PostWarps) : CommandExecutor, TabCompleter {
     
@@ -19,7 +19,7 @@ class LanguageCommand(private val plugin: PostWarps) : CommandExecutor, TabCompl
             sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("general.player-only")))
             return true
         }
-        
+
         when (args.size) {
             0 -> {
                 // 显示当前语言和可用语言
@@ -46,12 +46,11 @@ class LanguageCommand(private val plugin: PostWarps) : CommandExecutor, TabCompl
                 }
             }
             else -> {
-                // 参数过多
-                sender.sendMessage(MessageUtil.color(MessageUtil.getMessage("general.invalid-args", sender)))
+                // 参数过多，显示用法
                 showUsage(sender)
             }
         }
-        
+
         return true
     }
     
@@ -65,64 +64,129 @@ class LanguageCommand(private val plugin: PostWarps) : CommandExecutor, TabCompl
         } catch (e: Exception) {
             "unknown"
         }
-        
-        player.sendMessage(MessageUtil.color("&8========== &3语言信息 &8=========="))
-        player.sendMessage(MessageUtil.color("&7当前语言: &f$currentLang"))
-        player.sendMessage(MessageUtil.color("&7客户端语言: &f$clientLang"))
-        player.sendMessage(MessageUtil.color("&7支持的语言: &f${MessageUtil.getSupportedLanguages().joinToString(", ")}"))
-        player.sendMessage(MessageUtil.color(""))
-        player.sendMessage(MessageUtil.color("&e使用 &f/lang <语言> &e切换语言"))
-        player.sendMessage(MessageUtil.color("&e使用 &f/lang auto &e启用自动检测"))
-        player.sendMessage(MessageUtil.color("&e使用 &f/lang list &e查看支持的语言"))
+
+        // 使用多语言消息
+        when (currentLang) {
+            "zh_CN" -> {
+                player.sendMessage(MessageUtil.color("&8========== &3语言信息 &8=========="))
+                player.sendMessage(MessageUtil.color("&7当前语言: &f$currentLang"))
+                player.sendMessage(MessageUtil.color("&7客户端语言: &f$clientLang"))
+                player.sendMessage(MessageUtil.color("&7支持的语言: &f${MessageUtil.getSupportedLanguages().joinToString(", ")}"))
+                player.sendMessage(MessageUtil.color(""))
+                player.sendMessage(MessageUtil.color("&e使用 &f/lang <语言> &e切换语言"))
+                player.sendMessage(MessageUtil.color("&e使用 &f/lang auto &e启用自动检测"))
+                player.sendMessage(MessageUtil.color("&e使用 &f/lang list &e查看支持的语言"))
+            }
+            "en_US" -> {
+                player.sendMessage(MessageUtil.color("&8========== &3Language Info &8=========="))
+                player.sendMessage(MessageUtil.color("&7Current language: &f$currentLang"))
+                player.sendMessage(MessageUtil.color("&7Client language: &f$clientLang"))
+                player.sendMessage(MessageUtil.color("&7Supported languages: &f${MessageUtil.getSupportedLanguages().joinToString(", ")}"))
+                player.sendMessage(MessageUtil.color(""))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang <language> &eto switch language"))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang auto &eto enable auto detection"))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang list &eto view supported languages"))
+            }
+            else -> {
+                // 默认使用英文
+                player.sendMessage(MessageUtil.color("&8========== &3Language Info &8=========="))
+                player.sendMessage(MessageUtil.color("&7Current language: &f$currentLang"))
+                player.sendMessage(MessageUtil.color("&7Client language: &f$clientLang"))
+                player.sendMessage(MessageUtil.color("&7Supported languages: &f${MessageUtil.getSupportedLanguages().joinToString(", ")}"))
+                player.sendMessage(MessageUtil.color(""))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang <language> &eto switch language"))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang auto &eto enable auto detection"))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang list &eto view supported languages"))
+            }
+        }
     }
     
     /**
      * 显示支持的语言列表
      */
     private fun showSupportedLanguages(player: Player) {
-        player.sendMessage(MessageUtil.color("&8========== &3支持的语言 &8=========="))
-        
+        val currentLang = MessageUtil.getPlayerLanguage(player)
         val supportedLanguages = mapOf(
             "zh_CN" to "中文 (简体)",
             "en_US" to "English (US)"
         )
-        
-        supportedLanguages.forEach { (code, name) ->
-            val current = if (MessageUtil.getPlayerLanguage(player) == code) " &a(当前)" else ""
-            player.sendMessage(MessageUtil.color("&e$code &7- &f$name$current"))
+
+        when (currentLang) {
+            "zh_CN" -> {
+                player.sendMessage(MessageUtil.color("&8========== &3支持的语言 &8=========="))
+                supportedLanguages.forEach { (code, name) ->
+                    val current = if (currentLang == code) " &a(当前)" else ""
+                    player.sendMessage(MessageUtil.color("&e$code &7- &f$name$current"))
+                }
+                player.sendMessage(MessageUtil.color(""))
+                player.sendMessage(MessageUtil.color("&e使用 &f/lang <语言代码> &e切换语言"))
+                player.sendMessage(MessageUtil.color("&7例如: &f/lang en_US"))
+            }
+            "en_US" -> {
+                player.sendMessage(MessageUtil.color("&8========== &3Supported Languages &8=========="))
+                supportedLanguages.forEach { (code, name) ->
+                    val current = if (currentLang == code) " &a(current)" else ""
+                    player.sendMessage(MessageUtil.color("&e$code &7- &f$name$current"))
+                }
+                player.sendMessage(MessageUtil.color(""))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang <language_code> &eto switch language"))
+                player.sendMessage(MessageUtil.color("&7Example: &f/lang zh_CN"))
+            }
+            else -> {
+                // 默认使用英文
+                player.sendMessage(MessageUtil.color("&8========== &3Supported Languages &8=========="))
+                supportedLanguages.forEach { (code, name) ->
+                    val current = if (currentLang == code) " &a(current)" else ""
+                    player.sendMessage(MessageUtil.color("&e$code &7- &f$name$current"))
+                }
+                player.sendMessage(MessageUtil.color(""))
+                player.sendMessage(MessageUtil.color("&eUse &f/lang <language_code> &eto switch language"))
+                player.sendMessage(MessageUtil.color("&7Example: &f/lang zh_CN"))
+            }
         }
-        
-        player.sendMessage(MessageUtil.color(""))
-        player.sendMessage(MessageUtil.color("&e使用 &f/lang <语言代码> &e切换语言"))
-        player.sendMessage(MessageUtil.color("&7例如: &f/lang en_US"))
     }
     
     /**
      * 设置指定语言
      */
     private fun setLanguage(player: Player, language: String) {
-        val normalizedLang = language
-        
-        if (MessageUtil.isLanguageSupported(normalizedLang)) {
-            MessageUtil.setPlayerLanguage(player, normalizedLang)
-            
-            // 使用新语言发送确认消息
-            val confirmMessage = when (normalizedLang) {
-                "zh_CN" -> "&a语言已切换为中文！"
-                "en_US" -> "&aLanguage switched to English!"
-                else -> "&aLanguage switched to $normalizedLang!"
-            }
-            
-            player.sendMessage(MessageUtil.color(confirmMessage))
+        val normalizedLang = language.trim()
 
-            // 自动刷新当前打开的菜单
-            refreshCurrentMenu(player, normalizedLang)
-            
+        if (MessageUtil.isLanguageSupported(normalizedLang)) {
+            // 保存旧语言用于错误回退
+            val oldLanguage = MessageUtil.getPlayerLanguage(player)
+
+            try {
+                MessageUtil.setPlayerLanguage(player, normalizedLang)
+
+                // 使用新语言发送确认消息
+                val confirmMessage = when (normalizedLang) {
+                    "zh_CN" -> "&a语言已切换为中文！"
+                    "en_US" -> "&aLanguage switched to English!"
+                    else -> "&aLanguage switched to $normalizedLang!"
+                }
+
+                player.sendMessage(MessageUtil.color(confirmMessage))
+
+                // 自动刷新当前打开的菜单
+                refreshCurrentMenu(player, normalizedLang)
+
+            } catch (e: Exception) {
+                // 如果设置失败，回退到旧语言
+                MessageUtil.setPlayerLanguage(player, oldLanguage)
+                player.sendMessage(MessageUtil.color("&cFailed to switch language: ${e.message}"))
+                plugin.logger.warning("Failed to set language for player ${player.name}: ${e.message}")
+            }
+
         } else {
-            player.sendMessage(MessageUtil.color(MessageUtil.getMessage("language.unsupported", player)
-                .replace("{language}", language)
-                .replace("{supported}", MessageUtil.getSupportedLanguages().joinToString(", "))
-            ))
+            // 使用当前语言显示错误消息
+            val currentLang = MessageUtil.getPlayerLanguage(player)
+            val errorMessage = when (currentLang) {
+                "zh_CN" -> "&c不支持的语言: &e$language&c。支持的语言: &f${MessageUtil.getSupportedLanguages().joinToString(", ")}"
+                "en_US" -> "&cUnsupported language: &e$language&c. Supported languages: &f${MessageUtil.getSupportedLanguages().joinToString(", ")}"
+                else -> "&cUnsupported language: &e$language&c. Supported languages: &f${MessageUtil.getSupportedLanguages().joinToString(", ")}"
+            }
+            player.sendMessage(MessageUtil.color(errorMessage))
         }
     }
 
