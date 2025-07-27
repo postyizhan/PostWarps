@@ -2,7 +2,7 @@ package com.github.postyizhan.gui.impl
 
 import com.github.postyizhan.gui.core.MenuRenderer
 import com.github.postyizhan.gui.core.MenuContext
-import com.github.postyizhan.gui.util.ItemBuilder
+import com.github.postyizhan.gui.processor.MenuItemProcessor
 import com.github.postyizhan.gui.util.PlaceholderProcessor
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -28,15 +28,21 @@ class WarpListMenuRenderer : MenuRenderer {
             val title = processTitle(context)
             val inventory = Bukkit.createInventory(null, rows * 9, title)
             
-            // 创建物品构建器
-            val itemBuilder = ItemBuilder(context)
+            // 创建菜单项处理器
+            val menuItemProcessor = MenuItemProcessor(context.plugin)
             val itemsConfig = context.getItemsConfig()
-            
+
+            // 合并MenuData的dynamicData到playerData中，用于条件检查
+            val combinedData = context.playerData.toMutableMap()
+            menuData.dynamicData.forEach { (key, value) ->
+                combinedData[key] = value
+            }
+
             // 计算分页信息
             val currentPage = context.getCurrentPage()
             val warpsPerPage = countWarpSlots(layout)
             val startIndex = currentPage * warpsPerPage
-            
+
             // 用于追踪当前显示的地标索引
             var currentWarpIndex = startIndex
             
@@ -50,20 +56,20 @@ class WarpListMenuRenderer : MenuRenderer {
                                 // 这是地标物品槽位
                                 if (currentWarpIndex < menuData.warps.size) {
                                     val warp = menuData.warps[currentWarpIndex]
-                                    
+
                                     // 存储地标ID到玩家数据中，用于点击处理
                                     val slotKey = "warp_id_${row}_${col}"
                                     context.setPlayerData(slotKey, warp.id)
-                                    
+
                                     currentWarpIndex++
-                                    itemBuilder.createWarpItem(symbol.toString(), itemConfig, warp)
+                                    menuItemProcessor.createWarpMenuItem(itemConfig, context.player, warp)
                                 } else {
                                     // 没有更多地标，不显示物品
                                     null
                                 }
                             } else {
                                 // 普通菜单按钮
-                                itemBuilder.createItem(symbol.toString(), itemConfig)
+                                menuItemProcessor.createMenuItem(itemConfig, context.player, combinedData)
                             }
                             
                             if (item != null) {

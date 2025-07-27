@@ -29,19 +29,6 @@ items:
   # 公开/私有设置按钮
   B:
     material: REDSTONE_TORCH
-    i18n:
-      zh_CN:
-        name: "&b公开/私有"
-        lore:
-          - "&7当前状态: {public_state}"
-          - ""
-          - "&e► 点击切换状态"
-      en_US:
-        name: "&bPublic/Private"
-        lore:
-          - "&7Current status: {public_state}"
-          - ""
-          - "&e► Click to toggle status"
     icons:
       # 公开状态时显示火把
       - condition: 'data is_public'

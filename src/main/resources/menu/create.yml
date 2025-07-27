@@ -52,23 +52,6 @@ items:
   # 公开/私有设置按钮
   C:
     material: REDSTONE_TORCH
-    i18n:
-      zh_CN:
-        name: "&b公开/私有"
-        lore:
-          - "&7当前状态: {public_state}"
-          - ""
-          - "&e► 点击切换状态"
-      en_US:
-        name: "&bPublic/Private"
-        lore:
-          - "&7Current status: {public_state}"
-          - ""
-          - "&e► Click to toggle status"
-    action:
-      all:
-        - "[warp_toggle]"
-        - "[sound] CLICK 0.5 1.5"
     icons:
       # 公开状态时显示火把
       - condition: 'data is_public'
@@ -106,6 +89,10 @@ items:
               - "&7Only you can see this warp"
               - ""
               - "&e► Click to make public"
+    action:
+      all:
+        - "[warp_toggle]"
+        - "[sound] CLICK 0.5 1.5"
   # 创建按钮
   D:
     material: EMERALD

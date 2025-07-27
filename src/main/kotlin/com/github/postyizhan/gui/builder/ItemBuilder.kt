@@ -2,6 +2,7 @@ package com.github.postyizhan.gui.builder
 
 import com.github.postyizhan.PostWarps
 import com.github.postyizhan.gui.icon.IconConfig
+import com.github.postyizhan.model.Warp
 import com.github.postyizhan.util.MessageUtil
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -69,7 +70,60 @@ class ItemBuilder(private val plugin: PostWarps) {
         item.itemMeta = meta
         return item
     }
-    
+
+    /**
+     * 创建地标物品（支持地标占位符）
+     * @param mainConfig 主配置
+     * @param iconConfig 子图标配置（可为null）
+     * @param player 玩家
+     * @param warp 地标对象
+     * @return 创建的物品，如果失败返回null
+     */
+    fun createWarpItem(
+        mainConfig: ConfigurationSection,
+        iconConfig: IconConfig?,
+        player: Player,
+        warp: Warp
+    ): ItemStack? {
+        // 创建基础数据，包含地标信息
+        val data = mutableMapOf<String, Any>(
+            "name" to warp.name,
+            "desc" to warp.description,
+            "owner" to warp.owner,
+            "world" to warp.worldName,
+            "coords" to "${warp.x.toInt()}, ${warp.y.toInt()}, ${warp.z.toInt()}",
+            "is_public" to warp.isPublic,
+            "warp_id" to warp.id
+        )
+
+        // 创建物品
+        val item = createItem(mainConfig, iconConfig, player, data) ?: return null
+
+        // 存储地标ID到物品中（用于点击识别）
+        val meta = item.itemMeta
+        if (meta != null) {
+            storeWarpId(meta, warp)
+            item.itemMeta = meta
+        }
+
+        return item
+    }
+
+    /**
+     * 存储地标ID到物品中
+     */
+    private fun storeWarpId(meta: ItemMeta, warp: Warp) {
+        try {
+            // 将地标ID存储在物品的显示名称中（临时方案）
+            val currentDisplayName = meta.displayName ?: ""
+            meta.setDisplayName("$currentDisplayName§r§0§${warp.id}")
+        } catch (e: Exception) {
+            if (plugin.isDebugEnabled()) {
+                plugin.logger.warning("Failed to set warp ID on item: ${e.message}")
+            }
+        }
+    }
+
     /**
      * 处理条件材料（已废弃，现在使用子图标功能）
      */

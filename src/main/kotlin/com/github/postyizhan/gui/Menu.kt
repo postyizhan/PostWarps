@@ -196,110 +196,14 @@ open class Menu(
     /**
      * 创建地标物品（支持国际化）
      */
-    private fun createWarpItem(symbol: String, player: Player, data: Map<String, Any>, warp: com.github.postyizhan.model.Warp): org.bukkit.inventory.ItemStack? {
+    private fun createWarpItem(symbol: String, player: Player, @Suppress("UNUSED_PARAMETER") data: Map<String, Any>, warp: com.github.postyizhan.model.Warp): org.bukkit.inventory.ItemStack? {
         val itemConfig = items?.getConfigurationSection(symbol) ?: return null
 
-        // 获取物品材质 - 优先使用地标的显示材质
-        val material = try {
-            org.bukkit.Material.valueOf(warp.displayMaterial.uppercase())
-        } catch (e: IllegalArgumentException) {
-            // 如果地标材质无效，回退到配置文件中的材质
-            try {
-                org.bukkit.Material.valueOf(itemConfig.getString("material", "STONE")!!.uppercase())
-            } catch (e2: IllegalArgumentException) {
-                org.bukkit.Material.STONE
-            }
-        }
-
-        // 创建物品
-        val item = org.bukkit.inventory.ItemStack(material)
-        val meta = item.itemMeta ?: return item
-
-        // 设置名称（支持国际化）
-        val name = getLocalizedItemName(itemConfig, player)
-        if (name != null) {
-            meta.setDisplayName(MessageUtil.color(replacePlaceholders(name, player, data, warp)))
-        }
-
-        // 设置描述（支持国际化）
-        val lore = getLocalizedItemLore(itemConfig, player)
-        if (lore.isNotEmpty()) {
-            meta.lore = lore.map { MessageUtil.color(replacePlaceholders(it, player, data, warp)) }
-        }
-        
-        // 设置自定义NBT标签（如果Bukkit API支持的话）
-        // 注意：如果服务器不支持此功能，可以移除这部分代码
-        try {
-            // 将地标ID存储在物品的显示名称中
-            // 这种方式不建议用于生产环境，但作为临时解决方案可以使用
-            val currentDisplayName = meta.displayName ?: ""
-            meta.setDisplayName("$currentDisplayName§r§0§${warp.id}")
-        } catch (e: Exception) {
-            if (plugin.isDebugEnabled()) {
-                plugin.logger.warning("Failed to set item NBT tags: ${e.message}")
-            }
-        }
-        
-        item.itemMeta = meta
-        return item
+        // 使用统一的菜单项处理器创建地标物品
+        return menuItemProcessor.createWarpMenuItem(itemConfig, player, warp)
     }
     
-    /**
-     * 替换地标特定的占位符
-     */
-    private fun replacePlaceholders(text: String, player: Player, data: Map<String, Any>, warp: com.github.postyizhan.model.Warp): String {
-        var result = text
-            .replace("{name}", warp.name)
-            .replace("{owner}", warp.ownerName)
-            .replace("{world}", warp.worldName)
-            .replace("{coords}", warp.getFormattedCoordinates())
-            .replace("{desc}", warp.description)
-            
-        // 处理公开/私有状态（国际化）
-        val publicState = if (warp.isPublic) {
-            MessageUtil.getMessage("status.public", player)
-        } else {
-            MessageUtil.getMessage("status.private", player)
-        }
-        result = result.replace("{public_state}", publicState)
-            
-        // 替换数据占位符
-        for ((key, value) in data) {
-            result = result.replace("{$key}", value.toString())
-        }
-        
-        // 替换玩家占位符
-        result = result.replace("{player}", player.name)
-            
-        return result
-    }
-    
-    /**
-     * 处理占位符
-     */
-    private fun processPlaceholders(text: String, @Suppress("UNUSED_PARAMETER") player: Player, data: Map<String, Any>): String {
-        var result = text
-        
-        // 处理数据占位符
-        for ((key, value) in data) {
-            result = result.replace("{$key}", value.toString())
-        }
-        
-        // 特殊占位符处理
-        result = result.replace("{name}", data["name"]?.toString() ?: "")
-        result = result.replace("{desc}", data["desc"]?.toString() ?: "")
-        
-        // 公开/私有状态显示（国际化）
-        val isPublic = data["is_public"] as? Boolean ?: false
-        val publicState = if (isPublic) {
-            MessageUtil.getMessage("status.public", player)
-        } else {
-            MessageUtil.getMessage("status.private", player)
-        }
-        result = result.replace("{public_state}", publicState)
-        
-        return result
-    }
+
     
     /**
      * 处理点击事件

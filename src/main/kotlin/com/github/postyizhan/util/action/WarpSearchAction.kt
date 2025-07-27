@@ -3,7 +3,9 @@ package com.github.postyizhan.util.action
 import com.github.postyizhan.PostWarps
 import com.github.postyizhan.util.MessageUtil
 import net.wesjd.anvilgui.AnvilGUI
+import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 /**
  * 地标搜索动作处理器
@@ -36,8 +38,12 @@ class WarpSearchAction(plugin: PostWarps) : AbstractAction(plugin) {
         // 关闭当前菜单
         player.closeInventory()
 
-        // 获取当前搜索关键词作为默认文本
+        // 获取当前搜索关键词作为默认文本（暂时不使用，因为现在使用空格作为默认输入）
+        @Suppress("UNUSED_VARIABLE")
         val currentSearch = plugin.getMenuManager().getPlayerData(player)["search_filter"] as? String ?: ""
+
+        // 创建输入物品
+        val inputItem = createInputItem()
 
         // 创建铁砧GUI用于搜索
         AnvilGUI.Builder()
@@ -49,7 +55,8 @@ class WarpSearchAction(plugin: PostWarps) : AbstractAction(plugin) {
             }
             .onClick { slot, stateSnapshot ->
                 if (slot == AnvilGUI.Slot.OUTPUT) {
-                    val searchText = stateSnapshot.text.trim()
+                    // 获取输入文本并去掉最前面的空格
+                    val searchText = stateSnapshot.text.removePrefix(" ").trim()
 
                     if (searchText.isEmpty()) {
                         // 如果搜索内容为空，清除搜索过滤器
@@ -68,6 +75,9 @@ class WarpSearchAction(plugin: PostWarps) : AbstractAction(plugin) {
 
                     // 清除菜单缓存以强制重新加载数据
                     clearMenuCache(stateSnapshot.player, currentMenu)
+
+                    // 清除条件缓存以确保子图标正确刷新
+                    clearPlayerConditionCache(stateSnapshot.player)
 
                     // 发送搜索结果消息
                     if (searchText.isEmpty()) {
@@ -91,10 +101,24 @@ class WarpSearchAction(plugin: PostWarps) : AbstractAction(plugin) {
                     emptyList()
                 }
             }
-            .text(if (currentSearch.isEmpty()) "输入搜索关键词" else currentSearch)
+            .itemLeft(inputItem)
             .title("搜索地标")
             .plugin(plugin)
             .open(player)
+    }
+
+    /**
+     * 创建输入物品
+     */
+    private fun createInputItem(): ItemStack {
+        val item = ItemStack(Material.PAPER)
+        val meta = item.itemMeta
+
+        // 设置物品显示名称为一个空格
+        meta?.setDisplayName(" ")
+
+        item.itemMeta = meta
+        return item
     }
 
     /**

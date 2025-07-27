@@ -2,7 +2,7 @@ package com.github.postyizhan.gui.impl
 
 import com.github.postyizhan.gui.core.MenuRenderer
 import com.github.postyizhan.gui.core.MenuContext
-import com.github.postyizhan.gui.util.ItemBuilder
+import com.github.postyizhan.gui.processor.MenuItemProcessor
 import com.github.postyizhan.gui.util.PlaceholderProcessor
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -26,17 +26,28 @@ class StandardMenuRenderer : MenuRenderer {
             val title = processTitle(context)
             val inventory = Bukkit.createInventory(null, rows * 9, title)
             
-            // 创建物品构建器
-            val itemBuilder = ItemBuilder(context)
+            // 创建菜单项处理器
+            val menuItemProcessor = MenuItemProcessor(context.plugin)
             val itemsConfig = context.getItemsConfig()
-            
+
+            // 合并MenuData的dynamicData到playerData中，用于条件检查和占位符处理
+            val combinedData = context.playerData.toMutableMap()
+            context.menuData?.let { menuData ->
+                menuData.dynamicData.forEach { (key, value) ->
+                    combinedData[key] = value
+                }
+                menuData.staticData.forEach { (key, value) ->
+                    combinedData[key] = value
+                }
+            }
+
             // 填充物品
             layout.forEachIndexed { row, layoutLine ->
                 layoutLine.forEachIndexed { col, symbol ->
                     if (symbol != ' ') {
                         val itemConfig = itemsConfig?.getConfigurationSection(symbol.toString())
                         if (itemConfig != null) {
-                            val item = itemBuilder.createItem(symbol.toString(), itemConfig)
+                            val item = menuItemProcessor.createMenuItem(itemConfig, context.player, combinedData)
                             if (item != null) {
                                 inventory.setItem(row * 9 + col, item)
                             }

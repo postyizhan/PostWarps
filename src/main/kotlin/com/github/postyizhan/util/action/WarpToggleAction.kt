@@ -37,6 +37,9 @@ class WarpToggleAction(plugin: PostWarps) : AbstractAction(plugin) {
                     // 更新内存中的数据（使用新的键名）
                     (playerData as? MutableMap<String, Any>)?.put("is_public", newState)
 
+                    // 清除条件缓存以确保子图标正确刷新
+                    clearPlayerConditionCache(player)
+
                     // 显示确认消息
                     if (newState) {
                         sendMessage(player, "warp_toggle.success_public")
@@ -58,6 +61,9 @@ class WarpToggleAction(plugin: PostWarps) : AbstractAction(plugin) {
             val currentValue = playerData["is_public"] as? Boolean ?: false
             val newValue = !currentValue
             (playerData as? MutableMap<String, Any>)?.put("is_public", newValue)
+
+            // 清除条件缓存以确保子图标正确刷新
+            clearPlayerConditionCache(player)
 
             logDebug("Toggled menu display state from $currentValue to $newValue")
         }

@@ -4,6 +4,7 @@ import com.github.postyizhan.PostWarps
 import com.github.postyizhan.gui.action.ActionResolver
 import com.github.postyizhan.gui.builder.ItemBuilder
 import com.github.postyizhan.gui.icon.IconProcessor
+import com.github.postyizhan.model.Warp
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -44,7 +45,41 @@ class MenuItemProcessor(private val plugin: PostWarps) {
         // 创建物品
         return itemBuilder.createItem(itemConfig, matchedIcon, player, data)
     }
-    
+
+    /**
+     * 创建地标菜单项
+     * @param itemConfig 物品配置
+     * @param player 玩家
+     * @param warp 地标对象
+     * @return 创建的物品，如果失败返回null
+     */
+    fun createWarpMenuItem(
+        itemConfig: ConfigurationSection,
+        player: Player,
+        warp: Warp
+    ): ItemStack? {
+        // 创建基础数据，包含地标信息
+        val data = mapOf(
+            "name" to warp.name,
+            "desc" to warp.description,
+            "owner" to warp.owner,
+            "world" to warp.worldName,
+            "coords" to "${warp.x.toInt()}, ${warp.y.toInt()}, ${warp.z.toInt()}",
+            "is_public" to warp.isPublic,
+            "warp_id" to warp.id
+        )
+
+        // 处理子图标
+        val matchedIcon = if (itemConfig.contains("icons")) {
+            processIconsFromConfig(itemConfig, player, data)
+        } else {
+            null
+        }
+
+        // 创建地标物品
+        return itemBuilder.createWarpItem(itemConfig, matchedIcon, player, warp)
+    }
+
     /**
      * 获取菜单项的动作
      * @param itemConfig 物品配置
@@ -111,7 +146,7 @@ class MenuItemProcessor(private val plugin: PostWarps) {
                 plugin.logger.info("[DEBUG] Processing icon ${index + 1}: condition=${iconMap["condition"]}, material=${iconMap["material"]}")
             }
 
-            val iconConfig = com.github.postyizhan.gui.icon.IconConfig.fromMap(iconMap)
+            val iconConfig = iconProcessor.processIconFromMap(iconMap, player)
 
             // 检查条件
             val condition = iconConfig.condition

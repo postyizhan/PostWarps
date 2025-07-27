@@ -109,6 +109,16 @@ class IconProcessor(private val plugin: PostWarps) {
     }
 
     /**
+     * 处理单个图标的i18n配置
+     * @param iconMap 图标配置Map
+     * @param player 玩家
+     * @return 本地化的IconConfig
+     */
+    fun processIconFromMap(iconMap: Map<String, Any>, player: Player): IconConfig {
+        return createLocalizedIconConfig(iconMap, player)
+    }
+
+    /**
      * 获取条件管理器
      * @return 条件管理器实例
      */
