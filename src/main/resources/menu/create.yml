@@ -26,8 +26,9 @@ items:
           - ""
           - "&e► Click to set warp name"
     action:
-      - "[warp_set] name"
-      - "[sound] NOTE_PLING 0.5 1.0"
+      all:
+        - "[warp_set] name"
+        - "[sound] NOTE_PLING 0.5 1.0"
   # 描述输入按钮
   B:
     material: BOOK
@@ -45,8 +46,9 @@ items:
           - ""
           - "&e► Click to set warp description"
     action:
-      - "[warp_set] desc"
-      - "[sound] NOTE_PLING 0.5 1.2"
+      all:
+        - "[warp_set] desc"
+        - "[sound] NOTE_PLING 0.5 1.2"
   # 公开/私有设置按钮
   C:
     material: REDSTONE_TORCH
@@ -64,8 +66,9 @@ items:
           - ""
           - "&e► Click to toggle status"
     action:
-      - "[warp_toggle]"
-      - "[sound] CLICK 0.5 1.5"
+      all:
+        - "[warp_toggle]"
+        - "[sound] CLICK 0.5 1.5"
     icons:
       # 公开状态时显示火把
       - condition: 'data is_public'
@@ -128,8 +131,9 @@ items:
           - ""
           - "&e► Click to confirm"
     action:
-      - "[warp_create]"
-      - "[sound] LEVEL_UP 0.7 1.0"
+      all:
+        - "[warp_create]"
+        - "[sound] LEVEL_UP 0.7 1.0"
   # 返回按钮
   E:
     material: ARROW
@@ -147,8 +151,9 @@ items:
           - ""
           - "&e► Click to go back"
     action:
-      - "[menu] main"
-      - "[sound] NOTE_PLING 0.6 1.2"
+      all:
+        - "[menu] main"
+        - "[sound] NOTE_PLING 0.6 1.2"
   # 关闭菜单按钮
   F:
     material: BARRIER
@@ -166,5 +171,6 @@ items:
           - ""
           - "&e► Click to close"
     action:
-      - "[close]"
-      - "[sound] CHEST_CLOSE 0.5 1.0"
+      all:
+        - "[close]"
+        - "[sound] CHEST_CLOSE 0.5 1.0"

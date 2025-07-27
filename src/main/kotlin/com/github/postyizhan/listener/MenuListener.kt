@@ -50,12 +50,17 @@ class MenuListener(private val plugin: PostWarps) : Listener {
         }
         
         // 处理点击
-        val isShiftClick = event.click == ClickType.SHIFT_LEFT || event.click == ClickType.SHIFT_RIGHT
-        val isLeftClick = event.click == ClickType.LEFT || event.click == ClickType.SHIFT_LEFT
-        
-        // 设置是否按住Shift键
-        (playerData as? MutableMap<String, Any>)?.put("is_shift_click", isShiftClick)
-        (playerData as? MutableMap<String, Any>)?.put("is_left_click", isLeftClick)
+        val clickType = when (event.click) {
+            ClickType.LEFT -> "left"
+            ClickType.RIGHT -> "right"
+            ClickType.SHIFT_LEFT -> "shift_left"
+            ClickType.SHIFT_RIGHT -> "shift_right"
+            ClickType.MIDDLE -> "middle"
+            else -> "left" // 默认为左键
+        }
+
+        // 设置点击类型信息
+        (playerData as? MutableMap<String, Any>)?.put("click_type", clickType)
         
         // 处理点击，获取动作
         val actions = menu.handleClick(player, slot, playerData)

@@ -11,19 +11,6 @@ layout:
 items:
   P:
     material: BARRIER
-    i18n:
-      zh_CN:
-        name: "&a上一页"
-        lore:
-          - "&7查看上一页地标"
-          - ""
-          - "&e► 点击查看"
-      en_US:
-        name: "&aPrevious Page"
-        lore:
-          - "&7View previous page of warps"
-          - ""
-          - "&e► Click to view"
     icons:
       # 有上一页时显示箭头
       - condition: 'data has_prev'
@@ -41,9 +28,6 @@ items:
               - "&7View previous page of warps"
               - ""
               - "&e► Click to view"
-        action:
-          - "[page_prev]"
-          - "[sound] CLICK 0.5 1.0"
       # 没有上一页时显示屏障
       - condition: '!data has_prev'
         material: BARRIER
@@ -56,26 +40,12 @@ items:
             name: "&7Previous Page"
             lore:
               - "&7No previous page"
-        action: []
-    # 默认动作
     action:
-      - "[page_prev]"
-      - "[sound] CLICK 0.5 1.0"
+      all:
+        - "[page_prev]"
+        - "[sound] CLICK 0.5 1.0"
   N:
     material: BARRIER
-    i18n:
-      zh_CN:
-        name: "&a下一页"
-        lore:
-          - "&7查看下一页地标"
-          - ""
-          - "&e► 点击查看"
-      en_US:
-        name: "&aNext Page"
-        lore:
-          - "&7View next page of warps"
-          - ""
-          - "&e► Click to view"
     icons:
       # 有下一页时显示箭头
       - condition: 'data has_next'
@@ -93,9 +63,6 @@ items:
               - "&7View next page of warps"
               - ""
               - "&e► Click to view"
-        action:
-          - "[page_next]"
-          - "[sound] CLICK 0.5 1.0"
       # 没有下一页时显示屏障
       - condition: '!data has_next'
         material: BARRIER
@@ -108,26 +75,12 @@ items:
             name: "&7Next Page"
             lore:
               - "&7No next page"
-        action: []
-    # 默认动作
     action:
-      - "[page_next]"
-      - "[sound] CLICK 0.5 1.0"
+      all:
+        - "[page_next]"
+        - "[sound] CLICK 0.5 1.0"
   S:
     material: OAK_SIGN
-    i18n:
-      zh_CN:
-        name: "&e搜索地标"
-        lore:
-          - "&7搜索地标名称、描述或世界"
-          - ""
-          - "&e► 点击搜索"
-      en_US:
-        name: "&eSearch Warps"
-        lore:
-          - "&7Search warp names, descriptions or worlds"
-          - ""
-          - "&e► Click to search"
     icons:
       # 正在搜索时显示不同的图标
       - condition: 'data is_searching'
@@ -150,8 +103,12 @@ items:
               - "&e► Left click to modify search"
               - "&c► Right click to clear search"
         action:
-          - "[warp_search]"
-          - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
+          all:
+            - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
+          left:
+            - "[warp_search]"
+          right:
+            - "[warp_search_clear]"
       # 没有搜索时显示普通图标
       - condition: '!data is_searching'
         material: OAK_SIGN
@@ -168,12 +125,13 @@ items:
               - "&7Search warp names, descriptions or worlds"
               - ""
               - "&e► Click to search"
-        action:
-          - "[warp_search]"
-          - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
     action:
-      - "[warp_search]"
-      - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
+      all:
+        - "[sound] ITEM_BOOK_PAGE_TURN 0.5 1.0"
+      left:
+        - "[warp_search]"
+      right:
+        - "[warp_search_clear]"
   B:
     material: COMPASS
     i18n:
@@ -208,8 +166,9 @@ items:
           - ""
           - "&e► Click to close"
     action:
-      - "[close]"
-      - "[sound] CHEST_CLOSE 0.5 1.0"
+      all:
+        - "[close]"
+        - "[sound] CHEST_CLOSE 0.5 1.0"
   # <
   <:
     material: ARROW
@@ -219,8 +178,9 @@ items:
       en_US:
         name: "&aBack"
     action:
-      - "[menu] main"
-      - "[sound] NOTE_PLING 0.6 1.2"
+      all:
+        - "[menu] main"
+        - "[sound] NOTE_PLING 0.6 1.2"
   W:
     material: ENDER_EYE
     warp_item: true
@@ -248,5 +208,9 @@ items:
           - "&e► Left click &7to teleport to this warp"
           - "&e► Shift+Left click &7to edit this warp"
     action:
-      - "[warp_tp]"
-      - "[sound] ENDERMAN_TELEPORT 0.5 1.0"
+      left:
+        - "[warp_tp]"
+        - "[sound] ENDERMAN_TELEPORT 0.5 1.0"
+      shift_left:
+        - "[menu] settings"
+        - "[sound] NOTE_PLING 0.6 1.2"

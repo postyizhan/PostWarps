@@ -23,8 +23,9 @@ items:
           - ""
           - "&e► Click to delete"
     action:
-      - "[warp_delete]"
-      - "[sound] ITEM_BREAK 0.7 0.8"
+      all:
+        - "[warp_delete]"
+        - "[sound] ITEM_BREAK 0.7 0.8"
   # 公开/私有设置按钮
   B:
     material: REDSTONE_TORCH
@@ -79,8 +80,9 @@ items:
               - ""
               - "&e► Click to make public"
     action:
-      - "[warp_toggle]"
-      - "[sound] CLICK 0.5 1.5"
+      all:
+        - "[warp_toggle]"
+        - "[sound] CLICK 0.5 1.5"
   # 显示材质
   C:
     material: APPLE
@@ -98,8 +100,9 @@ items:
           - ""
           - "&e► Click to set"
     action:
-      - "[warp_material]"
-      - "[sound] ORB_PICKUP 0.5 1.2"
+      all:
+        - "[warp_material]"
+        - "[sound] ORB_PICKUP 0.5 1.2"
   # 名称输入按钮
   D:
     material: NAME_TAG
@@ -117,8 +120,9 @@ items:
           - ""
           - "&e► Click to set warp name"
     action:
-      - "[warp_set] name"
-      - "[sound] NOTE_PLING 0.5 1.0"
+      all:
+        - "[warp_set] name"
+        - "[sound] NOTE_PLING 0.5 1.0"
   # 描述输入按钮
   E:
     material: BOOK
@@ -136,8 +140,9 @@ items:
           - ""
           - "&e► Click to set warp description"
     action:
-      - "[warp_set] desc"
-      - "[sound] NOTE_PLING 0.5 1.2"
+      all:
+        - "[warp_set] desc"
+        - "[sound] NOTE_PLING 0.5 1.2"
   # 变更
   F:
     material: RED_BED
@@ -155,8 +160,9 @@ items:
           - ""
           - "&e► Click to change"
     action:
-      - "[warp_location]"
-      - "[sound] LEVEL_UP 0.5 1.0"
+      all:
+        - "[warp_location]"
+        - "[sound] LEVEL_UP 0.5 1.0"
   # <
   <:
     material: ARROW
@@ -166,8 +172,9 @@ items:
       en_US:
         name: "&aBack"
     action:
-      - "[menu] private_warps"
-      - "[sound] NOTE_PLING 0.6 1.2"
+      all:
+        - "[menu] private_warps"
+        - "[sound] NOTE_PLING 0.6 1.2"
   # 传送
   T:
     material: ENDER_PEARL
@@ -185,5 +192,6 @@ items:
           - ""
           - "&e► Click to teleport"
     action:
-      - "[warp_tp]"
-      - "[sound] ENDERMAN_TELEPORT 0.5 1.0"
+      all:
+        - "[warp_tp]"
+        - "[sound] ENDERMAN_TELEPORT 0.5 1.0"

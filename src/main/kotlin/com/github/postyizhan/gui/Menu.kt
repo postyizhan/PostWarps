@@ -345,20 +345,8 @@ open class Menu(
                     plugin.logger.info("[DEBUG] Player ${player.name} clicked warp slot: $row,$col, warp ID: $warpId")
                 }
 
-                // 检查是否按住Shift键和左键点击
-                val isShiftClick = data["is_shift_click"] as? Boolean ?: false
-                val isLeftClick = data["is_left_click"] as? Boolean ?: true
-
-                return if (isShiftClick && isLeftClick) {
-                    // Shift+左键点击，打开设置菜单
-                    if (plugin.isDebugEnabled()) {
-                        plugin.logger.info("[DEBUG] Player ${player.name} shift+left clicked warp ID: $warpId, opening settings menu")
-                    }
-                    listOf("[menu] settings")
-                } else {
-                    // 普通点击，传送
-                    listOf("[warp_tp]")
-                }
+                // 使用动作解析系统处理地标物品点击
+                return menuItemProcessor.getMenuItemActions(itemConfig, player, data)
             } else {
                 if (plugin.isDebugEnabled()) {
                     plugin.logger.info("[DEBUG] Player ${player.name} clicked warp slot: $row,$col, but warp ID is null")
@@ -368,15 +356,7 @@ open class Menu(
         }
         
         // 处理普通按钮 - 支持子图标动作和点击类型
-        val actions = menuItemProcessor.getMenuItemActions(itemConfig, player, data)
-
-        // 特殊处理搜索按钮的右键点击
-        if (symbol == "S" && !(data["is_left_click"] as? Boolean ?: true)) {
-            // 右键点击搜索按钮，执行清除搜索
-            return listOf("[warp_search_clear]")
-        }
-
-        return actions
+        return menuItemProcessor.getMenuItemActions(itemConfig, player, data)
     }
 
     /**

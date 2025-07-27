@@ -30,8 +30,9 @@ items:
           - ""
           - "&e► Click to open create menu"
     action:
-      - "[menu] create"
-      - "[sound] ORB_PICKUP 0.5 1.2"
+      all:
+        - "[menu] create"
+        - "[sound] ORB_PICKUP 0.5 1.2"
   # 我的地标按钮
   B:
     material: BOOK
@@ -49,8 +50,9 @@ items:
           - ""
           - "&e► Click to view"
     action:
-      - "[menu] private_warps"
-      - "[sound] NOTE_PLING 0.6 1.0"
+      all:
+        - "[menu] private_warps"
+        - "[sound] NOTE_PLING 0.6 1.0"
   # 公开地标按钮
   C:
     material: FILLED_MAP
@@ -68,8 +70,9 @@ items:
           - ""
           - "&e► Click to view"
     action:
-      - "[menu] public_warps"
-      - "[sound] NOTE_PLING 0.6 1.2"
+      all:
+        - "[menu] public_warps"
+        - "[sound] NOTE_PLING 0.6 1.2"
   # 帮助信息
   ?:
     material: PAPER
@@ -95,5 +98,6 @@ items:
         lore:
           - "&7Close this menu"
     action:
-      - "[close]"
-      - "[sound] CHEST_CLOSE 0.5 1.0"
+      all:
+        - "[close]"
+        - "[sound] CHEST_CLOSE 0.5 1.0"
