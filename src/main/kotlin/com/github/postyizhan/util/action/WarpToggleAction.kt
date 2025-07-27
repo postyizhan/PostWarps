@@ -8,67 +8,48 @@ import org.bukkit.entity.Player
  */
 class WarpToggleAction(plugin: PostWarps) : AbstractAction(plugin) {
     override fun execute(player: Player, actionValue: String) {
-        val key = extractActionValue(actionValue, ActionType.WARP_TOGGLE.prefix)
-        logDebug("Player ${player.name} toggling warp data for key: $key")
-
-        // 简化处理：直接切换公开/私有状态，不需要指定key
-        // 获取当前地标ID
         val playerData = plugin.getMenuManager().getPlayerData(player)
         val warpId = playerData["warp_id"] as? Int
 
-        if (warpId != null) {
-            // 有地标ID，更新数据库中的地标状态
-            val warp = plugin.getDatabaseManager().getWarp(warpId)
-
-            if (warp != null) {
-                // 检查是否是自己的地标
-                if (warp.owner != player.uniqueId && !player.hasPermission("postwarps.admin")) {
-                    sendMessage(player, "warp_toggle.no_permission")
-                    return
-                }
-
-                // 切换状态
-                val newState = !warp.isPublic
-
-                // 更新数据库
-                val success = plugin.getDatabaseManager().setWarpPublic(warpId, newState)
-
-                if (success) {
-                    // 更新内存中的数据（使用新的键名）
-                    (playerData as? MutableMap<String, Any>)?.put("is_public", newState)
-
-                    // 清除条件缓存以确保子图标正确刷新
-                    clearPlayerConditionCache(player)
-
-                    // 显示确认消息
-                    if (newState) {
-                        sendMessage(player, "warp_toggle.success_public")
-                    } else {
-                        sendMessage(player, "warp_toggle.success_private")
-                    }
-
-                    logDebug("Updated warp ID: $warpId public state to: $newState")
-                } else {
-                    sendMessage(player, "warp_toggle.failed")
-                    logDebug("Failed to update warp ID: $warpId public state")
-                }
-            } else {
-                sendMessage(player, "warp_toggle.not_found")
-                return
-            }
+        val newState = if (warpId != null) {
+            // 编辑现有地标
+            toggleExistingWarp(player, warpId)
         } else {
-            // 没有地标ID，只是切换菜单中的显示状态（如在创建菜单中）
-            val currentValue = playerData["is_public"] as? Boolean ?: false
-            val newValue = !currentValue
-            (playerData as? MutableMap<String, Any>)?.put("is_public", newValue)
+            // 创建菜单中的状态切换
+            toggleMenuState(playerData)
+        } ?: return
 
-            // 清除条件缓存以确保子图标正确刷新
-            clearPlayerConditionCache(player)
+        // 更新数据并刷新菜单
+        (playerData as? MutableMap<String, Any>)?.put("is_public", newState)
+        refreshMenu(player)
+    }
 
-            logDebug("Toggled menu display state from $currentValue to $newValue")
+    private fun toggleExistingWarp(player: Player, warpId: Int): Boolean? {
+        val warp = plugin.getDatabaseManager().getWarp(warpId) ?: run {
+            sendMessage(player, "warp_toggle.not_found")
+            return null
         }
-        
-        // 重新打开当前菜单
+
+        if (warp.owner != player.uniqueId && !player.hasPermission("postwarps.admin")) {
+            sendMessage(player, "warp_toggle.no_permission")
+            return null
+        }
+
+        val newState = !warp.isPublic
+        return if (plugin.getDatabaseManager().setWarpPublic(warpId, newState)) {
+            sendMessage(player, if (newState) "warp_toggle.success_public" else "warp_toggle.success_private")
+            newState
+        } else {
+            sendMessage(player, "warp_toggle.failed")
+            null
+        }
+    }
+
+    private fun toggleMenuState(playerData: Map<String, Any>): Boolean {
+        return !(playerData["is_public"] as? Boolean ?: false)
+    }
+
+    private fun refreshMenu(player: Player) {
         val currentMenu = plugin.getMenuManager().getOpenMenu(player) ?: return
         plugin.getMenuManager().openMenu(player, currentMenu)
     }

@@ -76,8 +76,7 @@ class WarpSearchAction(plugin: PostWarps) : AbstractAction(plugin) {
                     // 清除菜单缓存以强制重新加载数据
                     clearMenuCache(stateSnapshot.player, currentMenu)
 
-                    // 清除条件缓存以确保子图标正确刷新
-                    clearPlayerConditionCache(stateSnapshot.player)
+
 
                     // 发送搜索结果消息
                     if (searchText.isEmpty()) {
