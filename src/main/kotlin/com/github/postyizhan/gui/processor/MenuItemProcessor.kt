@@ -134,46 +134,15 @@ class MenuItemProcessor(private val plugin: PostWarps) {
         player: Player,
         data: Map<String, Any>
     ): com.github.postyizhan.gui.icon.IconConfig? {
-        if (plugin.isDebugEnabled()) {
-            plugin.logger.info("[DEBUG] Processing icons list for player: ${player.name}, list size: ${iconsList.size}")
-        }
-
-        for ((index, iconItem) in iconsList.withIndex()) {
+        for (iconItem in iconsList) {
             @Suppress("UNCHECKED_CAST")
             val iconMap = iconItem as? Map<String, Any> ?: continue
-
-            if (plugin.isDebugEnabled()) {
-                plugin.logger.info("[DEBUG] Processing icon ${index + 1}: condition=${iconMap["condition"]}, material=${iconMap["material"]}")
-            }
-
             val iconConfig = iconProcessor.processIconFromMap(iconMap, player)
-
-            // 检查条件
             val condition = iconConfig.condition
 
-            if (condition == null) {
-                if (plugin.isDebugEnabled()) {
-                    plugin.logger.info("[DEBUG] No condition specified, using this icon")
-                }
+            if (condition == null || iconProcessor.getConditionManager().checkCondition(condition, player, data)) {
                 return iconConfig
-            } else {
-                val conditionResult = iconProcessor.getConditionManager().checkCondition(condition, player, data)
-
-                if (conditionResult) {
-                    if (plugin.isDebugEnabled()) {
-                        plugin.logger.info("[DEBUG] Player ${player.name} matched icon condition: '$condition'")
-                    }
-                    return iconConfig
-                } else {
-                    if (plugin.isDebugEnabled()) {
-                        plugin.logger.info("[DEBUG] Player ${player.name} did not match icon condition: '$condition'")
-                    }
-                }
             }
-        }
-
-        if (plugin.isDebugEnabled()) {
-            plugin.logger.info("[DEBUG] No matching icon found for player ${player.name}, using default")
         }
         return null
     }

@@ -23,8 +23,7 @@ class WarpSearchClearAction(plugin: PostWarps) : AbstractAction(plugin) {
         // 清除菜单缓存以强制重新加载数据
         clearMenuCache(player, currentMenu)
 
-        // 清除条件缓存以确保子图标正确刷新
-        clearPlayerConditionCache(player)
+
 
         player.sendMessage(MessageUtil.color(
             MessageUtil.getMessage("search.cleared", player)

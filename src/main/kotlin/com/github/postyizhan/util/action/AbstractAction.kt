@@ -61,34 +61,5 @@ abstract class AbstractAction(protected val plugin: PostWarps) : Action {
         player.sendMessage(getMessage(player, key, *replacements))
     }
 
-    /**
-     * 清除玩家的条件缓存
-     * @param player 玩家
-     */
-    protected fun clearPlayerConditionCache(player: Player) {
-        try {
-            // 创建MenuItemProcessor实例来获取条件管理器
-            val menuItemProcessor = com.github.postyizhan.gui.processor.MenuItemProcessor(plugin)
 
-            // 通过反射获取iconProcessor字段
-            val iconProcessorField = menuItemProcessor.javaClass.getDeclaredField("iconProcessor")
-            iconProcessorField.isAccessible = true
-            val iconProcessor = iconProcessorField.get(menuItemProcessor)
-
-            // 调用getConditionManager方法
-            val getConditionManagerMethod = iconProcessor.javaClass.getMethod("getConditionManager")
-            val conditionManager = getConditionManagerMethod.invoke(iconProcessor)
-
-            // 调用clearPlayerCache方法
-            val clearPlayerCacheMethod = conditionManager.javaClass.getMethod("clearPlayerCache", org.bukkit.entity.Player::class.java)
-            clearPlayerCacheMethod.invoke(conditionManager, player)
-
-            logDebug("Cleared condition cache for player ${player.name}")
-        } catch (e: Exception) {
-            logWarning("Failed to clear condition cache for player ${player.name}: ${e.message}")
-            if (plugin.isDebugEnabled()) {
-                e.printStackTrace()
-            }
-        }
-    }
 }

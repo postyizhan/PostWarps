@@ -93,41 +93,32 @@ class OptimizedConditionManager(private val plugin: PostWarps) {
      * @return 是否满足条件
      */
     fun checkCondition(condition: String, player: Player, data: Map<String, Any>): Boolean {
-        if (condition.isBlank()) {
-            logDebug("空条件，返回true")
-            return true
-        }
+        if (condition.isBlank()) return true
         
-        // 检查缓存（如果启用）
+        // 检查缓存
         if (isCacheEnabled()) {
             val cacheKey = buildCacheKey(condition, player, data)
             val cachedResult = conditionResultCache[cacheKey]
             if (cachedResult != null && !cachedResult.isExpired()) {
-                logDebug("使用缓存结果: '$condition' -> ${cachedResult.result}")
                 return cachedResult.result
             }
         }
         
-        // 查找匹配的检查器
+        // 查找并执行检查器
         val checker = findMatchingChecker(condition)
         if (checker != null) {
             val result = checker.checkCondition(condition, player, data)
             
-            // 缓存结果（如果启用）
+            // 缓存结果
             if (isCacheEnabled()) {
                 val cacheKey = buildCacheKey(condition, player, data)
                 conditionResultCache[cacheKey] = CachedResult(result, System.currentTimeMillis())
-                
-                // 定期清理缓存
                 cleanupCacheIfNeeded()
             }
             
-            logDebug("条件检查: '$condition' -> $result (使用 ${checker::class.simpleName}) 玩家 ${player.name}")
             return result
         }
         
-        // 没有找到合适的检查器
-        logWarning("未知条件类型: '$condition'")
         return false
     }
     
@@ -175,9 +166,22 @@ class OptimizedConditionManager(private val plugin: PostWarps) {
      * @return 缓存键
      */
     private fun buildCacheKey(condition: String, player: Player, data: Map<String, Any>): String {
-        // 简化的缓存键，只包含条件和玩家名
-        // 对于更复杂的缓存需求，可以包含更多数据
-        return "${condition}:${player.name}"
+        // 缓存条件
+        return when {
+            condition.startsWith("data ") -> {
+                val dataKey = condition.substring(5).trim()
+                val dataValue = data[dataKey]
+                "${condition}:${player.name}:${dataValue}"
+            }
+            condition.startsWith("!data ") -> {
+                val dataKey = condition.substring(6).trim()
+                val dataValue = data[dataKey]
+                "${condition}:${player.name}:${dataValue}"
+            }
+            else -> {
+                "${condition}:${player.name}"
+            }
+        }
     }
     
     /**
