@@ -77,17 +77,31 @@ items:
       zh_CN:
         name: "&a显示材质"
         lore:
-          - "&7将手持物品设置为此地标显示头颅"
+          - "&7设置此地标的显示材质"
+          - ""
+          - "&e左键: &f手持物品设置"
+          - "&e右键: &f设置为我的头颅"
+          - "&eShift+右键: &f输入玩家名设置头颅"
           - ""
           - "&e► 点击设置"
       en_US:
         name: "&aDisplay Material"
         lore:
-          - "&7Set held item as this warp's display skull"
+          - "&7Set this warp's display material"
+          - ""
+          - "&eLeft Click: &fSet held item"
+          - "&eRight Click: &fSet as my skull"
+          - "&eShift+Right Click: &fEnter player name for skull"
           - ""
           - "&e► Click to set"
     action:
-      all:
+      left:
+        - "[warp_material]"
+        - "[sound] ORB_PICKUP 0.5 1.2"
+      right:
+        - "[warp_material]"
+        - "[sound] ORB_PICKUP 0.5 1.2"
+      shift_right:
         - "[warp_material]"
         - "[sound] ORB_PICKUP 0.5 1.2"
   # 名称输入按钮

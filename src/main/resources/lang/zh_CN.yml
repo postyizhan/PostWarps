@@ -68,6 +68,7 @@ actions:
     no_warp: "{prefix}&c未找到地标信息"
     no_item: "{prefix}&c请手持一个物品来设置显示材质"
     invalid_material: "{prefix}&c无效的材质: &e{material}"
+    invalid_player_name: "{prefix}&c请输入有效的玩家名"
     success: "{prefix}&7成功将地标 &e{name} &7的显示材质设置为 &a{material}"
     failed: "{prefix}&c设置显示材质失败"
 

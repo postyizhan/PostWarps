@@ -91,6 +91,8 @@ class MySQLStorage(plugin: PostWarps) : WarpDAO(plugin), IStorage {
                 is_public BOOLEAN NOT NULL DEFAULT FALSE,
                 description VARCHAR(255),
                 material VARCHAR(64) DEFAULT 'ENDER_PEARL',
+                skull_owner VARCHAR(16),
+                skull_texture TEXT,
                 create_time BIGINT NOT NULL,
                 INDEX idx_warps_owner (owner),
                 INDEX idx_warps_public (is_public),
@@ -179,6 +181,23 @@ class MySQLStorage(plugin: PostWarps) : WarpDAO(plugin), IStorage {
     override fun updateWarpMaterial(name: String, owner: UUID, material: String): Boolean {
         val warp = getWarp(name, owner) ?: return false
         return updateWarpMaterial(warp.id, material)
+    }
+
+    override fun updateWarpMaterial(id: Int, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        val sql = "UPDATE warps SET material = ?, skull_owner = ?, skull_texture = ? WHERE id = ?"
+        val params = listOf(material, skullOwner ?: "", skullTexture ?: "", id)
+        val result = executeUpdate(sql, params) > 0
+        if (result) {
+            logDebug("更新地标材质和头颅信息成功: ID=$id, 材质=$material")
+        } else {
+            logWarning("更新地标材质和头颅信息失败: ID=$id")
+        }
+        return result
+    }
+
+    override fun updateWarpMaterial(name: String, owner: UUID, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        val warp = getWarp(name, owner) ?: return false
+        return updateWarpMaterial(warp.id, material, skullOwner, skullTexture)
     }
 
 

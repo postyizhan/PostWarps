@@ -106,4 +106,14 @@ interface IStorage {
      * 根据名称和所有者更新地标显示材质
      */
     fun updateWarpMaterial(name: String, owner: UUID, material: String): Boolean
+
+    /**
+     * 更新地标显示材质和头颅信息
+     */
+    fun updateWarpMaterial(id: Int, material: String, skullOwner: String?, skullTexture: String?): Boolean
+
+    /**
+     * 根据名称和所有者更新地标显示材质和头颅信息
+     */
+    fun updateWarpMaterial(name: String, owner: UUID, material: String, skullOwner: String?, skullTexture: String?): Boolean
 }

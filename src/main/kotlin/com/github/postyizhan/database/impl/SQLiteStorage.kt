@@ -64,10 +64,25 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
                 is_public BOOLEAN NOT NULL,
                 description TEXT,
                 material TEXT DEFAULT 'ENDER_PEARL',
+                skull_owner TEXT,
+                skull_texture TEXT,
                 create_time BIGINT NOT NULL
             )
             """.trimIndent()
         )
+
+        // 检查并添加新字段（用于数据库升级）
+        try {
+            statement?.executeUpdate("ALTER TABLE warps ADD COLUMN skull_owner TEXT")
+        } catch (e: SQLException) {
+            // 字段已存在，忽略错误
+        }
+
+        try {
+            statement?.executeUpdate("ALTER TABLE warps ADD COLUMN skull_texture TEXT")
+        } catch (e: SQLException) {
+            // 字段已存在，忽略错误
+        }
 
 
         
@@ -96,8 +111,8 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
     override fun createWarp(warp: Warp): Boolean {
         try {
             val sql = """
-                INSERT INTO warps (name, owner, owner_name, world_name, x, y, z, yaw, pitch, is_public, description, material, create_time)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO warps (name, owner, owner_name, world_name, x, y, z, yaw, pitch, is_public, description, material, skull_owner, skull_texture, create_time)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """.trimIndent()
 
             val preparedStatement = connection?.prepareStatement(sql)
@@ -114,7 +129,9 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             preparedStatement?.setBoolean(10, warp.isPublic)
             preparedStatement?.setString(11, warp.description)
             preparedStatement?.setString(12, warp.displayMaterial)
-            preparedStatement?.setLong(13, warp.createTime)
+            preparedStatement?.setString(13, warp.skullOwner)
+            preparedStatement?.setString(14, warp.skullTexture)
+            preparedStatement?.setLong(15, warp.createTime)
             
             val result = preparedStatement?.executeUpdate() ?: 0
             preparedStatement?.close()
@@ -485,6 +502,8 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             isPublic = rs.getBoolean("is_public"),
             description = rs.getString("description") ?: "",
             displayMaterial = rs.getString("material") ?: "ENDER_PEARL",
+            skullOwner = rs.getString("skull_owner"),
+            skullTexture = rs.getString("skull_texture"),
             createTime = rs.getLong("create_time")
         )
     }
@@ -524,6 +543,49 @@ class SQLiteStorage(private val plugin: PostWarps) : IStorage {
             return result > 0
         } catch (e: SQLException) {
             plugin.logger.severe("更新地标显示材质时出错: ${e.message}")
+            return false
+        }
+    }
+
+    /**
+     * 更新地标显示材质和头颅信息
+     */
+    override fun updateWarpMaterial(id: Int, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        try {
+            val sql = "UPDATE warps SET material = ?, skull_owner = ?, skull_texture = ? WHERE id = ?"
+            val preparedStatement = connection?.prepareStatement(sql)
+            preparedStatement?.setString(1, material)
+            preparedStatement?.setString(2, skullOwner)
+            preparedStatement?.setString(3, skullTexture)
+            preparedStatement?.setInt(4, id)
+            val result = preparedStatement?.executeUpdate() ?: 0
+            preparedStatement?.close()
+
+            return result > 0
+        } catch (e: SQLException) {
+            plugin.logger.severe("更新地标显示材质和头颅信息时出错: ${e.message}")
+            return false
+        }
+    }
+
+    /**
+     * 根据名称和所有者更新地标显示材质和头颅信息
+     */
+    override fun updateWarpMaterial(name: String, owner: UUID, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        try {
+            val sql = "UPDATE warps SET material = ?, skull_owner = ?, skull_texture = ? WHERE name = ? AND owner = ?"
+            val preparedStatement = connection?.prepareStatement(sql)
+            preparedStatement?.setString(1, material)
+            preparedStatement?.setString(2, skullOwner)
+            preparedStatement?.setString(3, skullTexture)
+            preparedStatement?.setString(4, name)
+            preparedStatement?.setString(5, owner.toString())
+            val result = preparedStatement?.executeUpdate() ?: 0
+            preparedStatement?.close()
+
+            return result > 0
+        } catch (e: SQLException) {
+            plugin.logger.severe("更新地标显示材质和头颅信息时出错: ${e.message}")
             return false
         }
     }

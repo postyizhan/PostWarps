@@ -32,6 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.slf4j:slf4j-simple:1.7.36")
+    implementation("com.google.code.gson:gson:2.8.9")
 }
 
 java {

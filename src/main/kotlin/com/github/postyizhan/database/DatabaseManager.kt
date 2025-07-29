@@ -177,4 +177,18 @@ class DatabaseManager(private val plugin: PostWarps) {
     fun updateWarpMaterial(name: String, owner: UUID, material: String): Boolean {
         return storage.updateWarpMaterial(name, owner, material)
     }
+
+    /**
+     * 更新地标显示材质和头颅信息
+     */
+    fun updateWarpMaterial(id: Int, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        return storage.updateWarpMaterial(id, material, skullOwner, skullTexture)
+    }
+
+    /**
+     * 根据名称和所有者更新地标显示材质和头颅信息
+     */
+    fun updateWarpMaterial(name: String, owner: UUID, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        return storage.updateWarpMaterial(name, owner, material, skullOwner, skullTexture)
+    }
 }

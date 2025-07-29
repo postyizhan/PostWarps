@@ -1,4 +1,7 @@
-title: "&8【 &3Post&bWarps &8】&7设置"
+title:
+  zh_CN: "&8【 &3Post&bWarps &8】&7设置"
+  en_US: "&8【 &3Post&bWarps &8】&7Settings"
+
 layout:
   - "<        "
   - "   A B   "
@@ -8,86 +11,188 @@ layout:
 items:
   A:
     material: REDSTONE
-    name: "&c删除地标"
-    lore:
-      - ""
-      - "&e► 点击删除"
+    i18n:
+      zh_CN:
+        name: "&c删除地标"
+        lore:
+          - ""
+          - "&e► 点击删除"
+      en_US:
+        name: "&cDelete Warp"
+        lore:
+          - ""
+          - "&e► Click to delete"
     action:
-      - "[warp_delete]"
-      - "[sound] ITEM_BREAK 0.7 0.8"
+      all:
+        - "[warp_delete]"
+        - "[sound] ITEM_BREAK 0.7 0.8"
   # 公开/私有设置按钮
   B:
     material: REDSTONE_TORCH
-    material_if_true: TORCH
-    material_if_false: REDSTONE_TORCH
-    name: "&b公开/私有"
-    lore:
-      - "&7当前状态: {public_state}"
-      - ""
-      - "&e► 点击切换状态"
+    icons:
+      # 公开状态时显示火把
+      - condition: 'data is_public'
+        material: TORCH
+        i18n:
+          zh_CN:
+            name: "&a公开地标"
+            lore:
+              - "&7当前状态: &a公开"
+              - "&7其他玩家可以看到此地标"
+              - ""
+              - "&e► 点击设为私有"
+          en_US:
+            name: "&aPublic Warp"
+            lore:
+              - "&7Current status: &aPublic"
+              - "&7Other players can see this warp"
+              - ""
+              - "&e► Click to make private"
+      # 私有状态时显示红石火把
+      - condition: '!data is_public'
+        material: REDSTONE_TORCH
+        i18n:
+          zh_CN:
+            name: "&c私有地标"
+            lore:
+              - "&7当前状态: &c私有"
+              - "&7只有你可以看到此地标"
+              - ""
+              - "&e► 点击设为公开"
+          en_US:
+            name: "&cPrivate Warp"
+            lore:
+              - "&7Current status: &cPrivate"
+              - "&7Only you can see this warp"
+              - ""
+              - "&e► Click to make public"
     action:
-      - "[warp_toggle] public"
-      - "[sound] CLICK 0.5 1.5"
+      all:
+        - "[warp_toggle]"
+        - "[sound] CLICK 0.5 1.5"
   # 显示材质
   C:
     material: APPLE
-    name: "&a显示材质"
-    lore:
-      - "&7将手持物品设置为此地标显示头颅"
-      - "&7若无物品则设置为你的头颅"
-      - ""
-      - "&e► 点击设置"
+    i18n:
+      zh_CN:
+        name: "&a显示材质"
+        lore:
+          - "&7设置此地标的显示材质"
+          - ""
+          - "&e左键: &f手持物品设置"
+          - "&e右键: &f设置为我的头颅"
+          - "&eShift+右键: &f输入玩家名设置头颅"
+          - ""
+          - "&e► 点击设置"
+      en_US:
+        name: "&aDisplay Material"
+        lore:
+          - "&7Set this warp's display material"
+          - ""
+          - "&eLeft Click: &fSet held item"
+          - "&eRight Click: &fSet as my skull"
+          - "&eShift+Right Click: &fEnter player name for skull"
+          - ""
+          - "&e► Click to set"
     action:
-      - "[warp_set] material"
-      - "[sound] ORB_PICKUP 0.5 1.2"
+      left:
+        - "[warp_material]"
+        - "[sound] ORB_PICKUP 0.5 1.2"
+      right:
+        - "[warp_material]"
+        - "[sound] ORB_PICKUP 0.5 1.2"
+      shift_right:
+        - "[warp_material]"
+        - "[sound] ORB_PICKUP 0.5 1.2"
   # 名称输入按钮
   D:
     material: NAME_TAG
-    name: "&b设置名称"
-    lore:
-      - "&7当前名称: &f{name}"
-      - ""
-      - "&e► 点击设置地标名称"
+    i18n:
+      zh_CN:
+        name: "&b设置名称"
+        lore:
+          - "&7当前名称: &f{name}"
+          - ""
+          - "&e► 点击设置地标名称"
+      en_US:
+        name: "&bSet Name"
+        lore:
+          - "&7Current name: &f{name}"
+          - ""
+          - "&e► Click to set warp name"
     action:
-      - "[warp_set] name"
-      - "[sound] NOTE_PLING 0.5 1.0"
+      all:
+        - "[warp_set] name"
+        - "[sound] NOTE_PLING 0.5 1.0"
   # 描述输入按钮
   E:
     material: BOOK
-    name: "&b设置描述"
-    lore:
-      - "&7当前描述: &f{desc}"
-      - ""
-      - "&e► 点击设置地标描述"
+    i18n:
+      zh_CN:
+        name: "&b设置描述"
+        lore:
+          - "&7当前描述: &f{desc}"
+          - ""
+          - "&e► 点击设置地标描述"
+      en_US:
+        name: "&bSet Description"
+        lore:
+          - "&7Current description: &f{desc}"
+          - ""
+          - "&e► Click to set warp description"
     action:
-      - "[warp_set] desc"
-      - "[sound] NOTE_PLING 0.5 1.2"
+      all:
+        - "[warp_set] desc"
+        - "[sound] NOTE_PLING 0.5 1.2"
   # 变更
   F:
     material: RED_BED
-    name: "&a变更位置"
-    lore:
-      - "&7设置地标位置到此处"
-      - ""
-      - "&e► 点击变更"
+    i18n:
+      zh_CN:
+        name: "&a变更位置"
+        lore:
+          - "&7设置地标位置到此处"
+          - ""
+          - "&e► 点击变更"
+      en_US:
+        name: "&aChange Location"
+        lore:
+          - "&7Set warp location to here"
+          - ""
+          - "&e► Click to change"
     action:
-      - "[warp_location]"
-      - "[sound] LEVEL_UP 0.5 1.0"
+      all:
+        - "[warp_location]"
+        - "[sound] LEVEL_UP 0.5 1.0"
   # <
   <:
     material: ARROW
-    name: "&a返回"
+    i18n:
+      zh_CN:
+        name: "&a返回"
+      en_US:
+        name: "&aBack"
     action:
-      - "[menu] private_warps"
-      - "[sound] NOTE_PLING 0.6 1.2"
+      all:
+        - "[menu] private_warps"
+        - "[sound] NOTE_PLING 0.6 1.2"
   # 传送
   T:
     material: ENDER_PEARL
-    name: "&c传送"
-    lore:
-      - "&7传送到地标"
-      - ""
-      - "&e► 点击传送"
+    i18n:
+      zh_CN:
+        name: "&c传送"
+        lore:
+          - "&7传送到地标"
+          - ""
+          - "&e► 点击传送"
+      en_US:
+        name: "&cTeleport"
+        lore:
+          - "&7Teleport to warp"
+          - ""
+          - "&e► Click to teleport"
     action:
-      - "[warp_tp]"
-      - "[sound] ENDERMAN_TELEPORT 0.5 1.0"
+      all:
+        - "[warp_tp]"
+        - "[sound] ENDERMAN_TELEPORT 0.5 1.0"

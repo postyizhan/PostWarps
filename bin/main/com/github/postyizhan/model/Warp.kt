@@ -18,6 +18,7 @@ import java.util.*
  * @param pitch 俯仰角
  * @param isPublic 是否公开
  * @param description 地标描述
+ * @param displayMaterial 显示材质
  * @param createTime 创建时间
  */
 data class Warp(
@@ -33,6 +34,9 @@ data class Warp(
     val pitch: Float = 0f,
     val isPublic: Boolean = false,
     val description: String = "",
+    val displayMaterial: String = "ENDER_PEARL",
+    val skullOwner: String? = null,
+    val skullTexture: String? = null,
     val createTime: Long = System.currentTimeMillis()
 ) {
     /**
@@ -53,7 +57,10 @@ data class Warp(
             ownerName: String,
             location: Location,
             isPublic: Boolean = false,
-            description: String = ""
+            description: String = "",
+            displayMaterial: String = "ENDER_PEARL",
+            skullOwner: String? = null,
+            skullTexture: String? = null
         ): Warp {
             return Warp(
                 name = name,
@@ -66,7 +73,10 @@ data class Warp(
                 yaw = location.yaw,
                 pitch = location.pitch,
                 isPublic = isPublic,
-                description = description
+                description = description,
+                displayMaterial = displayMaterial,
+                skullOwner = skullOwner,
+                skullTexture = skullTexture
             )
         }
     }
@@ -76,5 +86,23 @@ data class Warp(
      */
     fun getFormattedCoordinates(): String {
         return String.format("%.1f, %.1f, %.1f", x, y, z)
+    }
+
+    /**
+     * 获取头颅信息
+     */
+    fun getSkullInfo(): com.github.postyizhan.util.SkullUtil.SkullInfo {
+        return com.github.postyizhan.util.SkullUtil.SkullInfo(
+            material = displayMaterial,
+            skullOwner = skullOwner,
+            skullTexture = skullTexture
+        )
+    }
+
+    /**
+     * 是否为玩家头颅
+     */
+    fun isPlayerHead(): Boolean {
+        return displayMaterial == "PLAYER_HEAD"
     }
 }

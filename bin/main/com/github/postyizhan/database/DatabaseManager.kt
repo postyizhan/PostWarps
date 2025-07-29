@@ -35,7 +35,7 @@ class DatabaseManager(private val plugin: PostWarps) {
                     .replace("{type}", type)
             ))
         } catch (e: Exception) {
-            plugin.logger.severe("无法初始化数据库: ${e.message}")
+            plugin.logger.severe("Failed to initialize database: ${e.message}")
             e.printStackTrace()
         }
     }
@@ -94,6 +94,13 @@ class DatabaseManager(private val plugin: PostWarps) {
         return storage.getPublicWarp(name)
     }
     
+    /**
+     * 获取所有地标
+     */
+    fun getAllWarps(): List<Warp> {
+        return storage.getAllWarps()
+    }
+
     /**
      * 获取所有公开地标
      */
@@ -155,5 +162,33 @@ class DatabaseManager(private val plugin: PostWarps) {
      */
     fun updateWarpLocation(id: Int, worldName: String, x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Boolean {
         return storage.updateWarpLocation(id, worldName, x, y, z, yaw, pitch)
+    }
+
+    /**
+     * 更新地标显示材质
+     */
+    fun updateWarpMaterial(id: Int, material: String): Boolean {
+        return storage.updateWarpMaterial(id, material)
+    }
+
+    /**
+     * 根据名称和所有者更新地标显示材质
+     */
+    fun updateWarpMaterial(name: String, owner: UUID, material: String): Boolean {
+        return storage.updateWarpMaterial(name, owner, material)
+    }
+
+    /**
+     * 更新地标显示材质和头颅信息
+     */
+    fun updateWarpMaterial(id: Int, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        return storage.updateWarpMaterial(id, material, skullOwner, skullTexture)
+    }
+
+    /**
+     * 根据名称和所有者更新地标显示材质和头颅信息
+     */
+    fun updateWarpMaterial(name: String, owner: UUID, material: String, skullOwner: String?, skullTexture: String?): Boolean {
+        return storage.updateWarpMaterial(name, owner, material, skullOwner, skullTexture)
     }
 }

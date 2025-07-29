@@ -35,6 +35,8 @@ data class Warp(
     val isPublic: Boolean = false,
     val description: String = "",
     val displayMaterial: String = "ENDER_PEARL",
+    val skullOwner: String? = null,
+    val skullTexture: String? = null,
     val createTime: Long = System.currentTimeMillis()
 ) {
     /**
@@ -56,7 +58,9 @@ data class Warp(
             location: Location,
             isPublic: Boolean = false,
             description: String = "",
-            displayMaterial: String = "ENDER_PEARL"
+            displayMaterial: String = "ENDER_PEARL",
+            skullOwner: String? = null,
+            skullTexture: String? = null
         ): Warp {
             return Warp(
                 name = name,
@@ -70,7 +74,9 @@ data class Warp(
                 pitch = location.pitch,
                 isPublic = isPublic,
                 description = description,
-                displayMaterial = displayMaterial
+                displayMaterial = displayMaterial,
+                skullOwner = skullOwner,
+                skullTexture = skullTexture
             )
         }
     }
@@ -80,5 +86,23 @@ data class Warp(
      */
     fun getFormattedCoordinates(): String {
         return String.format("%.1f, %.1f, %.1f", x, y, z)
+    }
+
+    /**
+     * 获取头颅信息
+     */
+    fun getSkullInfo(): com.github.postyizhan.util.SkullUtil.SkullInfo {
+        return com.github.postyizhan.util.SkullUtil.SkullInfo(
+            material = displayMaterial,
+            skullOwner = skullOwner,
+            skullTexture = skullTexture
+        )
+    }
+
+    /**
+     * 是否为玩家头颅
+     */
+    fun isPlayerHead(): Boolean {
+        return displayMaterial == "PLAYER_HEAD"
     }
 }
