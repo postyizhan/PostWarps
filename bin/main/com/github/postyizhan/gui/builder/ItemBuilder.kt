@@ -89,7 +89,7 @@ class ItemBuilder(private val plugin: PostWarps) {
         val data = mutableMapOf<String, Any>(
             "name" to warp.name,
             "desc" to warp.description,
-            "owner" to warp.owner,
+            "owner" to warp.ownerName,  // 使用玩家名而不是UUID
             "world" to warp.worldName,
             "coords" to "${warp.x.toInt()}, ${warp.y.toInt()}, ${warp.z.toInt()}",
             "is_public" to warp.isPublic,
