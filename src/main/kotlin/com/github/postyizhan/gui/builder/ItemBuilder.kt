@@ -165,18 +165,7 @@ class ItemBuilder(private val plugin: PostWarps) {
         }
     }
 
-    /**
-     * 处理条件材料（已废弃，现在使用子图标功能）
-     */
-    private fun processConditionalMaterial(
-        materialName: String,
-        @Suppress("UNUSED_PARAMETER") mainConfig: ConfigurationSection,
-        @Suppress("UNUSED_PARAMETER") data: Map<String, Any>
-    ): String {
-        // 不再处理条件材料，直接返回原材料名称
-        // 条件材料功能已由子图标功能替代
-        return materialName
-    }
+
     
     /**
      * 设置物品名称

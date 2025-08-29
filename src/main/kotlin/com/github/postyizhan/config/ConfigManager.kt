@@ -41,46 +41,27 @@ class ConfigManager(private val plugin: PostWarps) {
      * 添加默认配置
      */
     private fun populateDefaults() {
-        // 更新检查配置
-        if (!config.contains("update-checker.enabled")) {
-            config.set("update-checker.enabled", true)
-        }
-        if (!config.contains("update-checker.check-interval-days")) {
-            config.set("update-checker.check-interval-days", 1)
-        }
+        // 配置项和默认值的映射
+        val defaults = mapOf(
+            "update-checker.enabled" to true,
+            "update-checker.check-interval-days" to 1,
+            "language" to "zh_CN",
+            "database.type" to "SQLite",
+            "database.mysql.host" to "localhost",
+            "database.mysql.port" to 3306,
+            "database.mysql.database" to "postwarps",
+            "database.mysql.username" to "root",
+            "database.mysql.password" to "password",
+            "database.mysql.use-ssl" to false,
+            "database.mysql.pool-size" to 10,
+            "database.debug" to false
+        )
         
-        // 语言配置
-        if (!config.contains("language")) {
-            config.set("language", "zh_CN")
-        }
-        
-        // 数据库配置
-        if (!config.contains("database.type")) {
-            config.set("database.type", "SQLite")
-        }
-        if (!config.contains("database.mysql.host")) {
-            config.set("database.mysql.host", "localhost")
-        }
-        if (!config.contains("database.mysql.port")) {
-            config.set("database.mysql.port", 3306)
-        }
-        if (!config.contains("database.mysql.database")) {
-            config.set("database.mysql.database", "postwarps")
-        }
-        if (!config.contains("database.mysql.username")) {
-            config.set("database.mysql.username", "root")
-        }
-        if (!config.contains("database.mysql.password")) {
-            config.set("database.mysql.password", "password")
-        }
-        if (!config.contains("database.mysql.use-ssl")) {
-            config.set("database.mysql.use-ssl", false)
-        }
-        if (!config.contains("database.mysql.pool-size")) {
-            config.set("database.mysql.pool-size", 10)
-        }
-        if (!config.contains("database.debug")) {
-            config.set("database.debug", false)
+        // 批量设置默认值
+        defaults.forEach { (key, value) ->
+            if (!config.contains(key)) {
+                config.set(key, value)
+            }
         }
     }
     

@@ -38,10 +38,6 @@ class WarpSearchAction(plugin: PostWarps) : AbstractAction(plugin) {
         // 关闭当前菜单
         player.closeInventory()
 
-        // 获取当前搜索关键词作为默认文本（暂时不使用，因为现在使用空格作为默认输入）
-        @Suppress("UNUSED_VARIABLE")
-        val currentSearch = plugin.getMenuManager().getPlayerData(player)["search_filter"] as? String ?: ""
-
         // 创建输入物品
         val inputItem = createInputItem()
 
