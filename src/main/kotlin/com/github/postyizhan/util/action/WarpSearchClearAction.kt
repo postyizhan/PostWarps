@@ -30,9 +30,6 @@ class WarpSearchClearAction(plugin: PostWarps) : AbstractAction(plugin) {
             plugin.getMenuManager().openMenu(player, currentMenu)
         }, 1L)
     }
-
-
-     */
     private fun clearMenuCache(player: Player, @Suppress("UNUSED_PARAMETER") menuName: String) {
         try {
             // 通过反射访问MenuManager的cache字段

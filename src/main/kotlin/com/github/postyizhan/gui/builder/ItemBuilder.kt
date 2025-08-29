@@ -40,8 +40,7 @@ class ItemBuilder(private val plugin: PostWarps) {
             ?: mainConfig.getString("material") 
             ?: return null
         
-        // 处理条件材料
-        val finalMaterialName = processConditionalMaterial(materialName, mainConfig, data)
+        val finalMaterialName = materialName
         
         val material = try {
             Material.valueOf(finalMaterialName.uppercase())

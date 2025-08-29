@@ -6,7 +6,6 @@ import org.bukkit.entity.Player
 
 /**
  * 地标可见性切换动作处理器 - 统一处理公开和私有设置
- * 合并了原来的WarpSetPublicAction和WarpSetPrivateAction
  */
 class WarpVisibilityAction(plugin: PostWarps) : AbstractAction(plugin) {
     
