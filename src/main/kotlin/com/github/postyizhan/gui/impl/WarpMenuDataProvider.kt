@@ -113,7 +113,7 @@ class WarpMenuDataProvider(
     /**
      * 获取公开地标数据
      */
-    private suspend fun getPublicWarpsData(@Suppress("UNUSED_PARAMETER") player: Player, context: MenuContext): MenuData {
+    private suspend fun getPublicWarpsData(player: Player, context: MenuContext): MenuData {
         return withContext(Dispatchers.IO) {
             try {
                 val allWarps = plugin.getDatabaseManager().getAllPublicWarps()

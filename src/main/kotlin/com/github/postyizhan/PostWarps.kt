@@ -119,6 +119,7 @@ class PostWarps : JavaPlugin() {
     // 委托给依赖容器的访问器方法
     fun getConfigManager() = container.configManager
     fun getDatabaseManager() = container.databaseManager
+    fun getEnhancedDatabaseManager() = container.enhancedDatabaseManager
     fun getMenuManager() = container.menuManager
     fun getDynamicCommandRegistrar() = container.dynamicCommandRegistrar
     fun getUpdateChecker() = container.updateChecker

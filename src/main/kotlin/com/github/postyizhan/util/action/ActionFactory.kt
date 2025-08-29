@@ -22,8 +22,11 @@ class ActionFactory(private val plugin: PostWarps) {
         registerAction(ActionType.WARP_DELETE, WarpDeleteAction(plugin))
         registerAction(ActionType.WARP_TELEPORT, WarpTeleportAction(plugin))
         registerAction(ActionType.WARP_INFO, WarpInfoAction(plugin))
-        registerAction(ActionType.WARP_SET_PUBLIC, WarpSetPublicAction(plugin))
-        registerAction(ActionType.WARP_SET_PRIVATE, WarpSetPrivateAction(plugin))
+        
+        // 使用统一的可见性切换Action
+        val visibilityAction = WarpVisibilityAction(plugin)
+        registerAction(ActionType.WARP_SET_PUBLIC, visibilityAction)
+        registerAction(ActionType.WARP_SET_PRIVATE, visibilityAction)
         registerAction(ActionType.WARP_SET, WarpSetAction(plugin))
         registerAction(ActionType.WARP_SEARCH, WarpSearchAction(plugin))
         registerAction(ActionType.WARP_SEARCH_CLEAR, WarpSearchClearAction(plugin))

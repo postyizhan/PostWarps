@@ -147,26 +147,7 @@ class MenuItemProcessor(private val plugin: PostWarps) {
         return null
     }
 
-    /**
-     * 检查显示条件（已废弃，现在使用子图标功能）
-     */
-    private fun checkDisplayCondition(
-        @Suppress("UNUSED_PARAMETER") itemConfig: ConfigurationSection,
-        @Suppress("UNUSED_PARAMETER") data: Map<String, Any>
-    ): Boolean {
-        // 不再处理display_condition，直接返回true
-        // 显示条件功能已由子图标功能替代
-        return true
-    }
-    
-    /**
-     * 创建备用物品（已废弃，现在使用子图标功能）
-     */
-    private fun createFallbackItem(@Suppress("UNUSED_PARAMETER") itemConfig: ConfigurationSection): ItemStack? {
-        // 不再创建备用物品，直接返回null
-        // 备用物品功能已由子图标功能替代
-        return null
-    }
+
     
     /**
      * 获取图标处理器

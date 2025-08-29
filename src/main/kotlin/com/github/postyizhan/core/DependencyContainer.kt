@@ -6,11 +6,13 @@ import com.github.postyizhan.command.DynamicCommandRegistrar
 import com.github.postyizhan.config.ConfigManager
 import com.github.postyizhan.config.GroupConfig
 import com.github.postyizhan.database.DatabaseManager
+import com.github.postyizhan.database.EnhancedDatabaseManager
 import com.github.postyizhan.gui.MenuManager
 import com.github.postyizhan.integration.PlaceholderAPIManager
 import com.github.postyizhan.integration.PlayerPointsManager
 import com.github.postyizhan.integration.VaultManager
 import com.github.postyizhan.service.EconomyService
+import com.github.postyizhan.service.WarpCacheService
 import com.github.postyizhan.teleport.TeleportManager
 import com.github.postyizhan.util.UpdateChecker
 import com.github.postyizhan.util.action.ActionFactory
@@ -24,6 +26,7 @@ class DependencyContainer private constructor(private val plugin: PostWarps) {
     // 核心管理器
     private var _configManager: ConfigManager? = null
     private var _databaseManager: DatabaseManager? = null
+    private var _enhancedDatabaseManager: EnhancedDatabaseManager? = null
     private var _menuManager: MenuManager? = null
     private var _commandManager: CommandManager? = null
     private var _dynamicCommandRegistrar: DynamicCommandRegistrar? = null
@@ -75,6 +78,9 @@ class DependencyContainer private constructor(private val plugin: PostWarps) {
     val databaseManager: DatabaseManager
         get() = _databaseManager ?: throw IllegalStateException("DatabaseManager not initialized")
     
+    val enhancedDatabaseManager: EnhancedDatabaseManager
+        get() = _enhancedDatabaseManager ?: throw IllegalStateException("EnhancedDatabaseManager not initialized")
+    
     val menuManager: MenuManager
         get() = _menuManager ?: throw IllegalStateException("MenuManager not initialized")
     
@@ -124,6 +130,7 @@ class DependencyContainer private constructor(private val plugin: PostWarps) {
     fun initDatabaseManager(): DatabaseManager {
         if (_databaseManager == null) {
             _databaseManager = DatabaseManager(plugin).apply { init() }
+            _enhancedDatabaseManager = EnhancedDatabaseManager(plugin, _databaseManager!!)
         }
         return _databaseManager!!
     }
@@ -163,6 +170,7 @@ class DependencyContainer private constructor(private val plugin: PostWarps) {
     fun isFullyInitialized(): Boolean {
         return _configManager != null &&
                 _databaseManager != null &&
+                _enhancedDatabaseManager != null &&
                 _menuManager != null &&
                 _commandManager != null &&
                 _dynamicCommandRegistrar != null &&
@@ -194,6 +202,7 @@ class DependencyContainer private constructor(private val plugin: PostWarps) {
         
         // 清理引用
         _configManager = null
+        _enhancedDatabaseManager = null
         _databaseManager = null
         _menuManager = null
         _commandManager = null

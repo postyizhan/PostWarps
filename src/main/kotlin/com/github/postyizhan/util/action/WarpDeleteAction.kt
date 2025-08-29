@@ -1,6 +1,7 @@
 package com.github.postyizhan.util.action
 
 import com.github.postyizhan.PostWarps
+import com.github.postyizhan.util.WarpOperationUtils
 import org.bukkit.entity.Player
 
 /**
@@ -11,43 +12,21 @@ class WarpDeleteAction(plugin: PostWarps) : AbstractAction(plugin) {
         val name = extractActionValue(actionValue, ActionType.WARP_DELETE.prefix)
         logDebug("Player ${player.name} deleting warp: $name")
         
-        // 从数据库中获取地标
-        val warp = if (name.isEmpty()) {
-            val data = plugin.getMenuManager().getPlayerData(player)
-            val warpId = data["warp_id"] as? Int ?: run {
-                logDebug("No warp_id found in player data")
-                return
+        // 使用工具类执行删除操作
+        val result = WarpOperationUtils.executeWarpOperation(
+            plugin, player, "warp_delete", name
+        ) { warp ->
+            val success = plugin.getEnhancedDatabaseManager().deleteWarpSync(warp.id)
+            if (success) {
+                // 退还费用
+                plugin.getEconomyService().refundDeleteCost(player)
+                // 关闭菜单
+                player.closeInventory()
             }
-            plugin.getDatabaseManager().getWarp(warpId)
-        } else {
-            plugin.getDatabaseManager().getWarp(name, player.uniqueId)
+            success
         }
         
-        if (warp == null) {
-            sendMessage(player, "warp_delete.not_found", "name" to (if (name.isEmpty()) "selected warp" else name))
-            return
-        }
-        
-        // 检查是否是自己的地标
-        if (warp.owner != player.uniqueId && !player.hasPermission("postwarps.admin")) {
-            sendMessage(player, "warp_delete.not_owner")
-            return
-        }
-        
-        logDebug("Deleting warp ID: ${warp.id}, name: ${warp.name}")
-        
-        // 删除地标
-        val success = plugin.getDatabaseManager().deleteWarp(warp.id)
-        if (success) {
-            sendMessage(player, "warp_delete.success", "name" to warp.name)
-
-            // 退还费用
-            plugin.getEconomyService().refundDeleteCost(player)
-
-            // 关闭菜单
-            player.closeInventory()
-        } else {
-            sendMessage(player, "warp_delete.failed")
-        }
+        // 发送结果消息
+        sendMessage(player, result.messageKey, *result.replacements.toList().toTypedArray())
     }
 }

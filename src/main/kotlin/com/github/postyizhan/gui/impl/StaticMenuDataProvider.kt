@@ -27,7 +27,7 @@ class StaticMenuDataProvider : MenuDataProvider {
     /**
      * 获取主菜单数据
      */
-    private fun getMainMenuData(@Suppress("UNUSED_PARAMETER") player: Player, context: MenuContext): MenuData {
+    private fun getMainMenuData(player: Player, context: MenuContext): MenuData {
         return MenuData(
             staticData = mapOf(
                 "server_name" to "PostWarps",
@@ -39,7 +39,7 @@ class StaticMenuDataProvider : MenuDataProvider {
     /**
      * 获取创建菜单数据
      */
-    private fun getCreateMenuData(player: Player, @Suppress("UNUSED_PARAMETER") context: MenuContext): MenuData {
+    private fun getCreateMenuData(player: Player, context: MenuContext): MenuData {
         return MenuData(
             staticData = mapOf(
                 "location" to "${player.location.blockX}, ${player.location.blockY}, ${player.location.blockZ}",
