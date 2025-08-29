@@ -64,7 +64,7 @@ class WarpInfoAction(plugin: PostWarps) : AbstractAction(plugin) {
             MessageUtil.getMessage("info.public", player).replace("{public}", publicStatus)
         ))
 
-        // 使用国际化的描述默认值
+
         val descriptionText = if (warp.description.isEmpty()) {
             when (MessageUtil.getPlayerLanguage(player)) {
                 "en_US" -> "None"
@@ -77,13 +77,11 @@ class WarpInfoAction(plugin: PostWarps) : AbstractAction(plugin) {
             MessageUtil.getMessage("info.description", player).replace("{desc}", descriptionText)
         ))
         
-        // 关闭菜单
+
         player.closeInventory()
     }
     
-    /**
-     * 格式化时间戳
-     */
+
     private fun formatTimestamp(timestamp: Long): String {
         val date = java.util.Date(timestamp)
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")

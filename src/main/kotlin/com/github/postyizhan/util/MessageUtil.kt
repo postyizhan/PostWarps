@@ -9,42 +9,35 @@ import java.io.File
 import java.io.InputStreamReader
 import java.util.concurrent.ConcurrentHashMap
 
-/**
- * 消息工具类，负责处理消息发送和颜色处理
- */
 object MessageUtil {
 
     private lateinit var plugin: PostWarps
     private lateinit var messages: YamlConfiguration
     private lateinit var prefix: String
 
-    // 缓存不同语言的消息配置
+
     private val languageMessages = ConcurrentHashMap<String, YamlConfiguration>()
 
-    // 玩家语言偏好设置（覆盖客户端检测）
+
     private val playerLanguagePreferences = ConcurrentHashMap<String, String>()
     
-    /**
-     * 初始化消息工具
-     */
+
     fun init(plugin: PostWarps) {
         this.plugin = plugin
         loadMessages()
     }
     
-    /**
-     * 加载语言文件
-     */
+
     private fun loadMessages() {
         val language = plugin.getConfigManager().getConfig().getString("language", "zh_CN")
         val langFile = File(plugin.dataFolder, "lang/$language.yml")
         
-        // 如果文件不存在，则创建
+
         if (!langFile.exists()) {
             plugin.saveResource("lang/$language.yml", false)
         }
         
-        // 尝试从文件加载，如果失败则从内置资源加载
+
         messages = try {
             YamlConfiguration.loadConfiguration(langFile)
         } catch (e: Exception) {
@@ -59,13 +52,11 @@ object MessageUtil {
             }
         }
         
-        // 获取前缀
+
         prefix = messages.getString("prefix", "&8[&3Post&bWarps&8] ")
     }
     
-    /**
-     * 获取消息（使用默认语言）
-     */
+
     fun getMessage(path: String): String {
         var message = messages.getString(path)
         if (message == null) {
@@ -77,16 +68,14 @@ object MessageUtil {
         return message.replace("{prefix}", prefix)
     }
 
-    /**
-     * 获取玩家语言的消息
-     */
+
     fun getMessage(path: String, player: Player): String {
         val language = getPlayerLanguage(player)
         val langMessages = getLanguageMessages(language)
 
         var message = langMessages.getString(path)
         if (message == null) {
-            // 回退到默认语言
+
             message = messages.getString(path)
             if (message == null) {
                 if (plugin.isDebugEnabled()) {
@@ -100,31 +89,27 @@ object MessageUtil {
         return message.replace("{prefix}", langPrefix)
     }
     
-    /**
-     * 处理颜色代码
-     */
+
     fun color(message: String): String {
         return ChatColor.translateAlternateColorCodes('&', message)
     }
 
-    /**
-     * 获取玩家的语言设置
-     */
+
     fun getPlayerLanguage(player: Player): String {
-        // 第一优先级：玩家手动设置的语言偏好
+
         val preference = playerLanguagePreferences[player.uniqueId.toString()]
         if (preference != null && preference != "auto") {
             return preference
         }
 
-        // 第二优先级：客户端语言检测
+
         val clientLanguage = try {
             player.locale
         } catch (e: Exception) {
             null
         }
 
-        // 转换客户端语言到支持的格式
+
         val supportedLanguage = when (clientLanguage) {
             "zh_cn", "zh_CN" -> "zh_CN"
             "en_us", "en_US" -> "en_US"
@@ -135,13 +120,11 @@ object MessageUtil {
             return supportedLanguage
         }
 
-        // 第三优先级：服务器默认语言
+
         return plugin.getConfigManager().getConfig().getString("language", "zh_CN") ?: "zh_CN"
     }
 
-    /**
-     * 设置玩家的语言偏好
-     */
+
     fun setPlayerLanguage(player: Player, language: String) {
         if (isLanguageSupported(language)) {
             playerLanguagePreferences[player.uniqueId.toString()] = language
@@ -151,40 +134,30 @@ object MessageUtil {
         }
     }
 
-    /**
-     * 清除玩家的语言偏好（使用客户端检测）
-     */
+
     fun clearPlayerLanguage(player: Player) {
         playerLanguagePreferences.remove(player.uniqueId.toString())
         plugin.logger.info("Player ${player.name} language preference cleared")
     }
 
-    /**
-     * 检查语言是否支持
-     */
+
     fun isLanguageSupported(language: String): Boolean {
         return language in listOf("zh_CN", "en_US")
     }
 
-    /**
-     * 获取支持的语言列表
-     */
+
     fun getSupportedLanguages(): List<String> {
         return listOf("zh_CN", "en_US")
     }
 
-    /**
-     * 获取指定语言的消息配置
-     */
+
     private fun getLanguageMessages(language: String): YamlConfiguration {
         return languageMessages.getOrPut(language) {
             loadLanguageMessages(language)
         }
     }
 
-    /**
-     * 加载指定语言的消息文件
-     */
+
     private fun loadLanguageMessages(language: String): YamlConfiguration {
         val langFile = File(plugin.dataFolder, "lang/$language.yml")
 
@@ -199,7 +172,7 @@ object MessageUtil {
                 }
             }
         } else {
-            // 尝试从资源文件加载
+
             try {
                 plugin.getResource("lang/$language.yml")?.use { inputStream ->
                     InputStreamReader(inputStream, "UTF-8").use { reader ->
@@ -215,31 +188,25 @@ object MessageUtil {
             }
         }
 
-        // 如果加载失败，返回默认消息配置
+
         if (plugin.isDebugEnabled()) {
             plugin.logger.warning("Language file $language.yml not found, using default language")
         }
         return messages
     }
 
-    /**
-     * 重新加载所有语言文件
-     */
+
     fun reloadLanguages() {
         languageMessages.clear()
         plugin.logger.info("Language cache cleared, language files will be reloaded")
     }
     
-    /**
-     * 发送消息
-     */
+
     fun sendMessage(sender: CommandSender, message: String) {
         sender.sendMessage(color(message))
     }
     
-    /**
-     * 处理占位符
-     */
+
     fun process(message: String, vararg args: Pair<String, String>): String {
         var result = message
         args.forEach { (key, value) ->

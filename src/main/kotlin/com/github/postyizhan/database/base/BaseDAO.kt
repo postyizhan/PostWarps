@@ -6,25 +6,12 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
 
-/**
- * 数据库访问对象基类 - 提供通用的数据库操作模式
- * 统一错误处理、资源管理和日志记录
- */
 abstract class BaseDAO(protected val plugin: PostWarps) {
     
-    /**
-     * 获取数据库连接
-     * 子类需要实现此方法来提供具体的连接获取逻辑
-     */
+
     protected abstract fun getConnection(): Connection?
     
-    /**
-     * 执行查询操作
-     * @param sql SQL查询语句
-     * @param params 查询参数
-     * @param mapper 结果映射函数
-     * @return 查询结果列表
-     */
+
     protected fun <T> executeQuery(
         sql: String,
         params: List<Any> = emptyList(),
@@ -44,13 +31,7 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         } ?: emptyList()
     }
     
-    /**
-     * 执行单个查询操作
-     * @param sql SQL查询语句
-     * @param params 查询参数
-     * @param mapper 结果映射函数
-     * @return 查询结果，如果没有结果则返回null
-     */
+
     protected fun <T> executeQuerySingle(
         sql: String,
         params: List<Any> = emptyList(),
@@ -70,12 +51,7 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         }
     }
     
-    /**
-     * 执行更新操作（INSERT, UPDATE, DELETE）
-     * @param sql SQL更新语句
-     * @param params 更新参数
-     * @return 受影响的行数，如果操作失败则返回-1
-     */
+
     protected fun executeUpdate(sql: String, params: List<Any> = emptyList()): Int {
         return executeWithConnection { connection ->
             connection.prepareStatement(sql).use { statement ->
@@ -85,12 +61,7 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         } ?: -1
     }
     
-    /**
-     * 执行插入操作并返回生成的主键
-     * @param sql SQL插入语句
-     * @param params 插入参数
-     * @return 生成的主键，如果操作失败则返回null
-     */
+
     protected fun executeInsertWithGeneratedKey(sql: String, params: List<Any> = emptyList()): Long? {
         return executeWithConnection { connection ->
             connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS).use { statement ->
@@ -112,12 +83,7 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         }
     }
     
-    /**
-     * 执行批量更新操作
-     * @param sql SQL更新语句
-     * @param paramsList 参数列表的列表
-     * @return 每个操作受影响的行数数组，如果操作失败则返回null
-     */
+
     protected fun executeBatch(sql: String, paramsList: List<List<Any>>): IntArray? {
         if (paramsList.isEmpty()) return intArrayOf()
         
@@ -132,11 +98,7 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         }
     }
     
-    /**
-     * 在事务中执行操作
-     * @param operation 要执行的操作
-     * @return 操作结果
-     */
+
     protected fun <T> executeInTransaction(operation: (Connection) -> T): T? {
         return executeWithConnection { connection ->
             val originalAutoCommit = connection.autoCommit
@@ -163,11 +125,7 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         }
     }
     
-    /**
-     * 使用连接执行操作的通用模板方法
-     * @param operation 要执行的操作
-     * @return 操作结果，如果发生错误则返回null
-     */
+
     private fun <T> executeWithConnection(operation: (Connection) -> T): T? {
         val connection = getConnection()
         if (connection == null) {
@@ -194,22 +152,14 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         }
     }
     
-    /**
-     * 设置PreparedStatement的参数
-     * @param statement PreparedStatement对象
-     * @param params 参数列表
-     */
+
     private fun setParameters(statement: PreparedStatement, params: List<Any>) {
         params.forEachIndexed { index, param ->
             statement.setObject(index + 1, param)
         }
     }
     
-    /**
-     * 检查表是否存在
-     * @param tableName 表名
-     * @return 如果表存在则返回true
-     */
+
     protected fun tableExists(tableName: String): Boolean {
         return executeWithConnection { connection ->
             val metaData = connection.metaData
@@ -219,18 +169,12 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         } ?: false
     }
     
-    /**
-     * 记录调试信息
-     */
     protected fun logDebug(message: String) {
         if (plugin.isDebugEnabled()) {
             plugin.logger.info("[DEBUG] ${this::class.simpleName}: $message")
         }
     }
     
-    /**
-     * 记录错误信息
-     */
     protected fun logError(message: String, exception: Exception) {
         plugin.logger.severe("${this::class.simpleName}: $message - ${exception.message}")
         if (plugin.isDebugEnabled()) {
@@ -238,16 +182,10 @@ abstract class BaseDAO(protected val plugin: PostWarps) {
         }
     }
     
-    /**
-     * 记录警告信息
-     */
     protected fun logWarning(message: String) {
         plugin.logger.warning("${this::class.simpleName}: $message")
     }
     
-    /**
-     * 记录信息
-     */
     protected fun logInfo(message: String) {
         plugin.logger.info("${this::class.simpleName}: $message")
     }

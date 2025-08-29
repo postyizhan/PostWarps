@@ -4,10 +4,6 @@ import com.github.postyizhan.PostWarps
 import com.github.postyizhan.util.MessageUtil
 import org.bukkit.entity.Player
 
-/**
- * 清除地标搜索动作处理器
- * 清除当前的搜索过滤器
- */
 class WarpSearchClearAction(plugin: PostWarps) : AbstractAction(plugin) {
     
     override fun execute(player: Player, actionValue: String) {
@@ -15,12 +11,12 @@ class WarpSearchClearAction(plugin: PostWarps) : AbstractAction(plugin) {
         
         val currentMenu = plugin.getMenuManager().getOpenMenu(player) ?: return
         
-        // 清除搜索过滤器
+
         plugin.getMenuManager().setPlayerData(player, "search_filter", "")
         plugin.getMenuManager().setPlayerData(player, "search_display", "")
         plugin.getMenuManager().setPlayerData(player, "page", 0)
 
-        // 清除菜单缓存以强制重新加载数据
+
         clearMenuCache(player, currentMenu)
 
 
@@ -29,14 +25,13 @@ class WarpSearchClearAction(plugin: PostWarps) : AbstractAction(plugin) {
             MessageUtil.getMessage("search.cleared", player)
         ))
         
-        // 重新打开菜单以显示清除搜索后的结果
+
         plugin.server.scheduler.runTaskLater(plugin, Runnable {
             plugin.getMenuManager().openMenu(player, currentMenu)
         }, 1L)
     }
 
-    /**
-     * 清除菜单缓存以强制重新加载数据
+
      */
     private fun clearMenuCache(player: Player, @Suppress("UNUSED_PARAMETER") menuName: String) {
         try {
